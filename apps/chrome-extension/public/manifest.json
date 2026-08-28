@@ -1,0 +1,15 @@
+{
+  "manifest_version": 3,
+  "name": "Vigour UI Review",
+  "version": "0.0.1",
+  "description": "采集 Web 实现图、DOM 和计算样式并发送至本地 Vigour UI Review 工作台。",
+  "permissions": ["activeTab", "scripting", "storage", "tabs"],
+  "host_permissions": ["http://127.0.0.1:4179/*"],
+  "action": { "default_popup": "popup.html", "default_title": "Vigour UI Review" },
+  "background": { "service_worker": "service-worker.js", "type": "module" },
+  "content_scripts": [{
+    "matches": ["http://*/*", "https://*/*"],
+    "js": ["content.js"],
+    "run_at": "document_idle"
+  }]
+}

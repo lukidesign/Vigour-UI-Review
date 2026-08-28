@@ -1,0 +1,7 @@
+#!/bin/zsh
+set -euo pipefail
+VISION_DIR="${0:A:h}"
+PACKAGE_DIR="${VISION_DIR:h}"
+export PYTHONPATH="$VISION_DIR/site-packages"
+export PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK=True
+exec "$PACKAGE_DIR/runtime/python/bin/python3.12" -m design_acceptance_vision.rpc "$@"

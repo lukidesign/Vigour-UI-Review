@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Vigour UI Review</title></head>
+  <body>
+    <main>
+      <header><span class="mark">VR</span><div><strong>Vigour UI Review</strong><small>本地安全采集</small></div></header>
+      <label>会话令牌<input id="token" type="password" autocomplete="off" placeholder="首次使用请粘贴本地令牌"></label>
+      <div class="actions"><button id="viewport">采集当前视口</button><button id="fullpage" class="secondary">采集完整页面</button></div>
+      <p id="status" role="status">准备就绪</p>
+    </main>
+    <script type="module" src="/src/popup.ts"></script>
+  </body>
+</html>

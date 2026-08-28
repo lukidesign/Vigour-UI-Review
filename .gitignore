@@ -1,0 +1,47 @@
+# JavaScript dependencies and build output
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+coverage/
+
+# Python environments and caches
+.venv/
+**/.venv/
+__pycache__/
+**/__pycache__/
+.pytest_cache/
+**/.pytest_cache/
+*.py[cod]
+
+# Runtime and generated analysis data
+.data/
+*.sqlite
+*.sqlite3
+*.sqlite-shm
+*.sqlite-wal
+session-token
+.benchmark-output/
+
+# Release output must be attached to GitHub Releases, never committed
+release/
+release-artifacts/
+*.zip
+*.sha256
+
+# Local configuration and credentials
+.env
+.env.*
+!.env.example
+*.pem
+*.p12
+*.pfx
+*.key
+
+# Logs, editors, and operating-system files
+*.log
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo

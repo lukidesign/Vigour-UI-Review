@@ -1,0 +1,33 @@
+{
+  "name": "vigour-ui-review",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@11.22.0",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "build": "pnpm -r build",
+    "dev:service": "pnpm --filter @vigour-ui-review/local-service dev",
+    "dev:workbench": "pnpm --filter @vigour-ui-review/workbench dev",
+    "start:local": "node scripts/start-local.mjs",
+    "package:dev": "node scripts/package-dev.mjs",
+    "package:check": "node scripts/check-package.mjs",
+    "package:smoke": "node scripts/smoke-package.mjs",
+    "package:archive": "node scripts/archive-package.mjs",
+    "benchmark": "uv run --project apps/vision-engine python apps/vision-engine/benchmark/run_benchmark.py",
+    "repository:check": "node scripts/check-repository.mjs",
+    "release:verify-tag": "node scripts/verify-release-tag.mjs",
+    "release:check": "node scripts/release-check.mjs",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "pnpm -r typecheck"
+  },
+  "devDependencies": {
+    "@types/node": "26.4.0",
+    "tsx": "4.23.12",
+    "typescript": "5.9.3",
+    "vitest": "4.1.11"
+  }
+}

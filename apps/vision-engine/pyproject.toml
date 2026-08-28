@@ -1,0 +1,28 @@
+[project]
+name = "vigour-ui-review-vision"
+version = "0.0.1"
+description = "Local deterministic vision engine for Vigour UI Review"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+  "numpy>=2.2,<3",
+  "opencv-python-headless>=4.11,<5",
+  "pillow>=11,<13",
+]
+
+[project.optional-dependencies]
+ocr = ["paddleocr>=3,<4", "paddlepaddle>=3,<4"]
+dev = ["pytest>=8,<10"]
+
+[project.scripts]
+vigour-ui-review-vision = "design_acceptance_vision.rpc:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/design_acceptance_vision"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
