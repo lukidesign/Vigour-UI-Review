@@ -29,7 +29,8 @@ await cp(resolve(root, 'apps/workbench/dist'), resolve(target, 'workbench'), { r
 await cp(resolve(root, 'apps/chrome-extension/dist'), resolve(target, 'chrome-extension'), { recursive: true });
 await mkdir(resolve(target, 'vision-engine'), { recursive: true });
 await mkdir(resolve(target, 'runtime'), { recursive: true });
-const pythonExecutable = await capture('uv', ['python', 'find', '3.12']);
+await run('uv', ['python', 'install', '3.12', '--managed-python']);
+const pythonExecutable = await capture('uv', ['python', 'find', '3.12', '--managed-python', '--resolve-links']);
 const pythonRoot = await realpath(resolve(pythonExecutable, '../..'));
 const packagedPythonRoot = resolve(target, 'runtime/python');
 await cp(pythonRoot, packagedPythonRoot, { recursive: true });

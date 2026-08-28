@@ -248,6 +248,7 @@ Vigour-UI-Review/
 7. **本机测试掩盖搬迁错误**：只在原工程目录启动会误用仍存在的本机 Python。新增包级二进制路径扫描，并将整包移动到 `/tmp` 后再次执行视觉分析，确保交付目录可搬迁。
 8. **冒烟测试修改发布包**：Python 首次运行会回写 `.pyc`，导致测试前后字节内容不同。测试进程现已设置 `PYTHONDONTWRITEBYTECODE=1`，并在冒烟测试后再次执行包检查。
 9. **离线包缺少聚合许可入口**：Python wheels 保留了各自许可文件，但单独复制的 Node.js 二进制和打包后的 JavaScript 依赖缺少统一入口。最终包增加 Node.js/Python 许可文本、132 项 JavaScript 依赖清单、127 份随包许可文件和 MIT 兜底文本。
+10. **GitHub runner 误选系统 Python**：首次标签构建时，`uv python find` 在 runner 上选择了 `/Library/Frameworks` 下的系统解释器，产生包外软链接。打包脚本现会先安装并强制解析 uv-managed Python，保证本地与 CI 使用同一类可搬迁运行时。
 
 可搬迁验收中，将整个交付目录移动到 `/tmp` 后，使用包内 Node 和 Python 成功完成：
 
