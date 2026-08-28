@@ -16,6 +16,15 @@ const rawIssueSchema = z.object({
 export const visionResultSchema = z.object({
   engine_version: z.string().min(1).max(100), rules_hash: z.string().min(1).max(128),
   alignment: z.object({ matrix: z.array(z.array(z.number())), confidence: z.number().min(0).max(1), mode: z.string() }),
+  normalization: z.object({
+    applied: z.boolean(),
+    reference: z.object({ width: z.number().int().positive(), height: z.number().int().positive() }),
+    candidate: z.object({ width: z.number().int().positive(), height: z.number().int().positive() }),
+    target: z.object({ width: z.number().int().positive(), height: z.number().int().positive() }),
+    aspect_ratio_difference_percent: z.number().min(0),
+    scale_x: z.number().positive(),
+    scale_y: z.number().positive(),
+  }),
   issues: z.array(rawIssueSchema).max(10_000), evidence_path: z.string(),
 });
 

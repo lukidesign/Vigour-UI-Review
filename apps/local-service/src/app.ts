@@ -19,6 +19,7 @@ import { FigmaStore } from './figma-store.js';
 import { AIConsentStore, payloadHash, type AIProvider, type AITask } from './ai-consent.js';
 import { createProviderRegistry, type AIAdapter } from './ai-providers.js';
 import { buildAIContext, makeAIPrompt } from './ai-context.js';
+import { incompatibleImageResponse, planImageNormalization } from './image-normalization.js';
 
 const createTaskBody = z.object({ kind: taskKindSchema });
 
@@ -211,9 +212,8 @@ export function buildApp(db: DatabaseSync, security: SecurityConfig, assetRoot =
     try {
       const reference = images.get(parsed.data.referenceAssetId);
       const candidate = images.get(parsed.data.candidateAssetId);
-      if (reference.width !== candidate.width || reference.height !== candidate.height) {
-        return reply.code(409).send({ code: 'IMAGE_DIMENSION_MISMATCH', reference: { width: reference.width, height: reference.height }, candidate: { width: candidate.width, height: candidate.height } });
-      }
+      const normalization = planImageNormalization(reference, candidate);
+      if (!normalization.compatible) return reply.code(409).send(incompatibleImageResponse(normalization));
       const evidence = images.reserveEvidence(reference);
       evidencePath = evidence.path;
       const result = await vision.request('analyze', {
@@ -245,6 +245,8 @@ export function buildApp(db: DatabaseSync, security: SecurityConfig, assetRoot =
     try {
       const reference = images.get(parsed.data.referenceAssetId);
       const candidate = images.get(parsed.data.candidateAssetId);
+      const normalization = planImageNormalization(reference, candidate);
+      if (!normalization.compatible) return reply.code(409).send(incompatibleImageResponse(normalization));
       const profile = projects.getProfileForProject(parsed.data.projectId);
       const run = projects.createRun(parsed.data.projectId, reference.id, candidate.id);
       runId = run.id;
@@ -258,7 +260,22 @@ export function buildApp(db: DatabaseSync, security: SecurityConfig, assetRoot =
       const normalized = normalizeVisionIssues(run.id, raw);
       const evidenceAsset = images.commitEvidence(evidence, reference);
       const completed = projects.completeRun(run.id, normalized.issues, evidenceAsset.id);
-      return reply.code(201).send({ run: completed, issues: projects.listIssues(run.id), evidenceAssetId: evidenceAsset.id, alignment: normalized.result.alignment });
+      const rawNormalization = normalized.result.normalization;
+      return reply.code(201).send({
+        run: completed,
+        issues: projects.listIssues(run.id),
+        evidenceAssetId: evidenceAsset.id,
+        alignment: normalized.result.alignment,
+        normalization: {
+          applied: rawNormalization.applied,
+          reference: rawNormalization.reference,
+          candidate: rawNormalization.candidate,
+          target: rawNormalization.target,
+          aspectRatioDifferencePercent: rawNormalization.aspect_ratio_difference_percent,
+          scaleX: rawNormalization.scale_x,
+          scaleY: rawNormalization.scale_y,
+        },
+      });
     } catch (error) {
       if (evidencePath) rmSync(evidencePath, { force: true });
       if (runId) projects.failRun(runId);

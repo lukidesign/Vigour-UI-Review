@@ -4,6 +4,17 @@ All notable changes to Vigour UI Review are documented here. The project follows
 
 ## [Unreleased]
 
+### Changed
+
+- Automatically normalize development screenshots when their aspect ratio differs from the design by at most 1%, without modifying the original asset.
+- Show the original size, target size, and scale used by automatic normalization in the workbench.
+
+### Fixed
+
+- Replace the opaque `ANALYSIS_FAILED` response for incompatible images with a structured size and aspect-ratio explanation.
+- Reject aspect-ratio differences over 1% before creating a failed run.
+- Prevent normal packaged-app startup from writing Python bytecode caches into the installation directory.
+
 ### Planned
 
 - Human-labeled production Web benchmark.

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { computed, nextTick, onBeforeUnmount, onMounted, reactive, ref, watch } from 'vue';
-import { theme as antdTheme, message } from 'ant-design-vue';
+import { theme as antdTheme, message, notification } from 'ant-design-vue';
 import {
   BgColorsOutlined, CheckOutlined, CloudUploadOutlined, CodeOutlined, CopyOutlined, DownloadOutlined,
   EyeOutlined, FolderOpenOutlined, HistoryOutlined, ImportOutlined, PlusOutlined, ReloadOutlined,
   SettingOutlined, BulbOutlined, ZoomInOutlined, ZoomOutOutlined,
 } from '@ant-design/icons-vue';
-import { assetBlobUrl, download, sessionToken, setSessionToken } from './api';
+import { ApiError, assetBlobUrl, download, sessionToken, setSessionToken } from './api';
 import { useWorkbenchStore } from './stores/workbench';
 import { applyTheme, loadCustomTheme, loadThemeId, saveCustomThemeValue, themes, type ThemePreset } from './themes';
 import type { Issue, Severity } from './types';
@@ -72,6 +72,14 @@ const severityCount = computed(() => ({
   minor: store.issues.filter((issue) => issue.severity === 'minor' && issue.status === 'open').length,
 }));
 const issueTypes = computed(() => [...new Set(store.issues.map((issue) => issue.type))]);
+const normalizationDescription = computed(() => {
+  const item = store.normalization;
+  if (!item?.applied) return '';
+  const scaleX = `${(item.scaleX * 100).toFixed(2)}%`;
+  const scaleY = `${(item.scaleY * 100).toFixed(2)}%`;
+  const scale = scaleX === scaleY ? scaleX : `宽 ${scaleX} / 高 ${scaleY}`;
+  return `开发图 ${item.candidate.width}×${item.candidate.height} → ${item.target.width}×${item.target.height}，缩放比例 ${scale}；原图未被修改。`;
+});
 
 function revoke(url: string) { if (url.startsWith('blob:')) URL.revokeObjectURL(url); }
 async function updateBlob(kind: 'design' | 'implementation' | 'evidence', id?: string) {
@@ -102,8 +110,15 @@ async function chooseFile(kind: 'design' | 'implementation', event: Event) {
   input.value = '';
 }
 async function runAnalysis(useOcr = false) {
-  try { await store.analyze(useOcr); selectedIssueId.value = store.issues[0]?.id ?? ''; message.success('验收分析完成'); }
-  catch (error) { message.error(error instanceof Error ? error.message : '分析失败'); }
+  try {
+    await store.analyze(useOcr); selectedIssueId.value = store.issues[0]?.id ?? '';
+    if (store.normalization?.applied) notification.success({ message: '验收分析完成，开发图已自动对齐', description: normalizationDescription.value, duration: 6 });
+    else message.success('验收分析完成');
+  } catch (error) {
+    if (error instanceof ApiError && error.code === 'IMAGE_ASPECT_RATIO_MISMATCH') {
+      notification.error({ message: '图片比例不一致，无法开始验收', description: error.message, duration: 10 });
+    } else message.error(error instanceof Error ? error.message : '分析失败');
+  }
 }
 async function openCaptures() { await store.refreshCaptures(); captureModal.value = true; }
 function chooseCapture(capture: typeof store.captures[number]) {
@@ -244,6 +259,7 @@ onBeforeUnmount(() => { revoke(designUrl.value); revoke(implementationUrl.value)
             <div class="zoom-tools"><a-button size="small" @click="zoom = Math.max(25, zoom - 10)"><ZoomOutOutlined /></a-button><span>{{ zoom }}%</span><a-button size="small" @click="zoom = Math.min(200, zoom + 10)"><ZoomInOutlined /></a-button></div>
           </div>
           <div v-if="mode === 'overlay'" class="opacity-bar"><span>开发图透明度</span><a-slider v-model:value="opacity" :min="0" :max="100" /><b>{{ opacity }}%</b></div>
+          <a-alert v-if="store.normalization?.applied" class="normalization-alert" type="info" show-icon message="开发图已自动对齐" :description="normalizationDescription" />
           <div class="canvas-stage">
             <a-empty v-if="!designUrl || !implementationUrl" description="上传设计原图和开发实现图后开始验收" />
             <div v-else-if="mode === 'side-by-side'" class="side-by-side" :style="{ width: `${zoom * 2}%` }">

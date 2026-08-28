@@ -9,4 +9,13 @@ export interface Issue {
   delta?: number; unit?: string; suggestedCssPatch?: string; status: IssueStatus; createdAt: string;
 }
 export interface ImageAsset { id: string; kind: string; filename: string; mimeType: string; width: number; height: number; createdAt: string }
-export interface AnalysisResponse { run: Run; issues: Issue[]; evidenceAssetId: string; alignment: unknown }
+export interface ImageNormalization {
+  applied: boolean;
+  reference: { width: number; height: number };
+  candidate: { width: number; height: number };
+  target: { width: number; height: number };
+  aspectRatioDifferencePercent: number;
+  scaleX: number;
+  scaleY: number;
+}
+export interface AnalysisResponse { run: Run; issues: Issue[]; evidenceAssetId: string; alignment: unknown; normalization: ImageNormalization }

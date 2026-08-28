@@ -10,6 +10,14 @@ let db: DatabaseSync;
 let app: ReturnType<typeof buildApp>;
 const token = 'test-session-token-that-is-long-enough-123456789';
 const security = { sessionToken: token, allowedOrigins: new Set(['http://127.0.0.1:4173']) };
+const authenticatedHeaders = { authorization: `Bearer ${token}`, 'x-csrf-token': token };
+
+function pngDataUrl(width: number, height: number): string {
+  const buffer = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAFgwJ/l5Y2WQAAAABJRU5ErkJggg==', 'base64');
+  buffer.writeUInt32BE(width, 16);
+  buffer.writeUInt32BE(height, 20);
+  return `data:image/png;base64,${buffer.toString('base64')}`;
+}
 
 beforeEach(() => {
   db = openDatabase(':memory:');
@@ -90,6 +98,58 @@ describe('local API', () => {
     expect(response.statusCode).toBe(500);
     expect(response.json()).toEqual({ code: 'ANALYSIS_FAILED' });
     expect(response.body).not.toContain('/Users/');
+    await visionApp.close();
+  });
+
+  it('blocks incompatible aspect ratios before creating a failed run', async () => {
+    const vision = { request: async () => { throw new Error('vision should not run'); } };
+    const visionApp = buildApp(db, security, mkdtempSync(join(tmpdir(), 'vision-mismatch-')), vision);
+    const project = await visionApp.inject({ method: 'POST', url: '/api/v1/projects', headers: authenticatedHeaders, payload: { name: '尺寸预检' } });
+    const reference = await visionApp.inject({ method: 'POST', url: '/api/v1/assets/images', headers: authenticatedHeaders, payload: { kind: 'design', filename: 'design.png', dataUrl: pngDataUrl(1724, 888) } });
+    const candidate = await visionApp.inject({ method: 'POST', url: '/api/v1/assets/images', headers: authenticatedHeaders, payload: { kind: 'implementation', filename: 'implementation.png', dataUrl: pngDataUrl(2562, 1404) } });
+
+    const response = await visionApp.inject({ method: 'POST', url: '/api/v1/runs/analyze', headers: authenticatedHeaders, payload: {
+      projectId: project.json().id,
+      referenceAssetId: reference.json().id,
+      candidateAssetId: candidate.json().id,
+    } });
+
+    expect(response.statusCode).toBe(409);
+    expect(response.json()).toEqual({
+      code: 'IMAGE_ASPECT_RATIO_MISMATCH', thresholdPercent: 1, differencePercent: 6.01,
+      reference: { width: 1724, height: 888 }, candidate: { width: 2562, height: 1404 }, target: { width: 1724, height: 888 },
+    });
+    expect((db.prepare('SELECT COUNT(*) AS count FROM runs').get() as unknown as { count: number }).count).toBe(0);
+    await visionApp.close();
+  });
+
+  it('returns normalization details for proportional images', async () => {
+    const vision = { request: async (_method: string, params: Record<string, unknown>) => ({
+      engine_version: 'test', rules_hash: 'hash', alignment: { matrix: [[1, 0, 0], [0, 1, 0]], confidence: 1, mode: 'identity' },
+      normalization: {
+        applied: true,
+        reference: { width: 100, height: 50 }, candidate: { width: 200, height: 100 }, target: { width: 100, height: 50 },
+        aspect_ratio_difference_percent: 0, scale_x: 0.5, scale_y: 0.5,
+      },
+      issues: [], evidence_path: params.evidence_path,
+    }) };
+    const visionApp = buildApp(db, security, mkdtempSync(join(tmpdir(), 'vision-normalize-')), vision);
+    const project = await visionApp.inject({ method: 'POST', url: '/api/v1/projects', headers: authenticatedHeaders, payload: { name: '自动对齐' } });
+    const reference = await visionApp.inject({ method: 'POST', url: '/api/v1/assets/images', headers: authenticatedHeaders, payload: { kind: 'design', filename: 'design.png', dataUrl: pngDataUrl(100, 50) } });
+    const candidate = await visionApp.inject({ method: 'POST', url: '/api/v1/assets/images', headers: authenticatedHeaders, payload: { kind: 'implementation', filename: 'implementation.png', dataUrl: pngDataUrl(200, 100) } });
+
+    const response = await visionApp.inject({ method: 'POST', url: '/api/v1/runs/analyze', headers: authenticatedHeaders, payload: {
+      projectId: project.json().id,
+      referenceAssetId: reference.json().id,
+      candidateAssetId: candidate.json().id,
+    } });
+
+    expect(response.statusCode).toBe(201);
+    expect(response.json().normalization).toEqual({
+      applied: true,
+      reference: { width: 100, height: 50 }, candidate: { width: 200, height: 100 }, target: { width: 100, height: 50 },
+      aspectRatioDifferencePercent: 0, scaleX: 0.5, scaleY: 0.5,
+    });
     await visionApp.close();
   });
 });

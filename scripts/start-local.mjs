@@ -21,7 +21,13 @@ const workbenchRoot = releaseMode ? resolve(appRoot, 'workbench') : resolve(appR
 const child = spawn(process.execPath, [serviceEntry], {
   cwd: appRoot,
   stdio: 'inherit',
-  env: { ...process.env, VIGOUR_UI_REVIEW_DATA_DIR: dataRoot, VIGOUR_UI_REVIEW_VISION_COMMAND: visionCommand, VIGOUR_UI_REVIEW_WORKBENCH_ROOT: workbenchRoot },
+  env: {
+    ...process.env,
+    PYTHONDONTWRITEBYTECODE: '1',
+    VIGOUR_UI_REVIEW_DATA_DIR: dataRoot,
+    VIGOUR_UI_REVIEW_VISION_COMMAND: visionCommand,
+    VIGOUR_UI_REVIEW_WORKBENCH_ROOT: workbenchRoot,
+  },
 });
 
 let ready = false;
