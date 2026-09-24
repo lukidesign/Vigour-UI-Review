@@ -4,19 +4,38 @@ All notable changes to Vigour UI Review are documented here. The project follows
 
 ## [Unreleased]
 
+Source-only development update; no new downloadable release or store approval is implied. Existing v0.0.1 artifacts are unchanged. See [delivery status](docs/DELIVERY-STATUS.md) for acceptance gates.
+
+### Added
+
+- Native Messaging host with constrained commands, exact extension-origin pairing, process reuse, one-time workbench tickets, and idle lifecycle management.
+- Apple Silicon graphical companion installer with payload verification, install/update/repair, same-schema rollback, and data-preserving uninstall.
+- Extension icons, bilingual store copy, actual synthetic-demo screenshots, privacy disclosures, and private-beta checklists.
+- Regression coverage for capture cancellation, Native framing/session lifecycle, installer ownership, and workbench authentication.
+
 ### Changed
 
+- Standardize publisher and project copyright attribution as LukiDesign; retain Vigour UI Review as the product name.
+- New-source workbench and extension credentials use session storage; normal Native pairing does not require manual token copying.
+- Link the known store draft ID and distinguish source development from the legacy downloadable package.
+- Include store-material validation in the basic release-check pipeline; Native and installer integration remain separate gates.
 - Automatically normalize development screenshots when their aspect ratio differs from the design by at most 1%, without modifying the original asset.
 - Show the original size, target size, and scale used by automatic normalization in the workbench.
 
 ### Fixed
 
+- Bind capture to the initiating document and viewport; cancel safely on navigation, tab changes, timeout, or user cancellation, with page restoration safeguards.
+- Keep side-by-side image edges reachable and preserve horizontal access when zooming the canvas.
 - Replace the opaque `ANALYSIS_FAILED` response for incompatible images with a structured size and aspect-ratio explanation.
 - Reject aspect-ratio differences over 1% before creating a failed run.
 - Prevent normal packaged-app startup from writing Python bytecode caches into the installation directory.
 
 ### Planned
 
+- Real Chrome toolbar capture-to-export acceptance and clean-machine companion installation.
+- Coordinated beta package versions, fixed store-ID pairing, download URL and SHA-256.
+- Real elapsed idle/sleep tests, minimum macOS verification, and installation fault recovery.
+- Narrow-screen layout and complete English UI; Windows and Intel Mac remain outside the first beta.
 - Human-labeled production Web benchmark.
 - Signed and notarized macOS package.
 - Chrome Web Store distribution.

@@ -1,6 +1,6 @@
 # Code of Conduct
 
-Vigour UI is committed to a welcoming, respectful, and harassment-free project community.
+LukiDesign is committed to a welcoming, respectful, and harassment-free project community.
 
 ## Expected behavior
 
@@ -18,6 +18,6 @@ Vigour UI is committed to a welcoming, respectful, and harassment-free project c
 
 ## Enforcement
 
-Project maintainers may edit or remove contributions and restrict participation when behavior violates this code. For confidential conduct reports, contact the maintainers through a private channel associated with the Vigour UI GitHub account. Security vulnerabilities must use GitHub Private Vulnerability Reporting instead.
+Project maintainers may edit or remove contributions and restrict participation when behavior violates this code. For confidential conduct reports, contact the project maintainers through an established private channel. Security vulnerabilities must use GitHub Private Vulnerability Reporting instead.
 
 This code applies to repository discussions, issues, pull requests, reviews, and other official project spaces.

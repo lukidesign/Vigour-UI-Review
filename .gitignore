@@ -21,6 +21,9 @@ __pycache__/
 *.sqlite-shm
 *.sqlite-wal
 session-token
+host-config.json
+native-state.json
+native-launch.lock*
 .benchmark-output/
 
 # Release output must be attached to GitHub Releases, never committed

@@ -23,10 +23,12 @@ const capture = async (command, args) => await new Promise((resolveOutput, rejec
   child.once('error', reject); child.once('exit', (code) => code === 0 ? resolveOutput(output.trim()) : reject(new Error(`${command} failed with ${code}`)));
 });
 await run('pnpm', ['build']);
+await run('pnpm', ['build:native']);
 await mkdir(resolve(target, 'service'), { recursive: true });
 await cp(resolve(root, 'apps/local-service/dist/main.js'), resolve(target, 'service/main.js'));
 await cp(resolve(root, 'apps/workbench/dist'), resolve(target, 'workbench'), { recursive: true });
 await cp(resolve(root, 'apps/chrome-extension/dist'), resolve(target, 'chrome-extension'), { recursive: true });
+await cp(resolve(root, 'apps/native-host/dist'), resolve(target, 'native'), { recursive: true });
 await mkdir(resolve(target, 'vision-engine'), { recursive: true });
 await mkdir(resolve(target, 'runtime'), { recursive: true });
 await run('uv', ['python', 'install', '3.12', '--managed-python']);
@@ -62,7 +64,11 @@ del _VigourPath, _vigour_prefix
 const packagedPythonLibrary = resolve(packagedPythonRoot, 'lib/libpython3.12.dylib');
 await run('/usr/bin/install_name_tool', ['-id', '@rpath/libpython3.12.dylib', packagedPythonLibrary]);
 await run('/usr/bin/codesign', ['--force', '--sign', '-', packagedPythonLibrary]);
-await run('uv', ['pip', 'install', '--python', resolve(target, 'runtime/python/bin/python3.12'), '--target', resolve(target, 'vision-engine/site-packages'), resolve(root, 'apps/vision-engine') + '[ocr]']);
+const pythonRequirements = await capture('uv', ['export', '--project', 'apps/vision-engine', '--extra', 'ocr', '--no-dev', '--no-emit-project', '--format', 'requirements-txt', '--frozen']);
+const pythonRequirementsPath = resolve(target, 'vision-engine/requirements.lock.txt');
+await writeFile(pythonRequirementsPath, `${pythonRequirements}\n`, { mode: 0o644 });
+await run('uv', ['pip', 'install', '--python', resolve(target, 'runtime/python/bin/python3.12'), '--target', resolve(target, 'vision-engine/site-packages'), '--require-hashes', '--no-deps', '-r', pythonRequirementsPath]);
+await run('uv', ['pip', 'install', '--python', resolve(target, 'runtime/python/bin/python3.12'), '--target', resolve(target, 'vision-engine/site-packages'), '--no-deps', resolve(root, 'apps/vision-engine')]);
 await rm(resolve(target, 'vision-engine/site-packages/bin'), { recursive: true, force: true });
 await rm(resolve(target, `vision-engine/site-packages/vigour_ui_review_vision-${manifest.version}.dist-info/direct_url.json`), { force: true });
 async function removeBuildOnlyFiles(directory) {
@@ -86,6 +92,10 @@ await cp(resolve(root, 'LICENSE'), resolve(target, 'LICENSE'));
 await cp(resolve(root, 'THIRD_PARTY_NOTICES.md'), resolve(target, 'THIRD_PARTY_NOTICES.md'));
 const thirdPartyRoot = resolve(target, 'THIRD_PARTY_LICENSES');
 await mkdir(resolve(thirdPartyRoot, 'javascript'), { recursive: true });
+const rustSysroot = await capture(process.env.VIGOUR_RUSTC ?? 'rustc', ['--print', 'sysroot']);
+await mkdir(resolve(thirdPartyRoot, 'rust'), { recursive: true });
+await cp(resolve(rustSysroot, 'share/doc/rust/COPYRIGHT-library.html'), resolve(thirdPartyRoot, 'rust/COPYRIGHT-library.html'));
+await cp(resolve(rustSysroot, 'share/doc/rust/licenses'), resolve(thirdPartyRoot, 'rust/licenses'), { recursive: true });
 await cp(resolve(dirname(process.execPath), '../LICENSE'), resolve(thirdPartyRoot, 'Node.js-LICENSE.txt'));
 await cp(resolve(packagedPythonRoot, 'lib/python3.12/LICENSE.txt'), resolve(thirdPartyRoot, 'Python-LICENSE.txt'));
 await cp(resolve(root, 'licenses/MIT.txt'), resolve(thirdPartyRoot, 'javascript/SPDX-MIT.txt'));

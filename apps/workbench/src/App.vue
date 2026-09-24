@@ -6,7 +6,7 @@ import {
   EyeOutlined, FolderOpenOutlined, HistoryOutlined, ImportOutlined, PlusOutlined, ReloadOutlined,
   SettingOutlined, BulbOutlined, ZoomInOutlined, ZoomOutOutlined,
 } from '@ant-design/icons-vue';
-import { ApiError, assetBlobUrl, download, sessionToken, setSessionToken } from './api';
+import { ApiError, assetBlobUrl, download, sessionToken, setSessionToken, initializeSessionFromLocation, startWorkbenchLease } from './api';
 import { useWorkbenchStore } from './stores/workbench';
 import { applyTheme, loadCustomTheme, loadThemeId, saveCustomThemeValue, themes, type ThemePreset } from './themes';
 import type { Issue, Severity } from './types';
@@ -14,6 +14,8 @@ import type { Issue, Severity } from './types';
 const store = useWorkbenchStore();
 const needsToken = ref(false);
 const tokenDraft = ref('');
+let stopLease: (() => void) | undefined;
+function keepWorkbenchOpen() { stopLease?.(); stopLease = startWorkbenchLease(); }
 const projectModal = ref(false);
 const projectName = ref('');
 const projectDescription = ref('');
@@ -94,7 +96,7 @@ watch(activeTheme, (theme) => applyTheme(theme), { immediate: true, deep: true }
 async function connect() {
   if (!tokenDraft.value.trim()) return;
   setSessionToken(tokenDraft.value.trim());
-  try { await store.loadProjects(); needsToken.value = false; }
+  try { await store.loadProjects(); needsToken.value = false; keepWorkbenchOpen(); }
   catch { message.error('无法连接本地服务，请检查令牌和服务状态'); }
 }
 async function createProject() {
@@ -184,14 +186,13 @@ function exportRun(format: 'png' | 'markdown' | 'json') {
 async function copyPatch(issue: Issue) { if (issue.suggestedCssPatch) { await navigator.clipboard.writeText(issue.suggestedCssPatch); message.success('修改建议已复制'); } }
 
 onMounted(async () => {
-  const url = new URL(location.href); const fragment = new URLSearchParams(url.hash.slice(1));
-  const token = fragment.get('token') ?? url.searchParams.get('token');
-  if (token) { setSessionToken(token); url.searchParams.delete('token'); url.hash = ''; history.replaceState({}, '', url); }
+  try { await initializeSessionFromLocation(); }
+  catch (error) { message.error(error instanceof Error ? error.message : '连接失败，请从扩展重新打开工作台。'); }
   needsToken.value = !sessionToken(); tokenDraft.value = sessionToken();
-  if (!needsToken.value) { try { await store.loadProjects(); } catch { needsToken.value = true; } }
+  if (!needsToken.value) { try { await store.loadProjects(); keepWorkbenchOpen(); } catch { needsToken.value = true; } }
   await nextTick();
 });
-onBeforeUnmount(() => { revoke(designUrl.value); revoke(implementationUrl.value); revoke(evidenceUrl.value); });
+onBeforeUnmount(() => { stopLease?.(); revoke(designUrl.value); revoke(implementationUrl.value); revoke(evidenceUrl.value); });
 </script>
 
 <template>
@@ -256,13 +257,13 @@ onBeforeUnmount(() => { revoke(designUrl.value); revoke(implementationUrl.value)
           <div class="canvas-toolbar">
             <div><strong>{{ store.activeProject?.name || '未选择项目' }}</strong><small v-if="store.activeRun">{{ store.activeRun.score }} 分 · {{ store.issues.length }} 个问题</small></div>
             <a-segmented v-model:value="mode" :options="[{ label: '开发图标注', value: 'annotation' }, { label: '平铺对比', value: 'side-by-side' }, { label: '透明度叠加', value: 'overlay' }]" />
-            <div class="zoom-tools"><a-button size="small" @click="zoom = Math.max(25, zoom - 10)"><ZoomOutOutlined /></a-button><span>{{ zoom }}%</span><a-button size="small" @click="zoom = Math.min(200, zoom + 10)"><ZoomInOutlined /></a-button></div>
+            <div class="zoom-tools"><a-button aria-label="缩小画布" size="small" @click="zoom = Math.max(25, zoom - 10)"><ZoomOutOutlined /></a-button><span>{{ zoom }}%</span><a-button aria-label="放大画布" size="small" @click="zoom = Math.min(200, zoom + 10)"><ZoomInOutlined /></a-button></div>
           </div>
           <div v-if="mode === 'overlay'" class="opacity-bar"><span>开发图透明度</span><a-slider v-model:value="opacity" :min="0" :max="100" /><b>{{ opacity }}%</b></div>
           <a-alert v-if="store.normalization?.applied" class="normalization-alert" type="info" show-icon message="开发图已自动对齐" :description="normalizationDescription" />
           <div class="canvas-stage">
             <a-empty v-if="!designUrl || !implementationUrl" description="上传设计原图和开发实现图后开始验收" />
-            <div v-else-if="mode === 'side-by-side'" class="side-by-side" :style="{ width: `${zoom * 2}%` }">
+            <div v-else-if="mode === 'side-by-side'" class="side-by-side" :style="{ width: `${zoom}%` }">
               <figure><figcaption>设计原图</figcaption><img :src="designUrl" alt="设计原图"></figure>
               <figure><figcaption>开发实现图</figcaption><img :src="implementationUrl" alt="开发实现图"></figure>
             </div>
@@ -298,7 +299,11 @@ onBeforeUnmount(() => { revoke(designUrl.value); revoke(implementationUrl.value)
       </main>
     </div>
 
-    <a-modal v-model:open="needsToken" title="连接本地服务" :closable="false" :mask-closable="false" :footer="null"><p class="modal-note">会话令牌只保存在当前浏览器会话中，用于阻止其他网页访问本地验收数据。</p><a-input-password v-model:value="tokenDraft" placeholder="粘贴 .data/session-token 中的令牌" @press-enter="connect" /><a-button type="primary" block class="connect-button" @click="connect">连接工作台</a-button></a-modal>
+    <a-modal v-model:open="needsToken" title="从扩展连接工作台" :closable="false" :mask-closable="false" :footer="null">
+      <p class="modal-note">请点击 Chrome 工具栏中的 Vigour UI Review 扩展，再选择“打开工作台”。匹配的本地配套程序会自动启动，日常使用无需复制令牌。</p>
+      <p class="modal-note">若扩展提示未安装，请先安装配套程序。旧版 v0.0.1 不支持自动启动。</p>
+      <details><summary>开发调试：手动连接</summary><p class="modal-note">仅限开发者或旧版手动启动流程。令牌只保存在当前标签页会话中。</p><a-input-password v-model:value="tokenDraft" placeholder="本地 session-token 文件中的令牌" @press-enter="connect" /><a-button type="primary" block class="connect-button" @click="connect">连接工作台</a-button></details>
+    </a-modal>
     <a-modal v-model:open="projectModal" title="新建 UI 验收项目" ok-text="创建" cancel-text="取消" @ok="createProject"><a-form layout="vertical"><a-form-item label="项目名称" required><a-input v-model:value="projectName" placeholder="例如：结算页 Web 重构"></a-input></a-form-item><a-form-item label="说明"><a-textarea v-model:value="projectDescription" :rows="3" placeholder="页面、版本或验收范围"></a-textarea></a-form-item></a-form></a-modal>
     <a-modal v-model:open="figmaModal" title="从 Figma 导入 Frame" :footer="null">
       <a-alert v-if="figmaConfigured" type="success" show-icon message="Figma Token 已安全保存在 macOS 钥匙串" />

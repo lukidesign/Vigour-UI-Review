@@ -12,4 +12,14 @@ input:focus { border-color: #78a9ff; box-shadow: 0 0 0 3px #78a9ff22; }
 button { min-height: 38px; border: 0; border-radius: 8px; color: #0b1527; background: #94bfff; font-weight: 650; cursor: pointer; }
 button.secondary { color: #dbe6fa; background: #252e3e; border: 1px solid #374258; }
 button:disabled { opacity: .5; cursor: wait; }
+button:focus-visible { outline: 2px solid #bcd6ff; outline-offset: 3px; }
+#cancel { width: 100%; margin-top: 8px; }
+#open-workbench { width: 100%; }
+#retry { margin-top: 12px; padding: 0 12px; }
+#connection { font-size: 13px; line-height: 1.6; color: #c3d0e4; }
+.capture-disclosure { color: #abb5c7; font-size: 12px; line-height: 1.6; margin: 14px 0 0; }
+details { margin-top: 14px; color: #abb5c7; font-size: 12px; line-height: 1.6; }
+summary { cursor: pointer; }
+code { display: block; overflow-wrap: anywhere; user-select: all; }
+a { color: #a8cbff; }
 #status { min-height: 18px; margin: 12px 0 0; color: #93a0b4; font-size: 12px; }

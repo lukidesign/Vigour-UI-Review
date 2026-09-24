@@ -20,10 +20,11 @@ import { AIConsentStore, payloadHash, type AIProvider, type AITask } from './ai-
 import { createProviderRegistry, type AIAdapter } from './ai-providers.js';
 import { buildAIContext, makeAIPrompt } from './ai-context.js';
 import { incompatibleImageResponse, planImageNormalization } from './image-normalization.js';
+import { LocalSession, registerLocalSession, NATIVE_PROTOCOL } from './local-session.js';
 
 const createTaskBody = z.object({ kind: taskKindSchema });
 
-interface ExternalIntegrations { secrets?: SecretStore; figma?: Pick<FigmaClient, 'importFrame'>; aiProviders?: Record<AIProvider, AIAdapter>; staticRoot?: string }
+interface ExternalIntegrations { secrets?: SecretStore; figma?: Pick<FigmaClient, 'importFrame'>; aiProviders?: Record<AIProvider, AIAdapter>; staticRoot?: string; session?: LocalSession; stopNative?: () => Promise<void> }
 export function buildApp(db: DatabaseSync, security: SecurityConfig, assetRoot = '.data/assets', vision?: Pick<VisionClient, 'request'>, integrations: ExternalIntegrations = {}) {
   const app = Fastify({ logger: false, bodyLimit: 40 * 1024 * 1024 });
   const tasks = new TaskStore(db);
@@ -43,8 +44,10 @@ export function buildApp(db: DatabaseSync, security: SecurityConfig, assetRoot =
     });
   }
   registerSecurity(app, security);
+  const session = integrations.session ?? new LocalSession(security.sessionToken);
+  registerLocalSession(app, session, integrations.stopNative);
 
-  app.get('/health', async () => ({ status: 'ok', service: 'vigour-ui-review-local', version: '0.0.1' }));
+  app.get('/health', async () => ({ status: 'ok', service: 'vigour-ui-review-local', version: '0.0.1', protocol: NATIVE_PROTOCOL, instanceId: session.instanceId }));
   app.get('/api/v1/capabilities', async () => ({
     capture: true,
     localVision: Boolean(vision),

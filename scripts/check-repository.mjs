@@ -47,7 +47,7 @@ if (!appSource.includes(`service: 'vigour-ui-review-local', version: '${expected
 const appPaths = await readFile(resolve(root, 'scripts/app-paths.mjs'), 'utf8');
 if (!appPaths.includes(`APP_VERSION = '${expectedVersion}'`)) fail('Launcher version is inconsistent');
 
-const textExtensions = new Set(['', '.command', '.css', '.html', '.js', '.json', '.md', '.mjs', '.py', '.toml', '.ts', '.vue', '.yaml', '.yml']);
+const textExtensions = new Set(['', '.command', '.css', '.html', '.js', '.json', '.md', '.mjs', '.py', '.rs', '.swift', '.svg', '.toml', '.ts', '.vue', '.yaml', '.yml']);
 const dependencyLockFiles = new Set(['pnpm-lock.yaml', 'apps/vision-engine/uv.lock']);
 const secretPatterns = [
   /-----BEGIN (?:RSA |EC |OPENSSH )?PRIVATE KEY-----/,
@@ -76,7 +76,7 @@ for (const file of files) {
 const requiredFiles = ['LICENSE', 'README.md', 'README.zh-CN.md', 'CHANGELOG.md', 'CONTRIBUTING.md', 'CODE_OF_CONDUCT.md', 'THIRD_PARTY_NOTICES.md', 'docs/PRIVACY.md', 'docs/SECURITY.md', 'docs/assets/workbench-overview.jpg', 'examples/demo/design.png', 'examples/demo/implementation.png', '.github/dependabot.yml', '.github/workflows/ci.yml', '.github/workflows/release.yml'];
 for (const file of requiredFiles) if (!files.includes(file)) fail(`Required public file is missing: ${file}`);
 const license = await readFile(resolve(root, 'LICENSE'), 'utf8');
-if (!license.includes('Copyright (c) 2026 Vigour UI')) fail('MIT copyright attribution is incorrect');
+if (!license.includes('Copyright (c) 2026 LukiDesign')) fail('MIT copyright attribution is incorrect');
 
 if (failures.length) {
   console.error(failures.map((message) => `- ${message}`).join('\n'));

@@ -18,6 +18,8 @@ function errorMessage(detail: ApiErrorDetail, status: number): string {
     return `设计图为 ${detail.reference.width}×${detail.reference.height}，开发图为 ${detail.candidate.width}×${detail.candidate.height}，宽高比相差 ${difference}%，超过 ${threshold}% 的安全范围。请按设计稿 ${detail.reference.width}×${detail.reference.height} 的画面比例重新采集。`;
   }
   if (detail.code === 'ANALYSIS_FAILED') return '分析引擎未能完成处理，请检查图片是否完整后重试。';
+  if (detail.code === 'TICKET_INVALID') return '工作台打开凭证已失效，请从 Chrome 扩展重新打开工作台。';
+  if (status === 401) return '本地会话已失效，请从 Chrome 扩展重新打开工作台。';
   return detail.code ?? `HTTP_${status}`;
 }
 
@@ -37,7 +39,42 @@ export function sessionToken(): string {
   if (legacy) sessionStorage.setItem(TOKEN_KEY, legacy);
   return legacy;
 }
-export function setSessionToken(token: string) { sessionStorage.setItem(TOKEN_KEY, token); }
+export function setSessionToken(token: string) { sessionStorage.removeItem('designAcceptanceToken'); sessionStorage.setItem(TOKEN_KEY, token); }
+
+export async function initializeSessionFromLocation() {
+  const url = new URL(location.href);
+  const fragment = new URLSearchParams(url.hash.slice(1));
+  const ticket = fragment.get('ticket');
+  const legacyToken = fragment.get('token') ?? url.searchParams.get('token');
+  if (!ticket && !legacyToken) return;
+  // Clear credentials from history before the first asynchronous operation.
+  url.searchParams.delete('token'); url.hash = '';
+  history.replaceState({}, '', url);
+  if (ticket) {
+    setSessionToken('');
+    const response = await fetch(`${BASE_URL}/api/v1/session/exchange`, {
+      method: 'POST', headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ ticket }), signal: AbortSignal.timeout(5_000),
+    });
+    const result = await response.json() as ApiErrorDetail & { sessionToken?: string };
+    if (!response.ok || !result.sessionToken) throw new ApiError(response.status, result);
+    setSessionToken(result.sessionToken);
+  } else if (legacyToken) setSessionToken(legacyToken); // Backwards-compatible developer launcher.
+}
+
+export function startWorkbenchLease() {
+  const id = crypto.randomUUID();
+  const send = (open: boolean) => { void api('/api/v1/session/lease', {
+    method: 'POST', body: JSON.stringify({ id, open }), keepalive: true, signal: AbortSignal.timeout(5_000),
+  }).catch(() => undefined); };
+  const leaving = (event: PageTransitionEvent) => { if (!event.persisted) send(false); };
+  const returning = () => send(true);
+  send(true);
+  const timer = setInterval(() => send(true), 30_000);
+  addEventListener('pagehide', leaving);
+  addEventListener('pageshow', returning);
+  return () => { clearInterval(timer); removeEventListener('pagehide', leaving); removeEventListener('pageshow', returning); send(false); };
+}
 
 export async function api<T>(path: string, init: RequestInit = {}): Promise<T> {
   const token = sessionToken();

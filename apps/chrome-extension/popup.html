@@ -4,9 +4,14 @@
   <body>
     <main>
       <header><span class="mark">VR</span><div><strong>Vigour UI Review</strong><small>本地安全采集</small></div></header>
-      <label>会话令牌<input id="token" type="password" autocomplete="off" placeholder="首次使用请粘贴本地令牌"></label>
-      <div class="actions"><button id="viewport">采集当前视口</button><button id="fullpage" class="secondary">采集完整页面</button></div>
-      <p id="status" role="status">准备就绪</p>
+      <p id="connection" role="status" aria-live="polite">正在连接本地程序…</p>
+      <button id="open-workbench" disabled>打开工作台</button>
+      <p class="capture-disclosure">点击采集会读取当前页截图、URL、文字及 DOM/CSS，并保存到本机。页面可能含敏感信息，请先隐藏。</p>
+      <div class="actions"><button id="viewport" class="secondary" disabled>采集当前视口</button><button id="fullpage" class="secondary" disabled>采集完整页面</button></div>
+      <button id="cancel" class="secondary" hidden>取消采集</button>
+      <p id="status" role="status" aria-live="polite" aria-atomic="true">准备就绪</p>
+      <button id="retry" class="secondary">重新连接</button>
+      <details><summary>首次安装与连接帮助</summary><p>需要匹配的 Native Messaging 配套程序。旧版 v0.0.1 下载包不支持自动启动；新版内测安装包尚未发布时，请勿使用旧包替代。</p><p>配对扩展 ID：<code id="extension-id"></code></p><a href="https://github.com/lukidesign/Vigour-UI-Review/releases" target="_blank" rel="noreferrer">查看已发布版本</a></details>
     </main>
     <script type="module" src="/src/popup.ts"></script>
   </body>

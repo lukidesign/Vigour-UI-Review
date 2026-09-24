@@ -31,13 +31,26 @@ const child = spawn(process.execPath, [serviceEntry], {
 });
 
 let ready = false;
-for (let attempt = 0; attempt < 240; attempt += 1) {
-  try { const response = await fetch('http://127.0.0.1:4179/health'); if (response.ok) { ready = true; break; } }
-  catch { await new Promise((resolveDelay) => setTimeout(resolveDelay, 250)); }
+const startupDeadline = Date.now() + 60_000;
+for (; Date.now() < startupDeadline;) {
+  if (child.exitCode !== null || child.signalCode !== null) break;
+  try {
+    const response = await fetch('http://127.0.0.1:4179/health', { signal: AbortSignal.timeout(1000) });
+    const health = await response.json();
+    const state = JSON.parse(await readFile(resolve(dataRoot, 'native-state.json'), 'utf8'));
+    if (response.ok && health.service === 'vigour-ui-review-local' && health.protocol === 1
+      && state.pid === child.pid && state.instanceId === health.instanceId) { ready = true; break; }
+  } catch { /* Startup and state publication are not yet complete. */ }
+  await new Promise((resolveDelay) => setTimeout(resolveDelay, 250));
 }
 if (!ready) { child.kill('SIGTERM'); throw new Error(`${APP_NAME} 本地服务在 60 秒内未能启动，请查看上方日志。`); }
 const token = (await readFile(resolve(dataRoot, 'session-token'), 'utf8')).trim();
-const url = `http://127.0.0.1:4179/#token=${encodeURIComponent(token)}`;
+const ticketResponse = await fetch('http://127.0.0.1:4179/api/v1/session/tickets', {
+  method: 'POST', headers: { authorization: `Bearer ${token}`, 'x-csrf-token': token }, signal: AbortSignal.timeout(5000),
+});
+const { ticket } = await ticketResponse.json();
+if (!ticketResponse.ok || typeof ticket !== 'string') { child.kill('SIGTERM'); throw new Error('工作台配对失败，请重启本地服务。'); }
+const url = `http://127.0.0.1:4179/#ticket=${encodeURIComponent(ticket)}`;
 spawn('/usr/bin/open', [url], { detached: true, stdio: 'ignore' }).unref();
 console.log(`${APP_NAME} 已启动：http://127.0.0.1:4179/`);
 console.log('按 Ctrl+C 停止本地服务。');

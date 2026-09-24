@@ -72,16 +72,24 @@ describe('local API', () => {
     expect(response.headers['access-control-allow-credentials']).toBeUndefined();
   });
 
-  it('permits a paired Chrome extension only when the wildcard is explicitly configured', async () => {
+  it('permits only the explicitly paired Chrome extension, including preflights', async () => {
+    const origin = 'chrome-extension://abcdefghijklmnopabcdefghijklmnop';
     const extensionApp = buildApp(db, {
       sessionToken: token,
-      allowedOrigins: new Set(['chrome-extension://*']),
+      allowedOrigins: new Set([origin]),
     }, mkdtempSync(join(tmpdir(), 'capture-assets-extension-')));
     const response = await extensionApp.inject({
       method: 'GET', url: '/api/v1/capabilities',
-      headers: { authorization: `Bearer ${token}`, origin: 'chrome-extension://abcdefghijklmnopqrstuvwxyzabcdef' },
+      headers: { authorization: `Bearer ${token}`, origin },
     });
     expect(response.statusCode).toBe(200);
+    const allowed = await extensionApp.inject({ method: 'OPTIONS', url: '/api/v1/captures', headers: { origin } });
+    expect(allowed.statusCode).toBe(204);
+    for (const untrusted of ['chrome-extension://pppppppppppppppppppppppppppppppp', `${origin}.evil`, 'null', '']) {
+      const rejected = await extensionApp.inject({ method: 'OPTIONS', url: '/api/v1/captures', headers: { origin: untrusted } });
+      expect(rejected.statusCode).toBe(403);
+      expect(rejected.headers['access-control-allow-origin']).toBeUndefined();
+    }
     await extensionApp.close();
   });
 

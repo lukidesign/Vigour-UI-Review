@@ -1,0 +1,19 @@
+{
+  "generatedAt": "2026-09-16T08:23:53.730Z",
+  "source": "unreleased stage-C source build",
+  "browser": "145.0.7632.6",
+  "data": "examples/demo/design.png + implementation.png",
+  "analysis": "actual local engine; OCR disabled; no AI",
+  "issueCount": 10,
+  "dimensions": {
+    "store": [
+      1280,
+      800
+    ],
+    "qaOnly": [
+      1920,
+      1080
+    ]
+  },
+  "note": "Actual workbench screenshots; not proof of Chrome toolbar capture or store approval."
+}

@@ -4,6 +4,7 @@ import { resolve } from 'node:path';
 const root = resolve(import.meta.dirname, '..');
 const commands = [
   ['pnpm', ['repository:check']],
+  ['pnpm', ['store:check']],
   ['pnpm', ['typecheck']], ['pnpm', ['test']], ['pnpm', ['build']],
   ['uv', ['run', '--project', 'apps/vision-engine', 'pytest', '-c', 'apps/vision-engine/pyproject.toml', 'apps/vision-engine/tests']],
   ['pnpm', ['benchmark']],

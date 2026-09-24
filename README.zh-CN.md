@@ -6,6 +6,14 @@ Vigour UI Review 是一款本地优先的 Web 设计验收工作台。它将开�
 
 > 当前状态：`v0.0.1` 是面向 macOS 14+ Apple Silicon 的未签名开发者预览版。当前准确率基准来自确定性合成图片，不能等同于真实业务页面的生产准确率。
 
+## 未发布的源码更新
+
+当前源码已加入采集安全加固、Native Messaging 按需启动、一次性工作台配对和 Apple Silicon 图形安装器。**这些改动不在已有 v0.0.1 下载包中**，不要混用新版扩展与旧配套程序。
+
+已取得商店草稿 ID：`dmkfgmpbomjjhalgnfhcpalobdnklchh`，不代表审核通过或可安装。真实 Chrome 工具栏采集、新机器安装、签名/公证、休眠及空闲退出仍需验收。源码版本暂保留 0.0.1，正式制作内测包时统一递增，不覆盖旧 Release。
+
+最新进度和发布门槛见[交付状态](docs/DELIVERY-STATUS.md)，功能变更见[变更记录](CHANGELOG.md#unreleased)。阶段 A/B/C 文档保留当时证据，不作为当前发布状态。
+
 ![Vigour UI Review 工作台](docs/assets/workbench-overview.jpg)
 
 ## 核心能力
@@ -78,6 +86,7 @@ pnpm package:archive
 - 仅支持 Apple Silicon；[当前 PaddlePaddle macOS 包支持 arm64、不支持 x86_64](https://www.paddlepaddle.org.cn/documentation/docs/en/install/pip/macos-pip_en.html)。
 - 开发者安装包尚未签名和 notarization。
 - Chrome 扩展尚未上架 Chrome Web Store。
+- 界面以中文为主，英文商店文案不代表英文界面已完成。桌面宽度 1920、1440 已有检查记录，900、720 仍有溢出。
 - 当前是合成回归基准，仍需补充人工标注的真实页面盲测。
 - Canvas、WebGL、视频内部、跨域 iframe 和交互回放不属于 `v0.0.1` 范围。
 
@@ -87,4 +96,4 @@ pnpm package:archive
 
 ## 许可证
 
-Copyright © 2026 Vigour UI。基于 [MIT License](LICENSE) 开源。
+Copyright © 2026 LukiDesign。基于 [MIT License](LICENSE) 开源。

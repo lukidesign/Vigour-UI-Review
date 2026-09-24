@@ -6,6 +6,14 @@ Vigour UI Review is a local-first visual acceptance workbench for comparing a We
 
 > Status: `v0.0.1` is an unsigned developer preview for macOS 14+ on Apple Silicon. The published accuracy baseline uses deterministic synthetic images and must not be interpreted as production accuracy on real websites.
 
+## Unreleased source update
+
+The working source adds capture safety checks, Native Messaging on-demand startup, one-time workbench pairing, and an Apple Silicon graphical companion installer. These changes are **not included in the existing v0.0.1 download**. Do not mix the new extension with the old companion.
+
+The store draft ID is `dmkfgmpbomjjhalgnfhcpalobdnklchh`; obtaining an ID does not mean store approval or availability. Real Chrome toolbar capture, clean-machine installation, signing/notarization, and sleep/idle behavior still require acceptance. The source version remains 0.0.1 until coordinated beta packaging; do not overwrite the existing release.
+
+See [current delivery status and release gates](docs/DELIVERY-STATUS.md) and [unreleased changes](CHANGELOG.md#unreleased). Stage A/B/C reports are dated evidence, not current publication status.
+
 ![Vigour UI Review workbench](docs/assets/workbench-overview.jpg)
 
 ## Highlights
@@ -83,6 +91,7 @@ On first launch, legacy `Design Acceptance 2.0` data is copied atomically to the
 - Apple Silicon only; [current PaddlePaddle macOS packages support arm64 and not x86_64](https://www.paddlepaddle.org.cn/documentation/docs/en/install/pip/macos-pip_en.html).
 - The developer package is not signed or notarized.
 - The Chrome extension is not yet published in the Chrome Web Store.
+- Current UI is primarily Chinese; English listing copy is not an English UI. Desktop checks cover 1920 and 1440 pixel widths; 900/720 widths still overflow.
 - The current benchmark is synthetic; a human-labeled real-page benchmark remains required.
 - Canvas, WebGL, video internals, cross-origin iframes, and interaction replay are outside `v0.0.1` scope.
 
@@ -92,4 +101,4 @@ Issues and pull requests are welcome. Read [CONTRIBUTING.md](CONTRIBUTING.md) an
 
 ## License
 
-Copyright © 2026 Vigour UI. Released under the [MIT License](LICENSE).
+Copyright © 2026 LukiDesign. Released under the [MIT License](LICENSE).

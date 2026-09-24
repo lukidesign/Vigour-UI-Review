@@ -12,7 +12,10 @@ Direct runtime dependencies include:
 | Pillow | MIT-CMU |
 | PaddleOCR | Apache License 2.0 |
 | PaddlePaddle | Apache License 2.0 |
+| Rust standard library linked into the Native launcher | MIT / Apache-2.0 and component notices |
 
 This table is a convenience summary, not a replacement for the upstream license text. Exact resolved versions are recorded in `pnpm-lock.yaml` and `apps/vision-engine/uv.lock`. The offline release package includes Node.js and Python license texts, a generated JavaScript dependency/license inventory, and the license files shipped in Python wheel metadata for PaddleOCR, PaddlePaddle, OpenCV, and transitive dependencies.
 
 Downstream redistributors are responsible for preserving all applicable notices and reviewing transitive dependency licenses for their distribution context.
+
+Native-enabled developer packages include the Rust toolchain's library copyright report and license texts under `THIRD_PARTY_LICENSES/rust`. The toolchain is used to compile the launcher, not shipped as an end-user prerequisite.

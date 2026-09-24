@@ -1,10 +1,27 @@
 import { randomBytes, timingSafeEqual } from 'node:crypto';
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync, renameSync } from 'node:fs';
 import type { FastifyInstance, FastifyRequest } from 'fastify';
 
 export interface SecurityConfig {
   sessionToken: string;
   allowedOrigins: ReadonlySet<string>;
+}
+
+export const DEFAULT_ALLOWED_ORIGINS = ['http://127.0.0.1:4173', 'http://127.0.0.1:4179'];
+
+export function newSessionToken() { return randomBytes(32).toString('base64url'); }
+export function persistSessionToken(path: string, token: string) {
+  const temporary = `${path}.${randomBytes(8).toString('hex')}.tmp`;
+  writeFileSync(temporary, `${token}\n`, { mode: 0o600, flag: 'wx' });
+  renameSync(temporary, path);
+}
+
+export function parseAllowedOrigins(value?: string): ReadonlySet<string> {
+  const origins = value === undefined ? DEFAULT_ALLOWED_ORIGINS : value.split(',').map((origin) => origin.trim()).filter(Boolean);
+  // No wildcard extensions and no remote websites. Configuration errors fail closed.
+  if (!origins.length || origins.some((origin) => !/^chrome-extension:\/\/[a-p]{32}$/.test(origin)
+    && !/^http:\/\/127\.0\.0\.1:(4173|4179)$/.test(origin))) throw new Error('INVALID_ALLOWED_ORIGIN');
+  return new Set(origins);
 }
 
 export function loadOrCreateSessionToken(path: string): string {
@@ -32,9 +49,9 @@ function bearerToken(request: FastifyRequest): string | undefined {
 }
 
 export function registerSecurity(app: FastifyInstance, config: SecurityConfig): void {
+  const allowedOrigins = parseAllowedOrigins([...config.allowedOrigins].join(','));
   const isOriginAllowed = (origin: string | undefined) => {
-    const extensionWildcard = config.allowedOrigins.has('chrome-extension://*');
-    return !origin || config.allowedOrigins.has(origin) || (extensionWildcard && origin.startsWith('chrome-extension://'));
+    return origin === undefined || allowedOrigins.has(origin);
   };
 
   app.addHook('onSend', async (request, reply, payload) => {
@@ -58,6 +75,12 @@ export function registerSecurity(app: FastifyInstance, config: SecurityConfig): 
       reply.header('access-control-allow-headers', 'authorization,content-type,x-csrf-token');
       reply.header('access-control-max-age', '600');
       return reply.code(204).send();
+    }
+    // The one unauthenticated API consumes an unguessable, single-use ticket.
+    // Only a same-origin workbench may exchange it (not an arbitrary extension).
+    if (request.method === 'POST' && request.routeOptions.url === '/api/v1/session/exchange') {
+      if (!origin || !DEFAULT_ALLOWED_ORIGINS.includes(origin)) return reply.code(403).send({ code: 'ORIGIN_NOT_ALLOWED' });
+      return;
     }
     if (!equalSecret(bearerToken(request), config.sessionToken)) {
       return reply.code(401).send({ code: 'UNAUTHORIZED' });
