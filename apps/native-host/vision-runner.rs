@@ -14,6 +14,10 @@ fn run() -> Result<i32, Box<dyn std::error::Error>> {
         .args(env::args_os().skip(1))
         .current_dir(root)
         .env("PYTHONPATH", modules)
+        // Windows pipes otherwise inherit a legacy code page (cp1252 on CI),
+        // which cannot encode Chinese issue descriptions in JSON-RPC replies.
+        .env("PYTHONIOENCODING", "utf-8")
+        .env("PYTHONUTF8", "1")
         .env("PYTHONNOUSERSITE", "1")
         .env("PYTHONDONTWRITEBYTECODE", "1")
         .env_remove("PYTHONHOME")
