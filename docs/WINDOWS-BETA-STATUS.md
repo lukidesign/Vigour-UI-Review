@@ -31,7 +31,7 @@ pnpm package:windows:installer
 ## 当前证据与待验证事项
 
 - [x] Mac 上的隔离 Windows 安装状态测试覆盖安装、修复、回退、未知注册、更新失败与数据保留；这些测试使用模拟注册表。
-- [ ] Windows CI 实际编译并运行；尤其是 Python 运行时重定位、Inno 编译、Windows Rust 链接及整包许可证路径。
+- [x] [草稿 PR #10 的 Windows CI](https://github.com/lukidesign/Vigour-UI-Review/actions/runs/35987883278) 通过：锁定依赖、类型检查、隔离安装器测试、整包校验与许可证、随包 Python 离线核心分析、Windows 凭据/Native 协议烟测，以及 Inno GUI 安装器编译。运行环境为 Windows Server 2022 构建机，不等于 Windows 11 普通用户安装验收。
 - [ ] Windows 11 x64 真机，以无开发环境的普通账号安装并记录 SmartScreen/Defender 提示；不关闭安全保护。
 - [ ] Chrome 工具栏真实采集、分析、导出、重复启动、休眠恢复、显示缩放与卸载升级全流程。
 - [ ] OCR 模型许可证、体积及断网初始化。PyPI 提供锁定的 PaddlePaddle 3.3.1 / CPython 3.12 / Windows x64 wheel，但 wheel 存在不代表模型已经内置或运行通过。
