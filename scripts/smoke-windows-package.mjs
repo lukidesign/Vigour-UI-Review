@@ -13,6 +13,7 @@ const packageRoot = process.env.VIGOUR_UI_REVIEW_PACKAGE_DIR
   : resolve(root, 'release', `Vigour-UI-Review-v${project.version}-windows-x64-dev`);
 const data = await mkdtemp(join(tmpdir(), 'vigour-windows-smoke-'));
 let child;
+let diagnostic = '';
 try {
   await cp(resolve(root, 'examples/demo/design.png'), join(data, 'design.png'));
   await cp(resolve(root, 'examples/demo/implementation.png'), join(data, 'implementation.png'));
@@ -20,13 +21,14 @@ try {
     cwd: packageRoot, windowsHide: true, stdio: ['pipe', 'pipe', 'pipe'],
     env: { ...process.env, PYTHONPATH: '', PYTHONHOME: '' },
   });
+  child.stderr.on('data', (part) => { diagnostic = (diagnostic + String(part)).slice(-4000); });
   const lines = createInterface({ input: child.stdout })[Symbol.asyncIterator]();
   const request = async (id, method, params) => {
     child.stdin.write(`${JSON.stringify({ jsonrpc: '2.0', id, method, params })}\n`);
     let timeout;
     const next = await Promise.race([lines.next(), new Promise((_, reject) => { timeout = setTimeout(() => reject(new Error('Windows vision RPC timed out')), 30_000); })])
       .finally(() => clearTimeout(timeout));
-    if (next.done) throw new Error('Windows vision RPC exited');
+    if (next.done) throw new Error(`Windows vision RPC exited: ${diagnostic || 'no stderr'}`);
     const response = JSON.parse(next.value);
     assert.equal(response.id, id);
     if (response.error) throw new Error(response.error.message);

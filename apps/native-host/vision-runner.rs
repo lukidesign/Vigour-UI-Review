@@ -23,4 +23,9 @@ fn run() -> Result<i32, Box<dyn std::error::Error>> {
     Ok(status.code().unwrap_or(1))
 }
 
-fn main() { std::process::exit(run().unwrap_or(1)); }
+fn main() {
+    match run() {
+        Ok(code) => std::process::exit(code),
+        Err(error) => { eprintln!("VISION_RUNNER_FAILED: {error}"); std::process::exit(1); }
+    }
+}
