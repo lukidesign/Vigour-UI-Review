@@ -7,7 +7,11 @@ export const APP_NAME = 'Vigour UI Review';
 export const APP_VERSION = '0.0.1';
 export const LEGACY_APP_NAME = 'Design Acceptance 2.0';
 
-export function applicationDataRoots(homeDirectory = homedir()) {
+export function applicationDataRoots(homeDirectory = homedir(), platform = process.platform, localAppData = process.env.LOCALAPPDATA) {
+  if (platform === 'win32') {
+    const base = localAppData || resolve(homeDirectory, 'AppData/Local');
+    return { current: resolve(base, APP_NAME), legacy: undefined };
+  }
   const applicationSupport = resolve(homeDirectory, 'Library/Application Support');
   return {
     current: resolve(applicationSupport, APP_NAME),
@@ -42,7 +46,7 @@ export async function ensureApplicationDataRoot(options = {}) {
     return { path: roots.current, migrated: false, legacyPath: roots.legacy };
   }
   await mkdir(dirname(roots.current), { recursive: true, mode: 0o700 });
-  if (!(await exists(roots.legacy))) {
+  if (!roots.legacy || !(await exists(roots.legacy))) {
     await mkdir(roots.current, { mode: 0o700 });
     await chmod(roots.current, 0o700);
     return { path: roots.current, migrated: false, legacyPath: roots.legacy };

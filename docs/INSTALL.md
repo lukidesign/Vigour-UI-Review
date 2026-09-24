@@ -2,6 +2,8 @@
 
 > 版本边界：GitHub 已发布的 v0.0.1 仍是下方的终端启动流程。当前源码已加入 Native Messaging 开发实现，但尚未发布新版图形安装器；不要混用新扩展和旧配套程序。
 
+Windows 11 x64 版本目前处于源码开发与验证阶段，尚不能作为普通用户下载入口。构建与验收进度见 [Windows 内测状态](WINDOWS-BETA-STATUS.md)。
+
 ## 直接使用开发者安装包
 
 交付包支持 macOS 14+、Apple Silicon，不需要另装 Node.js、Python、PaddleOCR 或项目依赖。

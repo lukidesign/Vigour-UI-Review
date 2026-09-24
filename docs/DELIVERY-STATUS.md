@@ -13,7 +13,8 @@
 | 本地源码 | 版本字段仍为 0.0.1，包含未发布 Native/安装器开发；不是旧下载包的同一内容 |
 | 商店条目 | ID `dmkfgmpbomjjhalgnfhcpalobdnklchh`；2026-09-16 最后操作为保存私享草稿和测试说明，未提交审核 |
 | 配套安装器 | Apple Silicon 开发构建；无 Developer ID 正式签名/公证，无匹配商店版公开下载交付 |
-| Windows / Intel / 英文 UI | 首轮不承诺；英文商店文案不代表英文 UI 已实现 |
+| Windows 11 x64 | 已确认[独立 SPEC](spec/WINDOWS-BETA-SPEC.md)，本地正在开发安装器、Native 注册与 CI；尚无 Windows 安装包或真机验收结论 |
+| 英文 UI | 英文商店文案不代表英文 UI 已实现 |
 
 ## 可以作为源码更新说明的内容
 
@@ -44,6 +45,8 @@ VIGOUR_INSTALLER_PAYLOAD=/absolute/path/to/sealed-companion pnpm test:installer
 ```
 
 Native 测试需 Rust 编译器（或设置 `VIGOUR_RUSTC`）。两种集成测试都会使用 4179 端口，必须顺序运行，且端口应空闲；不停止未知进程。安装器测试只操作隔离目录，不能证明普通用户下载后的 Gatekeeper 行为。详细构建入口见[安装说明](INSTALL.md)。
+
+Windows 11 x64 增量在本地源码开发中：已加入受保护凭据帮助程序、随包 Python 启动器、当前用户安装与 Native 注册逻辑、Inno Setup 图形安装脚本和 Windows CI。Mac 上的隔离安装器测试不代表 Windows 运行结果；Windows CI 尚未在本次改动上执行，真实 Chrome、安装器、OCR 模型离线使用及普通用户电脑均未验收。开发构建入口见[Windows 内测说明](WINDOWS-BETA-STATUS.md)。
 
 ## 内测安装包发布门槛
 
