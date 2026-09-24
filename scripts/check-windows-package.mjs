@@ -14,7 +14,10 @@ const expected = [...WINDOWS_REQUIRED, 'LICENSE', 'THIRD_PARTY_NOTICES.md', 'THI
   'THIRD_PARTY_LICENSES/Python-LICENSE.txt', 'THIRD_PARTY_LICENSES/javascript/SPDX-MIT.txt',
   'THIRD_PARTY_LICENSES/javascript/DEPENDENCIES.json', 'chrome-extension/manifest.json'];
 for (const path of expected) if (!(await stat(resolve(packageRoot, path))).isFile()) throw new Error(`Missing ${path}`);
-const markers = [root, tmpdir(), process.env.GITHUB_WORKSPACE, process.env.RUNNER_TEMP, homedir()]
+// Prebuilt Windows wheels may contain their upstream builder's generic profile
+// path. On CI, only reject paths unique to this checkout/run; match the macOS
+// package check's treatment of the runner's home directory.
+const markers = [root, tmpdir(), process.env.GITHUB_WORKSPACE, process.env.RUNNER_TEMP, process.env.CI ? undefined : homedir()]
   .filter(Boolean).map((value) => Buffer.from(value));
 const overlap = Math.max(...markers.map((value) => value.length)) - 1;
 let files = 0; let bytes = 0;
