@@ -8,9 +8,9 @@ Vigour UI Review is a local-first visual acceptance workbench for comparing a We
 
 ## Unreleased source update
 
-The working source adds capture safety checks, Native Messaging on-demand startup, one-time workbench pairing, and an Apple Silicon graphical companion installer. These changes are **not included in the existing v0.0.1 download**. Do not mix the new extension with the old companion.
+The working source adds capture safety checks, Native Messaging on-demand startup, one-time workbench pairing, and graphical companion installer sources for Apple Silicon and Windows 11 x64. These changes are **not included in the existing v0.0.1 download**. Do not mix the new extension with the old companion.
 
-The store draft ID is `dmkfgmpbomjjhalgnfhcpalobdnklchh`; obtaining an ID does not mean store approval or availability. Real Chrome toolbar capture, clean-machine installation, signing/notarization, and sleep/idle behavior still require acceptance. The source version remains 0.0.1 until coordinated beta packaging; do not overwrite the existing release.
+The store draft ID is `dmkfgmpbomjjhalgnfhcpalobdnklchh`; obtaining an ID does not mean store approval or availability. The unreleased source is now version 0.0.2 for a Windows 11 x64 tester candidate; the published v0.0.1 download is unchanged. Real Chrome toolbar capture, clean-machine installation, signing/notarization, and sleep/idle behavior still require acceptance.
 
 See [current delivery status and release gates](docs/DELIVERY-STATUS.md) and [unreleased changes](CHANGELOG.md#unreleased). Stage A/B/C reports are dated evidence, not current publication status.
 

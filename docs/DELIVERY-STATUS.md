@@ -10,7 +10,7 @@
 | --- | --- |
 | GitHub 下载版本 | v0.0.1，2026-08-28 发布，旧版终端启动包；2026-09-24 查询确认 |
 | 远端 main | 2026-09-16 隐私政策提交 `02f45496253e7ca6365892265e52360297c50109`；2026-09-24 查询确认 |
-| 本地源码 | 版本字段仍为 0.0.1，包含未发布 Native/安装器开发；不是旧下载包的同一内容 |
+| 本地源码 | 版本字段已统一递增至未发布的 0.0.2，包含 Windows 11 x64 内测候选包制作流程；不是旧 v0.0.1 下载包的同一内容 |
 | 商店条目 | ID `dmkfgmpbomjjhalgnfhcpalobdnklchh`；2026-09-16 最后操作为保存私享草稿和测试说明，未提交审核 |
 | 配套安装器 | Apple Silicon 开发构建；无 Developer ID 正式签名/公证，无匹配商店版公开下载交付 |
 | Windows 11 x64 | 已确认[独立 SPEC](spec/WINDOWS-BETA-SPEC.md)；[草稿 PR #10](https://github.com/lukidesign/Vigour-UI-Review/pull/10) 的 Windows CI 已通过开发包构建与烟测，但未发布安装包，也无 Windows 11 真机验收结论 |

@@ -1,6 +1,6 @@
 # Windows 11 x64 内测状态
 
-日期：2026-09-24。适用范围：[已确认 SPEC](spec/WINDOWS-BETA-SPEC.md)。本页仅描述源码开发进度，不是安装说明或下载承诺。
+更新：2026-09-25。适用范围：[已确认 SPEC](spec/WINDOWS-BETA-SPEC.md)。本页描述源码开发与候选包制作进度，不是公开下载承诺。
 
 ## 已写入源码
 
@@ -24,9 +24,10 @@ pnpm package:windows:check
 pnpm package:windows:smoke
 pnpm package:windows:native-smoke
 pnpm package:windows:installer
+pnpm package:windows:candidate
 ```
 
-输出目录为 `release/Vigour-UI-Review-v0.0.1-windows-x64-dev/` 与 `release/windows-setup/`；两者均为未发布的开发产物。正式内测前必须递增并统一版本号，核对扩展与配套程序的组合，生成安装器 SHA-256，并由发布者检查后交给同事。构建过程可能需要联网获取锁定依赖，安装包目标是核心分析安装后离线运行。
+输出目录为 `release/Vigour-UI-Review-v0.0.2-windows-x64-dev/` 与 `release/windows-setup/`；两者均为未发布的开发产物。`pnpm package:windows:candidate` 在完整烟测及安装器编译后，从白名单生成 `release/windows-candidate/`，包含安装器、匹配版本的未打包扩展、SHA-256、构建信息与[同事测试说明](WINDOWS-TESTER-GUIDE.md)。公开仓库的 Actions 附件不是私享渠道，因此 CI 目前**只暂存、不上传**候选包；待发布者确定交付渠道后再导出。构建过程可能需要联网获取锁定依赖，安装包目标是核心分析安装后离线运行。
 
 ## 当前证据与待验证事项
 

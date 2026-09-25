@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "minimum_chrome_version": "116",
   "name": "Vigour UI Review",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "采集 Web 实现图、DOM 和计算样式并发送至本地 Vigour UI Review 工作台。",
   "permissions": ["activeTab", "scripting", "storage", "nativeMessaging", "alarms"],
   "host_permissions": ["http://127.0.0.1:4179/*"],

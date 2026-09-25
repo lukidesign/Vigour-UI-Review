@@ -6,10 +6,13 @@ All notable changes to Vigour UI Review are documented here. The project follows
 
 Source-only development update; no new downloadable release or store approval is implied. Existing v0.0.1 artifacts are unchanged. See [delivery status](docs/DELIVERY-STATUS.md) for acceptance gates.
 
+The unreleased source version is 0.0.2 for a Windows 11 x64 tester candidate. Its installer and matching unpacked extension are not publicly distributed.
+
 ### Added
 
 - Native Messaging host with constrained commands, exact extension-origin pairing, process reuse, one-time workbench tickets, and idle lifecycle management.
 - Apple Silicon graphical companion installer with payload verification, install/update/repair, same-schema rollback, and data-preserving uninstall.
+- Windows 11 x64 current-user companion installer source and matched 0.0.2 tester-candidate staging; no public installer distribution or Windows 11 user acceptance yet.
 - Extension icons, bilingual store copy, actual synthetic-demo screenshots, privacy disclosures, and private-beta checklists.
 - Regression coverage for capture cancellation, Native framing/session lifecycle, installer ownership, and workbench authentication.
 

@@ -4,7 +4,7 @@ import { homedir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 
 export const APP_NAME = 'Vigour UI Review';
-export const APP_VERSION = '0.0.1';
+export const APP_VERSION = '0.0.2';
 export const LEGACY_APP_NAME = 'Design Acceptance 2.0';
 
 export function applicationDataRoots(homeDirectory = homedir(), platform = process.platform, localAppData = process.env.LOCALAPPDATA) {

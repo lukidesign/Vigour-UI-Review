@@ -79,3 +79,8 @@ jobs:
         run: pnpm package:windows:native-smoke
       - name: Compile GUI installer
         run: pnpm package:windows:installer
+      - name: Stage unsigned tester candidate
+        if: github.event_name == 'pull_request' && github.event.pull_request.number == 10 && github.event.pull_request.head.repo.full_name == github.repository
+        env:
+          VIGOUR_SOURCE_COMMIT: ${{ github.event.pull_request.head.sha }}
+        run: pnpm package:windows:candidate

@@ -104,7 +104,7 @@ pnpm package:smoke
 pnpm package:archive
 ```
 
-开发者目录位于 `release/Vigour-UI-Review-v0.0.1-macos-arm64/`，ZIP 和 SHA-256 文件位于 `release-artifacts/`。当前版本号尚未递增，新包不得覆盖已发布的同版本下载资产。Native 构建需要 Rust；`start.command` 仍作为手动开发入口保留。Rust 运行库许可随新包提供，Python 依赖按锁文件及哈希安装。发布前仍需正式版本整包复验。
+当前源码生成的开发者目录位于 `release/Vigour-UI-Review-v0.0.2-macos-arm64/`，ZIP 和 SHA-256 文件位于 `release-artifacts/`。已发布的 v0.0.1 下载资产仍保持不变，新包未验收、不得据此发布。Native 构建需要 Rust；`start.command` 仍作为手动开发入口保留。Rust 运行库许可随新包提供，Python 依赖按锁文件及哈希安装。发布前仍需正式版本整包复验。
 
 ## 图形安装助手（阶段 C，未发布开发构建）
 

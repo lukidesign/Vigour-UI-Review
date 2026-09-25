@@ -8,9 +8,9 @@ Vigour UI Review 是一款本地优先的 Web 设计验收工作台。它将开�
 
 ## 未发布的源码更新
 
-当前源码已加入采集安全加固、Native Messaging 按需启动、一次性工作台配对和 Apple Silicon 图形安装器。**这些改动不在已有 v0.0.1 下载包中**，不要混用新版扩展与旧配套程序。
+当前源码已加入采集安全加固、Native Messaging 按需启动、一次性工作台配对，以及 Apple Silicon 和 Windows 11 x64 图形安装器源码。**这些改动不在已有 v0.0.1 下载包中**，不要混用新版扩展与旧配套程序。
 
-已取得商店草稿 ID：`dmkfgmpbomjjhalgnfhcpalobdnklchh`，不代表审核通过或可安装。真实 Chrome 工具栏采集、新机器安装、签名/公证、休眠及空闲退出仍需验收。源码版本暂保留 0.0.1，正式制作内测包时统一递增，不覆盖旧 Release。
+已取得商店草稿 ID：`dmkfgmpbomjjhalgnfhcpalobdnklchh`，不代表审核通过或可安装。源码已统一递增至未发布的 0.0.2，用于 Windows 11 x64 候选包；已发布的 v0.0.1 下载不变。真实 Chrome 工具栏采集、新机器安装、签名/公证、休眠及空闲退出仍需验收。
 
 最新进度和发布门槛见[交付状态](docs/DELIVERY-STATUS.md)，功能变更见[变更记录](CHANGELOG.md#unreleased)。阶段 A/B/C 文档保留当时证据，不作为当前发布状态。
 
