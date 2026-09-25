@@ -1,0 +1,35 @@
+// Launch the bundled Python engine without a shell or a console window.
+#![cfg(windows)]
+use std::{env, process::{Command, Stdio}};
+use std::os::windows::process::CommandExt;
+
+fn run() -> Result<i32, Box<dyn std::error::Error>> {
+    let executable = env::current_exe()?.canonicalize()?;
+    let vision = executable.parent().ok_or("missing vision directory")?;
+    let root = vision.parent().ok_or("missing application directory")?;
+    let python = root.join("runtime").join("python").join("python.exe");
+    let modules = vision.join("site-packages");
+    let status = Command::new(python)
+        .arg("-m").arg("design_acceptance_vision.rpc")
+        .args(env::args_os().skip(1))
+        .current_dir(root)
+        .env("PYTHONPATH", modules)
+        // Windows pipes otherwise inherit a legacy code page (cp1252 on CI),
+        // which cannot encode Chinese issue descriptions in JSON-RPC replies.
+        .env("PYTHONIOENCODING", "utf-8")
+        .env("PYTHONUTF8", "1")
+        .env("PYTHONNOUSERSITE", "1")
+        .env("PYTHONDONTWRITEBYTECODE", "1")
+        .env_remove("PYTHONHOME")
+        .stdin(Stdio::inherit()).stdout(Stdio::inherit()).stderr(Stdio::inherit())
+        .creation_flags(0x08000000) // CREATE_NO_WINDOW
+        .status()?;
+    Ok(status.code().unwrap_or(1))
+}
+
+fn main() {
+    match run() {
+        Ok(code) => std::process::exit(code),
+        Err(error) => { eprintln!("VISION_RUNNER_FAILED: {error}"); std::process::exit(1); }
+    }
+}

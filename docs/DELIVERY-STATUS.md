@@ -10,10 +10,11 @@
 | --- | --- |
 | GitHub 下载版本 | v0.0.1，2026-08-28 发布，旧版终端启动包；2026-09-24 查询确认 |
 | 远端 main | 2026-09-16 隐私政策提交 `02f45496253e7ca6365892265e52360297c50109`；2026-09-24 查询确认 |
-| 本地源码 | 版本字段仍为 0.0.1，包含未发布 Native/安装器开发；不是旧下载包的同一内容 |
+| 本地源码 | 版本字段已统一递增至未发布的 0.0.2，包含 Windows 11 x64 内测候选包制作流程；不是旧 v0.0.1 下载包的同一内容 |
 | 商店条目 | ID `dmkfgmpbomjjhalgnfhcpalobdnklchh`；2026-09-16 最后操作为保存私享草稿和测试说明，未提交审核 |
 | 配套安装器 | Apple Silicon 开发构建；无 Developer ID 正式签名/公证，无匹配商店版公开下载交付 |
-| Windows / Intel / 英文 UI | 首轮不承诺；英文商店文案不代表英文 UI 已实现 |
+| Windows 11 x64 | 已确认[独立 SPEC](spec/WINDOWS-BETA-SPEC.md)；[草稿 PR #10](https://github.com/lukidesign/Vigour-UI-Review/pull/10) 的 Windows CI 已通过开发包构建与烟测，但未发布安装包，也无 Windows 11 真机验收结论 |
+| 英文 UI | 英文商店文案不代表英文 UI 已实现 |
 
 ## 可以作为源码更新说明的内容
 
@@ -32,7 +33,7 @@
 
 2026-09-16 已有 Python 11 项、50 对/500 处合成基准及隔离 Native/安装器验证记录。本轮不据此宣称新机器安装或真实 Chrome 工具栏链路通过。当天独立数据目录中的示例图片分析返回 10 个问题，仅证明本地示例分析可运行。
 
-现有 CI 调用 `release:check`：包含源码、类型、单测、构建、Python、合成基准；本轮将素材检查也加入此入口。**Native/离线安装器集成尚未纳入 CI**，必须另跑，不能以绿色 CI 替代。
+现有 CI 调用 `release:check`：包含源码、类型、单测、构建、Python、合成基准；本轮将素材检查也加入此入口。macOS Native/离线安装器集成尚未纳入 CI，必须另跑，不能以绿色 CI 替代。Windows CI 新增开发包构建及命令行烟测，但也不能替代真实 Windows 11 GUI/Chrome 验收。
 
 开发集成验证入口（macOS Apple Silicon）：
 
@@ -44,6 +45,8 @@ VIGOUR_INSTALLER_PAYLOAD=/absolute/path/to/sealed-companion pnpm test:installer
 ```
 
 Native 测试需 Rust 编译器（或设置 `VIGOUR_RUSTC`）。两种集成测试都会使用 4179 端口，必须顺序运行，且端口应空闲；不停止未知进程。安装器测试只操作隔离目录，不能证明普通用户下载后的 Gatekeeper 行为。详细构建入口见[安装说明](INSTALL.md)。
+
+Windows 11 x64 增量已加入受保护凭据帮助程序、随包 Python 启动器、当前用户安装与 Native 注册逻辑、Inno Setup 图形安装脚本和 Windows CI。[2026-09-24 CI 运行](https://github.com/lukidesign/Vigour-UI-Review/actions/runs/35987883278)通过构建、整包校验、离线核心分析、凭据/Native 协议烟测及安装器编译；真实 Chrome、Windows 11 GUI 安装/卸载、OCR 模型离线使用及普通用户电脑仍未验收。开发构建入口见[Windows 内测说明](WINDOWS-BETA-STATUS.md)。
 
 ## 内测安装包发布门槛
 

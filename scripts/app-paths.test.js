@@ -2,7 +2,7 @@ import { mkdtemp, mkdir, readFile, stat, symlink, writeFile } from 'node:fs/prom
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
-import { ensureApplicationDataRoot } from './app-paths.mjs';
+import { applicationDataRoots, ensureApplicationDataRoot } from './app-paths.mjs';
 
 const cleanup = [];
 afterEach(async () => {
@@ -17,6 +17,13 @@ async function fixtureRoots() {
 }
 
 describe('application data migration', () => {
+  it('keeps Windows data under LocalAppData without applying a macOS migration', async () => {
+    const base = await mkdtemp(join(tmpdir(), 'vigour-windows-data-test-')); cleanup.push(base);
+    const roots = applicationDataRoots(base, 'win32', base);
+    expect(roots).toEqual({ current: join(base, 'Vigour UI Review'), legacy: undefined });
+    const result = await ensureApplicationDataRoot({ roots });
+    expect(result).toMatchObject({ path: roots.current, migrated: false });
+  });
   it('creates a new private data root when no legacy data exists', async () => {
     const roots = await fixtureRoots();
     const result = await ensureApplicationDataRoot({ roots });

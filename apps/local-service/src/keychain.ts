@@ -1,5 +1,6 @@
 import { execFile, spawn } from 'node:child_process';
 import { promisify } from 'node:util';
+import { resolve } from 'node:path';
 
 const execFileAsync = promisify(execFile);
 export const KEYCHAIN_SERVICE = 'com.vigour-ui-review.local';
@@ -60,8 +61,41 @@ export class MacKeychainRunner implements KeychainRunner {
   }
 }
 
+export class WindowsCredentialRunner implements KeychainRunner {
+  private readonly helper = resolve(import.meta.dirname, '../native/vigour-ui-review-credentials.exe');
+
+  private command(action: 'save' | 'read' | 'remove', account: string, secret?: string): Promise<string> {
+    return new Promise((resolveResult, reject) => {
+      const child = spawn(this.helper, [action, account], { stdio: ['pipe', 'pipe', 'ignore'], windowsHide: true });
+      const chunks: Buffer[] = []; let length = 0;
+      child.stdout.on('data', (chunk: Buffer) => {
+        length += chunk.length;
+        if (length > 2560) { child.kill(); reject(new Error('CREDENTIAL_READ_FAILED')); return; }
+        chunks.push(chunk);
+      });
+      child.once('error', () => reject(new Error('CREDENTIAL_STORE_UNAVAILABLE')));
+      child.once('exit', (code) => code === 0 ? resolveResult(Buffer.concat(chunks).toString('utf8')) : reject(new Error(`CREDENTIAL_${action.toUpperCase()}_FAILED`)));
+      child.stdin.on('error', () => {});
+      child.stdin.end(secret ?? '');
+    });
+  }
+
+  async save(account: string, secret: string): Promise<void> {
+    if (!secret || Buffer.byteLength(secret, 'utf8') > 2560) throw new Error('INVALID_SECRET');
+    await this.command('save', account, secret);
+  }
+  async read(account: string): Promise<string | undefined> { return (await this.command('read', account)) || undefined; }
+  async remove(account: string): Promise<void> { await this.command('remove', account); }
+}
+
+export function defaultSecretRunner(platform = process.platform): KeychainRunner {
+  if (platform === 'darwin') return new MacKeychainRunner();
+  if (platform === 'win32') return new WindowsCredentialRunner();
+  throw new Error('CREDENTIAL_STORE_UNAVAILABLE');
+}
+
 export class SecretStore {
-  constructor(private readonly runner: KeychainRunner = new MacKeychainRunner()) {}
+  constructor(private readonly runner: KeychainRunner = defaultSecretRunner()) {}
   saveFigmaPat(value: string) { return this.runner.save('figma-pat', value); }
   readFigmaPat() { return this.runner.read('figma-pat'); }
   removeFigmaPat() { return this.runner.remove('figma-pat'); }

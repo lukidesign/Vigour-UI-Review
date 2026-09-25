@@ -1,6 +1,6 @@
 [project]
 name = "vigour-ui-review-vision"
-version = "0.0.1"
+version = "0.0.2"
 description = "Local deterministic vision engine for Vigour UI Review"
 requires-python = ">=3.11,<3.13"
 dependencies = [
