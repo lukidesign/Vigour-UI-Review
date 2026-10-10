@@ -27,7 +27,7 @@ pnpm package:windows:installer
 pnpm package:windows:candidate
 ```
 
-输出目录为 `release/Vigour-UI-Review-v0.0.2-windows-x64-dev/` 与 `release/windows-setup/`；两者均为未发布的开发产物。`pnpm package:windows:candidate` 在完整烟测及安装器编译后，从白名单生成 `release/windows-candidate/`，包含安装器、匹配版本的未打包扩展、SHA-256、构建信息与[同事测试说明](WINDOWS-TESTER-GUIDE.md)。公开仓库的 Actions 附件不是私享渠道，因此 CI 目前**只暂存、不上传**候选包；待发布者确定交付渠道后再导出。构建过程可能需要联网获取锁定依赖，安装包目标是核心分析安装后离线运行。
+输出目录为 `release/Vigour-UI-Review-v0.0.2-windows-x64-dev/` 与 `release/windows-setup/`；两者均为未发布的开发产物。`pnpm package:windows:candidate` 在完整烟测及安装器编译后，从白名单生成 `release/windows-candidate/`，包含安装器、匹配版本的未打包扩展、SHA-256、构建信息与[同事测试说明](WINDOWS-TESTER-GUIDE.md)。发布者已选择公开仓库的 Actions 附件作为候选包交付渠道：CI 只会在草稿 PR #10 的 Windows 检查全部通过后上传，保留 3 天。它不是私享渠道、不是 GitHub Release，也不是 Chrome 商店发布。构建过程可能需要联网获取锁定依赖，安装包目标是核心分析安装后离线运行。
 
 ## 当前证据与待验证事项
 
