@@ -1,6 +1,6 @@
 # 源码更新与交付状态
 
-更新：2026-09-24。发布商/版权署名：LukiDesign；产品名：Vigour UI Review。
+更新：2026-10-12。发布商/版权署名：LukiDesign；产品名：Vigour UI Review。
 
 ## 本次整理的边界
 
@@ -26,6 +26,8 @@
 完整历史证据见[阶段 A](STAGE-A-REVIEW.md)、[阶段 B](STAGE-B-REVIEW.md)、[阶段 C](STAGE-C-REVIEW.md)。不要改写历史报告来冒充新验证结果。
 
 ## 验证记录与缺口
+
+2026-10-12 在 UI、会话恢复、跨比较模式标注与 AI 对话框更新后重新完成对抗式复核和全量验证。`pnpm release:check` 通过：127 项 JS/TS 测试、11 项 Python 测试、生产构建及 50 对/500 处合成基准全部成功。已重新生成 `Vigour-UI-Review-v0.0.2-macos-arm64` 离线程序包和 `Vigour UI Review Setup-v0.0.2-macos-arm64.app` 图形安装器；整包校验覆盖 15,665 个文件（共 1,036,152,647 字节），未发现绝对符号链接或本机私有路径泄漏。整包烟测、隔离 Native 集成测试与安装/更新/同结构回退/修复/卸载测试均通过，未改写真实 Chrome 注册。该安装器仍是未签名开发构建，未经 Developer ID 签名、公证或干净机 Gatekeeper 验收，不等同于正式发布。
 
 2026-09-24 整理后重新执行 `pnpm release:check`，退出码 0：仓库检查、素材检查、工作区类型检查、121 项 JS/TS 测试、生产构建、11 项 Python 测试及 50 对/500 处合成基准全部通过。另通过 `git diff --check` 和发布脚本语法检查；已逐字节核对本地隐私政策与远端 main 一致。
 

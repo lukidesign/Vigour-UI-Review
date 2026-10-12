@@ -20,6 +20,13 @@ The unreleased source version is 0.0.2 for a Windows 11 x64 tester candidate. It
 
 - Standardize publisher and project copyright attribution as LukiDesign; retain Vigour UI Review as the product name.
 - New-source workbench and extension credentials use session storage; normal Native pairing does not require manual token copying.
+- Replace the token-first disconnected-workbench dialog with guided extension recovery, keep manual token entry under developer diagnostics, and surface pairing failures inline.
+- Clarify first-run analysis states, unify empty states and square zoom controls, move contextual AI actions into the issue header, and add a generated Vigour UI Review product mark with the current version in the title bar.
+- Default the project sidebar to a compact icon rail with explicit accessible expand and collapse controls.
+- Align the primary review action with the source cards, compact its state labels, normalize zoom controls, and colocate exports with the issue list.
+- Show issue annotations in every comparison mode, with one accessible global visibility control and issue-list reveal on marker selection.
+- Separate AI problem explanations from component-level business-logic inference within one focused dialog, progressively disclose provider settings, and present task-specific structured results with per-request consent.
+- Refine workbench controls with centered zoom icons, a compact review action, a state-aware theme icon, and a larger product title.
 - Link the known store draft ID and distinguish source development from the legacy downloadable package.
 - Include store-material validation in the basic release-check pipeline; Native and installer integration remain separate gates.
 - Automatically normalize development screenshots when their aspect ratio differs from the design by at most 1%, without modifying the original asset.
