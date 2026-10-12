@@ -3,14 +3,14 @@ import { createNativeClient } from './native-client';
 
 function setup() {
   let stored: Record<string, unknown> = {};
-  const connection = { ok: true, protocol: 1, serviceVersion: '0.0.1', instanceId: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', sessionToken: 'a'.repeat(43) };
+  const connection = { ok: true, protocol: 1, serviceVersion: '0.0.2', instanceId: 'aaaaaaaa-aaaa-aaaa-aaaa-aaaaaaaaaaaa', sessionToken: 'a'.repeat(43) };
   const event = () => { const listeners = new Set<(value: unknown) => void>(); return {
     addListener: (fn: (value: unknown) => void) => listeners.add(fn), removeListener: (fn: (value: unknown) => void) => listeners.delete(fn),
     emit: (value?: unknown) => { for (const fn of listeners) fn(value); },
   }; };
   const ports: { onMessage: ReturnType<typeof event>; onDisconnect: ReturnType<typeof event>; postMessage: ReturnType<typeof vi.fn>; disconnect: ReturnType<typeof vi.fn> }[] = [];
   const browser = {
-    runtime: { connectNative: vi.fn(() => { const port = { onMessage: event(), onDisconnect: event(), postMessage: vi.fn(() => queueMicrotask(() => port.onMessage.emit(connection))), disconnect: vi.fn() }; ports.push(port); return port; }), getManifest: () => ({ version: '0.0.1' }) },
+    runtime: { connectNative: vi.fn(() => { const port = { onMessage: event(), onDisconnect: event(), postMessage: vi.fn(() => queueMicrotask(() => port.onMessage.emit(connection))), disconnect: vi.fn() }; ports.push(port); return port; }), getManifest: () => ({ version: '0.0.2' }) },
     storage: { session: { get: vi.fn(async () => stored), set: vi.fn(async (value) => { stored = value; }), remove: vi.fn(async () => { stored = {}; }) }, local: { remove: vi.fn(async () => {}) } },
     alarms: { create: vi.fn(async () => {}) },
     tabs: { query: vi.fn(async () => [{ id: 4, url: 'http://127.0.0.1:4179/' }, { id: 5, url: 'http://127.0.0.1:4179/assets/test' }]), create: vi.fn(async (_options: { url: string }) => ({})) },

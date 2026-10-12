@@ -40,6 +40,7 @@ export function sessionToken(): string {
   return legacy;
 }
 export function setSessionToken(token: string) { sessionStorage.removeItem('designAcceptanceToken'); sessionStorage.setItem(TOKEN_KEY, token); }
+export function clearSessionToken() { sessionStorage.removeItem('designAcceptanceToken'); sessionStorage.removeItem(TOKEN_KEY); }
 
 export async function initializeSessionFromLocation() {
   const url = new URL(location.href);
@@ -51,7 +52,7 @@ export async function initializeSessionFromLocation() {
   url.searchParams.delete('token'); url.hash = '';
   history.replaceState({}, '', url);
   if (ticket) {
-    setSessionToken('');
+    clearSessionToken();
     const response = await fetch(`${BASE_URL}/api/v1/session/exchange`, {
       method: 'POST', headers: { 'content-type': 'application/json' },
       body: JSON.stringify({ ticket }), signal: AbortSignal.timeout(5_000),

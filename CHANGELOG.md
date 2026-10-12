@@ -6,10 +6,13 @@ All notable changes to Vigour UI Review are documented here. The project follows
 
 Source-only development update; no new downloadable release or store approval is implied. Existing v0.0.1 artifacts are unchanged. See [delivery status](docs/DELIVERY-STATUS.md) for acceptance gates.
 
+The unreleased source version is 0.0.2 for a Windows 11 x64 tester candidate. Its installer and matching unpacked extension are not publicly distributed.
+
 ### Added
 
 - Native Messaging host with constrained commands, exact extension-origin pairing, process reuse, one-time workbench tickets, and idle lifecycle management.
 - Apple Silicon graphical companion installer with payload verification, install/update/repair, same-schema rollback, and data-preserving uninstall.
+- Windows 11 x64 current-user companion installer source and matched 0.0.2 tester-candidate staging; no public installer distribution or Windows 11 user acceptance yet.
 - Extension icons, bilingual store copy, actual synthetic-demo screenshots, privacy disclosures, and private-beta checklists.
 - Regression coverage for capture cancellation, Native framing/session lifecycle, installer ownership, and workbench authentication.
 
@@ -17,6 +20,13 @@ Source-only development update; no new downloadable release or store approval is
 
 - Standardize publisher and project copyright attribution as LukiDesign; retain Vigour UI Review as the product name.
 - New-source workbench and extension credentials use session storage; normal Native pairing does not require manual token copying.
+- Replace the token-first disconnected-workbench dialog with guided extension recovery, keep manual token entry under developer diagnostics, and surface pairing failures inline.
+- Clarify first-run analysis states, unify empty states and square zoom controls, move contextual AI actions into the issue header, and add a generated Vigour UI Review product mark with the current version in the title bar.
+- Default the project sidebar to a compact icon rail with explicit accessible expand and collapse controls.
+- Align the primary review action with the source cards, compact its state labels, normalize zoom controls, and colocate exports with the issue list.
+- Show issue annotations in every comparison mode, with one accessible global visibility control and issue-list reveal on marker selection.
+- Separate AI problem explanations from component-level business-logic inference within one focused dialog, progressively disclose provider settings, and present task-specific structured results with per-request consent.
+- Refine workbench controls with centered zoom icons, a compact review action, a state-aware theme icon, and a larger product title.
 - Link the known store draft ID and distinguish source development from the legacy downloadable package.
 - Include store-material validation in the basic release-check pipeline; Native and installer integration remain separate gates.
 - Automatically normalize development screenshots when their aspect ratio differs from the design by at most 1%, without modifying the original asset.
