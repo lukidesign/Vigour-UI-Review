@@ -4,17 +4,43 @@
 
 Vigour UI Review is a local-first visual acceptance workbench for comparing a Web implementation with its design source. It detects and quantifies position, size, color, missing, extra, and optional OCR text differences, then turns them into reviewable issues and exportable evidence.
 
-> Status: `v0.0.1` is an unsigned developer preview for macOS 14+ on Apple Silicon. The published accuracy baseline uses deterministic synthetic images and must not be interpreted as production accuracy on real websites.
+> Updated October 13, 2026: **v0.0.2 is a development candidate in [PR #10](https://github.com/lukidesign/Vigour-UI-Review/pull/10)**. Source verification and Windows packaging CI passed. The latest GitHub Release remains **v0.0.1**; the new macOS installer has been rebuilt and tested locally.
 
-## Unreleased source update
+## v0.0.2 development update
 
-The working source adds capture safety checks, Native Messaging on-demand startup, one-time workbench pairing, and an Apple Silicon graphical companion installer. These changes are **not included in the existing v0.0.1 download**. Do not mix the new extension with the old companion.
+The [development branch](https://github.com/lukidesign/Vigour-UI-Review/tree/codex/windows-11-x64-beta), currently under review in PR #10, includes:
 
-The store draft ID is `dmkfgmpbomjjhalgnfhcpalobdnklchh`; obtaining an ID does not mean store approval or availability. Real Chrome toolbar capture, clean-machine installation, signing/notarization, and sleep/idle behavior still require acceptance. The source version remains 0.0.1 until coordinated beta packaging; do not overwrite the existing release.
+- A collapsed-by-default project sidebar, updated product mark and version display, centered zoom controls, and clearer first-run/review states.
+- Issue annotations in all three comparison modes, a shared visibility switch, and marker-to-issue navigation.
+- Export and AI actions beside the issue list. Problem explanations and component business-logic inference share a dialog with task-specific context, results, and per-request consent.
+- Guided connection recovery, Native Messaging on-demand startup, and one-time workbench pairing.
+- Rebuilt macOS Apple Silicon companion/graphical installer and a Windows 11 x64 unsigned tester candidate.
 
-See [current delivery status and release gates](docs/DELIVERY-STATUS.md) and [unreleased changes](CHANGELOG.md#unreleased). Stage A/B/C reports are dated evidence, not current publication status.
+These changes are **not included in the v0.0.1 download or the application source on main yet**. Use the matching extension and companion from the same build.
+
+### Downloads and build status
+
+| Version / platform | Status | Access |
+| --- | --- | --- |
+| v0.0.2 source | Development branch, PR #10 pending | [Browse source](https://github.com/lukidesign/Vigour-UI-Review/tree/codex/windows-11-x64-beta) |
+| v0.0.2 Windows 11 x64 | Unsigned test-only installer and matching extension; CI passed | [Actions download](https://github.com/lukidesign/Vigour-UI-Review/actions/runs/38237762236/artifacts/11740879600) |
+| v0.0.2 macOS Apple Silicon | Offline companion and graphical installer rebuilt and tested locally | No public v0.0.2 macOS download yet |
+| v0.0.1 macOS Apple Silicon | Previous unsigned developer preview | [Published release](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.1) |
+
+The Windows artifact requires a GitHub sign-in and is retained for three days. If expired, check [PR #10](https://github.com/lukidesign/Vigour-UI-Review/pull/10) for a newer successful build. Read the [Windows tester guide](https://github.com/lukidesign/Vigour-UI-Review/blob/codex/windows-11-x64-beta/docs/WINDOWS-TESTER-GUIDE.md) before installation. Windows 11 end-user/Chrome acceptance remains pending.
+
+### Verification — October 12, 2026
+
+- 127 JavaScript/TypeScript tests, 11 Python tests, type checks, and production builds passed.
+- The synthetic visual baseline matched all 500 annotated differences across 50 pairs; this is not a real-page production accuracy claim.
+- macOS package integrity/private-path checks, offline analysis, Native integration, and isolated install/update/rollback/repair/uninstall tests passed.
+- [GitHub CI](https://github.com/lukidesign/Vigour-UI-Review/actions/runs/38237762236) passed source verification, production dependency audit, Windows offline analysis and Native/credential smoke tests, and GUI installer packaging.
+
+See the [v0.0.2 delivery record](https://github.com/lukidesign/Vigour-UI-Review/blob/codex/windows-11-x64-beta/docs/DELIVERY-STATUS.md) and [changelog](https://github.com/lukidesign/Vigour-UI-Review/blob/codex/windows-11-x64-beta/CHANGELOG.md#unreleased). Installers remain unsigned; macOS notarization, clean-machine installation, real Chrome capture, and sleep/idle acceptance are pending. Store draft ID `dmkfgmpbomjjhalgnfhcpalobdnklchh` does not indicate store approval or availability.
 
 ![Vigour UI Review workbench](docs/assets/workbench-overview.jpg)
+
+*Earlier workbench screenshot using synthetic demo data; it does not show the v0.0.2 UI refinements above.*
 
 ## Highlights
 
@@ -29,7 +55,7 @@ See [current delivery status and release gates](docs/DELIVERY-STATUS.md) and [un
 - Nine built-in themes plus custom theme import, editing, copying, and export.
 - Credentials stored in the macOS Keychain; the local API binds to `127.0.0.1` only.
 
-## Install the preview
+## Install the previous v0.0.1 preview
 
 1. Download `Vigour-UI-Review-v0.0.1-macos-arm64.zip` and its `.sha256` file from [GitHub Releases](../../releases/latest).
 2. Verify the checksum:
@@ -45,6 +71,8 @@ To install the Chrome capture extension, open `chrome://extensions`, enable Deve
 
 ## Build from source
 
+For v0.0.2, check out `codex/windows-11-x64-beta` before running the commands below. Windows builders should follow the [Windows build guide](https://github.com/lukidesign/Vigour-UI-Review/blob/codex/windows-11-x64-beta/docs/WINDOWS-BETA-STATUS.md).
+
 Requirements:
 
 - macOS 14+ on Apple Silicon
@@ -59,7 +87,7 @@ pnpm release:check
 pnpm start:local
 ```
 
-Create the complete offline package:
+Create the macOS offline package (also requires a Rust compiler for the v0.0.2 Native Host):
 
 ```bash
 pnpm package:dev
@@ -88,7 +116,7 @@ On first launch, legacy `Design Acceptance 2.0` data is copied atomically to the
 
 ## Known limitations
 
-- Apple Silicon only; [current PaddlePaddle macOS packages support arm64 and not x86_64](https://www.paddlepaddle.org.cn/documentation/docs/en/install/pip/macos-pip_en.html).
+- The v0.0.1 release supports macOS Apple Silicon only. v0.0.2 adds a Windows 11 x64 test candidate; ordinary Windows 11 user installation has not yet been accepted. macOS Intel builds are unavailable.
 - The developer package is not signed or notarized.
 - The Chrome extension is not yet published in the Chrome Web Store.
 - Current UI is primarily Chinese; English listing copy is not an English UI. Desktop checks cover 1920 and 1440 pixel widths; 900/720 widths still overflow.
