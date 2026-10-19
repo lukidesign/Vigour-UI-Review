@@ -1,10 +1,10 @@
-# Vigour UI Review · Windows 11 x64 开发内测
+# Vigour UI Review · Windows x64 未签名 Beta 测试指南
 
-这是 LukiDesign 的 **0.0.2 未签名候选包**，只用于受邀同事验收；不是 Chrome 商店版本或公开 Release。只支持 Windows 11 x64（Intel/AMD）。请勿把它转发给其他人，也不要用旧版 v0.0.1 配套程序混装。
+这是 LukiDesign 的 **v0.0.2-beta.1 未签名公开预发布包**，程序和扩展版本为 **0.0.2**。目标平台为 Windows 11 x64（Intel/AMD），**Windows 11 真机测试仍待完成**；Windows Server 构建机测试不能替代普通用户电脑验收。这不是稳定版或 Chrome 商店版本。不要用旧版 v0.0.1 配套程序混装。
 
 ## 安装（普通用户不用终端）
 
-1. 从发布者指定的渠道取得候选 ZIP 并完整解压。确认目录内同时有 `chrome-extension`、`Vigour-UI-Review-0.0.2-windows-x64-dev-setup.exe` 和本文档。
+1. 从 [v0.0.2-beta.1 发布页](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1) 下载 Windows x64 ZIP 并完整解压。确认目录内同时有 `chrome-extension`、`Vigour-UI-Review-0.0.2-windows-x64-dev-setup.exe` 和本文档。
 2. Chrome 打开 `chrome://extensions`，开启“开发者模式”，点击“加载已解压的扩展程序”，选择解压后的 `chrome-extension` 文件夹。复制 Chrome 显示的 **32 位扩展 ID**。不要直接选择外层 ZIP 或安装器。
 3. 双击安装器，选择“安装或更新”，将刚复制的扩展 ID 填入配对页面。安装只作用于当前用户，不应要求管理员权限、Node、Python 或命令行。
 4. 在 Chrome 工具栏点击 Vigour UI Review，再选择“打开工作台”。如提示扩展未配对，先检查安装器里填的 ID 是否与 `chrome://extensions` 中一致。
