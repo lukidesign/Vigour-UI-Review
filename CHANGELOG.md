@@ -4,15 +4,17 @@ All notable changes to Vigour UI Review are documented here. The project follows
 
 ## [Unreleased]
 
-Source-only development update; no new downloadable release or store approval is implied. Existing v0.0.1 artifacts are unchanged. See [delivery status](docs/DELIVERY-STATUS.md) for acceptance gates.
+No additional changes recorded.
 
-The unreleased source version is 0.0.2. Successful PR #10 builds may upload an unsigned Windows tester installer and matching unpacked extension as public-repository Actions artifacts with three-day retention. These are not permanent Release downloads or Windows 11 acceptance evidence.
+## [0.0.2-beta.1] - 2026-10-19
+
+Unsigned public prerelease for macOS Apple Silicon and Windows x64; application and extension versions are 0.0.2. **Windows 11 real-machine testing remains pending.** Existing v0.0.1 assets are unchanged. See [beta notes](docs/releases/v0.0.2-beta.1.md) and [delivery status](docs/DELIVERY-STATUS.md). This release does not imply signing, notarization, stable-platform acceptance or store approval.
 
 ### Added
 
 - Native Messaging host with constrained commands, exact extension-origin pairing, process reuse, one-time workbench tickets, and idle lifecycle management.
 - Apple Silicon graphical companion installer with payload verification, install/update/repair, same-schema rollback, and data-preserving uninstall.
-- Windows 11 x64 current-user companion installer source and matched 0.0.2 tester-candidate staging; no permanent installer Release or Windows 11 user acceptance yet.
+- Windows x64 current-user companion installer and matched 0.0.2 tester-candidate staging for public Beta delivery; Windows 11 user acceptance remains pending.
 - Extension icons, bilingual store copy, actual synthetic-demo screenshots, privacy disclosures, and private-beta checklists.
 - Regression coverage for capture cancellation, Native framing/session lifecycle, installer ownership, and workbench authentication.
 
@@ -42,13 +44,14 @@ The unreleased source version is 0.0.2. Successful PR #10 builds may upload an u
 - Replace the opaque `ANALYSIS_FAILED` response for incompatible images with a structured size and aspect-ratio explanation.
 - Reject aspect-ratio differences over 1% before creating a failed run.
 - Prevent normal packaged-app startup from writing Python bytecode caches into the installation directory.
+- Align the macOS installer deployment target and minimum-system metadata at 14.0; prevent prerelease tags from invoking the stable Release publisher.
 
 ### Planned
 
-- Real Chrome toolbar capture-to-export acceptance and clean-machine companion installation.
-- Coordinated beta package versions, fixed store-ID pairing, download URL and SHA-256.
+- Clean-machine companion installation and Windows 11 real Chrome capture-to-export acceptance. macOS maintainer-machine capture-to-export passed on October 19.
+- Chrome store distribution and matching store-ID pairing (the Beta uses actual unpacked extension IDs).
 - Real elapsed idle/sleep tests, minimum macOS verification, and installation fault recovery.
-- Narrow-screen layout and complete English UI; Windows and Intel Mac remain outside the first beta.
+- Narrow-screen layout and complete English UI; Intel Mac remains outside this beta.
 - Human-labeled production Web benchmark.
 - Signed and notarized macOS package.
 - Chrome Web Store distribution.

@@ -4,7 +4,7 @@
 
 Vigour UI Review 是一款本地优先的 Web 设计验收工作台。它将开发实现图与设计源进行对齐，检测位置、尺寸、颜色、缺失、多余及可选 OCR 文字差异，并转换为可复核的问题和可导出的证据。
 
-> 更新于 2026-10-19：**本源码树为尚未发布的 v0.0.2 开发候选版本**，集成记录见 [PR #10](https://github.com/lukidesign/Vigour-UI-Review/pull/10)。GitHub 已发布的最新 Release 仍为 **v0.0.1**。源码合并不等于安装包发布；验证日期和待完成的验收门槛见下文。
+> **v0.0.2-beta.1：macOS Apple Silicon 与 Windows x64 未签名公开预发布版。** 程序及扩展内显示版本 **0.0.2**。**Windows 11 真机验收仍待完成。** 本版不是稳定版，也未完成签名；旧版 v0.0.1 保持不变。安装包以 [Beta 发布页](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1) 的实际附件为准，源码合并不等于安装包发布。
 
 ## v0.0.2 开发进展
 
@@ -22,12 +22,17 @@ v0.0.2 源码包含以下更新：
 
 | 版本 / 平台 | 当前状态 | 获取方式 |
 | --- | --- | --- |
-| v0.0.2 源码 | 未发布的开发候选版本 | [集成状态：PR #10](https://github.com/lukidesign/Vigour-UI-Review/pull/10) |
-| v0.0.2 Windows 11 x64 | 未签名内测安装器及匹配扩展 | [构建记录及可用附件](https://github.com/lukidesign/Vigour-UI-Review/actions/workflows/ci.yml) |
-| v0.0.2 macOS Apple Silicon | 离线程序与图形安装器已在本地重新构建并验证 | 暂无公开的 v0.0.2 macOS 下载链接 |
+| v0.0.2-beta.1 Windows x64 | 未签名测试安装器与匹配扩展；Windows 11 真机验收待完成 | [Beta 下载](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1) |
+| v0.0.2-beta.1 macOS Apple Silicon | 未签名图形安装器与匹配扩展；本机 Chrome 流程已验证 | [Beta 下载](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1) |
 | v0.0.1 macOS Apple Silicon | 旧版未签名开发者预览包 | [已发布版本](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.1) |
 
-Windows 内测附件仅由 PR #10 的成功构建上传，需要登录 GitHub，保留期为三天。main 分支 CI 不发布安装包，过期附件不是永久下载入口。安装前请阅读 [Windows 内测指南](docs/WINDOWS-TESTER-GUIDE.md)。Windows 11 普通用户真机与 Chrome 完整流程仍待验收。
+长期下载使用 Release 附件；Actions 构建附件仅保留七天，不是长期入口。安装前请阅读[安装说明](docs/INSTALL.md)、[Windows 测试指南](docs/WINDOWS-TESTER-GUIDE.md)及[本版说明与限制](docs/releases/v0.0.2-beta.1.md)。不要关闭操作系统安全保护来安装未签名程序。
+
+### 补充验证 · 2026-10-19
+
+- 集成版通过 135 项 JS/TS、11 项 Python 测试、构建和合成基准，生产依赖审计无已知漏洞。
+- 重建的 macOS 程序通过整包、离线分析、隔离 Native 和安装器生命周期检查；维护者 Mac 的真实 Chrome 配对、视口/整页采集、分析、三模式标注与 PNG/Markdown/JSON 导出通过。
+- Windows CI 使用 Windows Server 2022，不是 Windows 11 用户电脑。Windows 11 安装、真实 Chrome 采集、生命周期和离线 OCR 验收继续保留为待完成。
 
 ### 验证记录 · 2026-10-12
 
@@ -36,7 +41,7 @@ Windows 内测附件仅由 PR #10 的成功构建上传，需要登录 GitHub，
 - macOS 整包完整性与私有路径检查、离线分析、Native 集成，以及隔离安装、更新、回退、修复和卸载测试通过。
 - [GitHub CI](https://github.com/lukidesign/Vigour-UI-Review/actions/runs/38237762236) 完成源码验证、生产依赖审计、Windows 离线分析与凭据/Native 烟测，以及图形安装器打包。
 
-详细证据见 [v0.0.2 交付记录](https://github.com/lukidesign/Vigour-UI-Review/blob/codex/windows-11-x64-beta/docs/DELIVERY-STATUS.md)和[变更记录](https://github.com/lukidesign/Vigour-UI-Review/blob/codex/windows-11-x64-beta/CHANGELOG.md#unreleased)。安装器仍未签名；macOS 公证、干净机器安装、真实 Chrome 采集和休眠/空闲行为仍待验收。商店草稿 ID `dmkfgmpbomjjhalgnfhcpalobdnklchh` 不代表上架或审核通过。
+详细证据见[交付记录](docs/DELIVERY-STATUS.md)和[变更记录](CHANGELOG.md)。安装器仍未签名；公证、干净机器/最低 macOS 版本安装和休眠/空闲行为仍待验收。商店草稿 ID `dmkfgmpbomjjhalgnfhcpalobdnklchh` 不代表上架或审核通过，未打包扩展必须使用 Chrome 实际显示的 ID 配对。
 
 ![Vigour UI Review 工作台](docs/assets/workbench-overview.jpg)
 

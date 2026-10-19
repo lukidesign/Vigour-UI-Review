@@ -4,7 +4,7 @@
 
 Vigour UI Review is a local-first visual acceptance workbench for comparing a Web implementation with its design source. It detects and quantifies position, size, color, missing, extra, and optional OCR text differences, then turns them into reviewable issues and exportable evidence.
 
-> Updated October 19, 2026: **this source tree is the unreleased v0.0.2 development candidate**, tracked in [PR #10](https://github.com/lukidesign/Vigour-UI-Review/pull/10). The latest published GitHub Release remains **v0.0.1**. Source integration is not an installer release; see the dated verification evidence and outstanding acceptance gates below.
+> **v0.0.2-beta.1 — unsigned public prerelease for macOS Apple Silicon and Windows x64.** The application and extension display **0.0.2**. **Windows 11 real-machine acceptance is pending.** This is not a stable or signed release; v0.0.1 is preserved. Download only the assets listed on the [beta release page](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1); source integration alone does not publish an installer.
 
 ## v0.0.2 development update
 
@@ -22,12 +22,17 @@ These changes are **not included in the v0.0.1 download**. Use the matching exte
 
 | Version / platform | Status | Access |
 | --- | --- | --- |
-| v0.0.2 source | Unreleased development candidate | [Integration status: PR #10](https://github.com/lukidesign/Vigour-UI-Review/pull/10) |
-| v0.0.2 Windows 11 x64 | Unsigned test-only installer and matching extension | [Builds and any available artifacts](https://github.com/lukidesign/Vigour-UI-Review/actions/workflows/ci.yml) |
-| v0.0.2 macOS Apple Silicon | Offline companion and graphical installer rebuilt and tested locally | No public v0.0.2 macOS download yet |
+| v0.0.2-beta.1 Windows x64 | Unsigned test installer + matching extension; Windows 11 real-machine acceptance pending | [Beta downloads](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1) |
+| v0.0.2-beta.1 macOS Apple Silicon | Unsigned graphical installer + matching extension; local Chrome workflow verified | [Beta downloads](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1) |
 | v0.0.1 macOS Apple Silicon | Previous unsigned developer preview | [Published release](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.1) |
 
-Windows test artifacts are uploaded only by successful PR #10 builds, require a GitHub sign-in, and expire after three days. Main-branch CI does not publish installers; an expired artifact is not a permanent download. Read the [Windows tester guide](docs/WINDOWS-TESTER-GUIDE.md) before installation. Windows 11 end-user/Chrome acceptance remains pending.
+Use the Release assets for persistent downloads; Actions artifacts are temporary build evidence (seven-day retention). Read the [installation guide](docs/INSTALL.md), [Windows tester guide](docs/WINDOWS-TESTER-GUIDE.md), and [beta notes and limitations](docs/releases/v0.0.2-beta.1.md) before installation. Do not disable operating-system security protections to install an unsigned package.
+
+### Additional verification — October 19, 2026
+
+- The integrated application passed 135 JS/TS tests, 11 Python tests, builds and the synthetic baseline; production dependency audit reported no known vulnerabilities.
+- The rebuilt macOS application passed integrity, offline analysis, isolated Native and installer lifecycle checks. Real Chrome pairing, viewport/full-page capture, analysis, all three annotation modes and PNG/Markdown/JSON export passed on the maintainer's Mac.
+- Windows CI uses Windows Server 2022, not a Windows 11 user PC. Windows 11 installation, real Chrome capture, lifecycle and offline OCR acceptance remain pending.
 
 ### Verification — October 12, 2026
 
@@ -36,7 +41,7 @@ Windows test artifacts are uploaded only by successful PR #10 builds, require a 
 - macOS package integrity/private-path checks, offline analysis, Native integration, and isolated install/update/rollback/repair/uninstall tests passed.
 - [GitHub CI](https://github.com/lukidesign/Vigour-UI-Review/actions/runs/38237762236) passed source verification, production dependency audit, Windows offline analysis and Native/credential smoke tests, and GUI installer packaging.
 
-See the [v0.0.2 delivery record](https://github.com/lukidesign/Vigour-UI-Review/blob/codex/windows-11-x64-beta/docs/DELIVERY-STATUS.md) and [changelog](https://github.com/lukidesign/Vigour-UI-Review/blob/codex/windows-11-x64-beta/CHANGELOG.md#unreleased). Installers remain unsigned; macOS notarization, clean-machine installation, real Chrome capture, and sleep/idle acceptance are pending. Store draft ID `dmkfgmpbomjjhalgnfhcpalobdnklchh` does not indicate store approval or availability.
+See the [delivery record](docs/DELIVERY-STATUS.md) and [changelog](CHANGELOG.md). Installers remain unsigned; notarization, clean-machine/minimum-macOS installation and sleep/idle acceptance remain pending. Store draft ID `dmkfgmpbomjjhalgnfhcpalobdnklchh` does not indicate store approval or availability; unpacked extensions must be paired using their actual Chrome ID.
 
 ![Vigour UI Review workbench](docs/assets/workbench-overview.jpg)
 

@@ -1,4 +1,4 @@
-// Explicit allowlist for the short-lived, unsigned Windows 11 tester artifact.
+// Explicit allowlist for unsigned Windows tester artifacts and prerelease assets.
 // Never upload the whole release/ tree: it contains redundant runtimes and
 // could gain locally generated configuration files in future builds.
 import { createHash } from 'node:crypto';
@@ -35,7 +35,7 @@ for await (const chunk of createReadStream(setup)) hash.update(chunk);
 const sha256 = hash.digest('hex');
 await writeFile(resolve(output, 'CANDIDATE.json'), `${JSON.stringify({
   product: 'Vigour UI Review', publisher: 'LukiDesign', version, platform: 'Windows 11 x64',
-  unsigned: true, release: false, chromeExtensionVersion: extensionManifest.version,
+  unsigned: true, release: false, channel: 'prerelease', windows11Acceptance: 'pending', chromeExtensionVersion: extensionManifest.version,
   chromeExtensionId: 'Choose the actual ID shown in chrome://extensions after loading unpacked',
   setupFile: setupName, setupSha256: sha256,
   sourceCommit: process.env.VIGOUR_SOURCE_COMMIT ?? null, buildRun: process.env.GITHUB_RUN_ID ?? null,

@@ -1,10 +1,23 @@
 # Vigour UI Review：安装与启动
 
-> 版本边界：GitHub 已发布的 v0.0.1 仍是下方的终端启动流程。当前源码已加入 Native Messaging 开发实现，但尚未发布新版图形安装器；不要混用新扩展和旧配套程序。
+> 当前公开测试渠道为 [v0.0.2-beta.1](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1)，程序/扩展版本为 0.0.2。两个平台均未签名，Windows 11 真机验收待完成。旧版 v0.0.1 终端启动流程保留在下方；不要混用新扩展和旧配套程序。
 
-Windows 11 x64 版本目前处于源码开发与验证阶段，尚不能作为普通用户下载入口。构建与验收进度见 [Windows 内测状态](WINDOWS-BETA-STATUS.md)。
+## 安装 v0.0.2-beta.1
 
-## 直接使用开发者安装包
+### macOS Apple Silicon
+
+1. 在上述 Beta 发布页下载 macOS Setup ZIP、extension ZIP 和 `SHA256SUMS.txt`。最低目标 macOS 14；最低系统及干净机器验收尚未完成。
+2. 完整解压两个 ZIP，将扩展目录放在固定位置。Chrome 打开 `chrome://extensions`，关闭旧版扩展，开启开发者模式，加载新包的 `chrome-extension` 文件夹，复制其实际 32 位 ID。
+3. 打开解压后的 Setup 应用，安装或更新配套程序，填写上述实际扩展 ID。安装限定当前用户，并保留已有项目数据。不要填写商店草稿 ID。
+4. 从 Chrome 工具栏打开 Vigour UI Review，再打开工作台。自动配对无需复制令牌。
+
+程序没有 Developer ID 签名或公证。不要关闭 Gatekeeper 或移除系统安全保护；若系统或组织策略阻止运行，请停止并记录提示。已有本机验收不保证其他电脑的信任提示或安装结果。
+
+### Windows x64
+
+下载同一发布页的 Windows ZIP，按 [Windows 测试指南](WINDOWS-TESTER-GUIDE.md) 安装。ZIP 已包含安装器与匹配扩展；无需另装 Node、Python 或开发工具。**Windows 11 真机、真实 Chrome 全流程及离线 OCR 仍待验收**，详见 [Windows 状态](WINDOWS-BETA-STATUS.md)。
+
+## 旧版 v0.0.1：直接使用开发者安装包
 
 交付包支持 macOS 14+、Apple Silicon，不需要另装 Node.js、Python、PaddleOCR 或项目依赖。
 
@@ -83,7 +96,7 @@ node scripts/register-native.mjs --package /absolute/path/to/companion --extensi
 
 来源只授权一个明确扩展 ID，不允许 `chrome-extension://*`。注册脚本拒绝覆盖指向其他安装目录的清单；移动目录或更换扩展 ID 后需要重新配对。更新扩展后刷新目标页面，以清除旧常驻脚本。
 
-阶段 C 已加入图形安装、卸载、更新/修复与同数据结构回退的开发实现，见下文。商店 ID 已取得（`dmkfgmpbomjjhalgnfhcpalobdnklchh`），但匹配安装包、正式签名和真实 Chrome 端到端验收仍未完成；[阶段 B 记录](STAGE-B-REVIEW.md) 是当时状态，不表示图形安装当前仍未开发。最新门槛见[交付状态](DELIVERY-STATUS.md)。不要将此源码状态直接作为公开版分发。
+阶段 C 已加入图形安装、卸载、更新/修复与同数据结构回退的实现。商店 ID 已取得（`dmkfgmpbomjjhalgnfhcpalobdnklchh`），但扩展尚未上架；不要将它当作实际未打包扩展 ID。[阶段 B 记录](STAGE-B-REVIEW.md) 是历史状态。当前 Beta 下载和验收边界见本页顶部及[交付状态](DELIVERY-STATUS.md)，不能将任意开发构建当作稳定版分发。
 
 采集时请保持目标标签页不变。支持取消未提交的采集；开始提交后不能取消。如果提示“提交未确认”，先检查工作台“最近采集”，避免重复提交。采集故障后若页面未恢复，可刷新目标页。
 
@@ -104,9 +117,9 @@ pnpm package:smoke
 pnpm package:archive
 ```
 
-当前源码生成的开发者目录位于 `release/Vigour-UI-Review-v0.0.2-macos-arm64/`，ZIP 和 SHA-256 文件位于 `release-artifacts/`。已发布的 v0.0.1 下载资产仍保持不变，新包未验收、不得据此发布。Native 构建需要 Rust；`start.command` 仍作为手动开发入口保留。Rust 运行库许可随新包提供，Python 依赖按锁文件及哈希安装。发布前仍需正式版本整包复验。
+当前源码生成的开发者目录位于 `release/Vigour-UI-Review-v0.0.2-macos-arm64/`，ZIP 和 SHA-256 文件位于 `release-artifacts/`。v0.0.1 下载资产保持不变；公开 Beta 资产需单独完成整包校验并附上源码来源与未完成验收项。Native 构建需要 Rust；`start.command` 仍作为手动开发入口保留。Rust 运行库许可随新包提供，Python 依赖按锁文件及哈希安装。
 
-## 图形安装助手（阶段 C，未发布开发构建）
+## 图形安装助手：从源码构建
 
 首轮仅面向 Apple Silicon；尚无 Developer ID 签名、公证或干净机器安装结论。编译部署目标不等于已验证最低系统版本。不要通过关闭 Gatekeeper 或系统安全策略来安装。
 

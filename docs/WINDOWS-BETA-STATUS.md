@@ -1,6 +1,6 @@
 # Windows 11 x64 内测状态
 
-更新：2026-09-25。适用范围：[已确认 SPEC](spec/WINDOWS-BETA-SPEC.md)。本页描述源码开发与候选包制作进度，不是公开下载承诺。
+更新：2026-10-19。适用范围：[已确认 SPEC](spec/WINDOWS-BETA-SPEC.md)。用户新增授权：与 macOS 同步交付未签名公开预发布版，**保留 Windows 11 真机测试待完成**。下载入口为 [v0.0.2-beta.1](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1)，不标记为稳定版或已完成 Windows 11 验收。
 
 ## 已写入源码
 
@@ -27,7 +27,7 @@ pnpm package:windows:installer
 pnpm package:windows:candidate
 ```
 
-输出目录为 `release/Vigour-UI-Review-v0.0.2-windows-x64-dev/` 与 `release/windows-setup/`；两者均为未发布的开发产物。`pnpm package:windows:candidate` 在完整烟测及安装器编译后，从白名单生成 `release/windows-candidate/`，包含安装器、匹配版本的未打包扩展、SHA-256、构建信息与[同事测试说明](WINDOWS-TESTER-GUIDE.md)。发布者已选择公开仓库的 Actions 附件作为候选包交付渠道：CI 仅会在草稿 PR #10 的源码检查与生产依赖审计成功后启动 Windows 检查，并在该检查全部通过后上传，保留 3 天。它不是私享渠道、不是 GitHub Release，也不是 Chrome 商店发布。构建过程可能需要联网获取锁定依赖，安装包目标是核心分析安装后离线运行。
+输出目录为 `release/Vigour-UI-Review-v0.0.2-windows-x64-dev/` 与 `release/windows-setup/`。`pnpm package:windows:candidate` 在完整烟测及安装器编译后，从白名单生成 `release/windows-candidate/`，包含安装器、匹配扩展、SHA-256、源码提交/构建号与[测试说明](WINDOWS-TESTER-GUIDE.md)。同仓库 PR 和 main 的 CI 检查通过后可上传临时附件，保留七天；发布者校验后另将指定构建作为 Beta Release 附件长期交付。CI 不自动发布稳定版。构建需联网获取锁定依赖；安装包目标是核心分析安装后离线运行，不保证离线 OCR。
 
 ## 当前证据与待验证事项
 
@@ -39,4 +39,4 @@ pnpm package:windows:candidate
 - [ ] 用户目录 ACL、Credential Manager 读写、卸载后数据和凭据保留，在真实当前用户环境验证。
 - [ ] 签名与信任提示：当前没有 Windows 代码签名证书，也没有签名结论。
 
-以上待验证项未完成前，README 和商店内容继续标明 Windows 未受支持；不得把 CI 构建或源码提交当作已发布安装包。
+以上待验证项在公开 Beta 中仍保持未完成；README、发布页及包内说明必须披露，不得把 CI 构建通过等同于 Windows 11 验收。公开测试交付不等于稳定支持，也不代表 Chrome 商店批准。
