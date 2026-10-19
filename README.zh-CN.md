@@ -1,84 +1,39 @@
 # Vigour UI Review
 
-[English](README.md) · [产品 SPEC](docs/spec/PRODUCT_SPEC.md) · [技术架构](docs/architecture/TECHNICAL_ARCHITECTURE.md) · [安全说明](docs/SECURITY.md)
+[English](README.md) · [下载](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1) · [安装指南](docs/INSTALL.md) · [文档导航](docs/README.md) · [更新记录](CHANGELOG.md)
 
-Vigour UI Review 是一款本地优先的 Web 设计验收工作台。它将开发实现图与设计源进行对齐，检测位置、尺寸、颜色、缺失、多余及可选 OCR 文字差异，并转换为可复核的问题和可导出的证据。
+本地优先的 UI 视觉验收工作台：对照设计稿与 Web 实现，量化差异、走查问题并导出验收证据。
 
-> **v0.0.2-beta.1：macOS Apple Silicon 与 Windows x64 未签名公开预发布版。** 程序及扩展内显示版本 **0.0.2**。**Windows 11 真机验收仍待完成。** 本版不是稳定版，也未完成签名；旧版 v0.0.1 保持不变。安装包以 [Beta 发布页](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1) 的实际附件为准，源码合并不等于安装包发布。
+![Vigour UI Review 0.0.2：开发图标注与问题清单](docs/assets/workbench-overview.jpg)
 
-## v0.0.2 开发进展
+*当前 0.0.2 工作台截图，使用真实本地分析引擎和仓库公开合成示例，不含客户数据。[截图来源记录](docs/assets/workbench-overview.json)。*
 
-v0.0.2 源码包含以下更新：
+## 下载与开始使用
 
-- 项目栏默认收起，更新产品 Logo 与版本展示，缩放图标居中，并区分首次走查与重新走查。
-- 开发图标注、平铺对比、透明度叠加均支持问题标注，可统一显示/隐藏，点击标注可定位问题清单。
-- 导出和 AI 入口集中到问题清单头部；问题解释与组件业务逻辑推断共用弹窗，根据任务展示说明、结果及单次发送确认。
-- 引导式本地连接恢复、Native Messaging 按需启动与一次性工作台配对。
-- 重新构建 macOS Apple Silicon 离线配套程序、图形安装器，以及 Windows 11 x64 未签名内测候选包。
+> **v0.0.2-beta.1 是未签名的公开预发布版，不是稳定版。** 程序和扩展显示 **0.0.2**。**Windows 11 真机验收仍待完成。** macOS 签名/公证、干净机器/最低系统版本安装及休眠/空闲验收也仍待完成。
 
-**这些更新尚未包含在 v0.0.1 下载包中。** 请使用同一次构建中的配套扩展和本地程序。
-
-### 下载与构建状态
-
-| 版本 / 平台 | 当前状态 | 获取方式 |
+| 平台 | 下载 | 已验证边界 |
 | --- | --- | --- |
-| v0.0.2-beta.1 Windows x64 | 未签名测试安装器与匹配扩展；Windows 11 真机验收待完成 | [Beta 下载](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1) |
-| v0.0.2-beta.1 macOS Apple Silicon | 未签名图形安装器与匹配扩展；本机 Chrome 流程已验证 | [Beta 下载](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1) |
-| v0.0.1 macOS Apple Silicon | 旧版未签名开发者预览包 | [已发布版本](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.1) |
+| macOS 14+ · Apple Silicon | [图形安装器](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-Setup-v0.0.2-beta.1-macos-arm64-unsigned.zip) + [Chrome 扩展](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-extension-v0.0.2.zip) | 维护者 Mac 的核心 Chrome 流程已验证，不代表干净机器验收 |
+| Windows · x64 | [测试安装包](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-v0.0.2-beta.1-windows-x64-unsigned.zip) | Windows Server CI 已验证，Windows 11 用户真机测试待完成 |
 
-长期下载使用 Release 附件；Actions 构建附件仅保留七天，不是长期入口。安装前请阅读[安装说明](docs/INSTALL.md)、[Windows 测试指南](docs/WINDOWS-TESTER-GUIDE.md)及[本版说明与限制](docs/releases/v0.0.2-beta.1.md)。不要关闭操作系统安全保护来安装未签名程序。
+1. 从 [Beta 发布页](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1)下载同一版本的配套文件，验证校验和后解压。
+2. 在 Chrome 中加载未打包的扩展目录，记录实际扩展 ID，并停用旧扩展，避免混用。
+3. 按对应平台的安装与配对步骤打开工作台，导入设计图和开发实现图，开始走查。
 
-### 补充验证 · 2026-10-19
+请先阅读[安装指南](docs/INSTALL.md)、[Windows 测试指南](docs/WINDOWS-TESTER-GUIDE.md)和[版本限制](docs/releases/v0.0.2-beta.1.md)。不要关闭操作系统安全保护。扩展尚未在 Chrome 应用商店上架。[旧版 v0.0.1](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.1)继续保留，不要将其伴随程序与新版扩展混用。
 
-- 集成版通过 135 项 JS/TS、11 项 Python 测试、构建和合成基准，生产依赖审计无已知漏洞。
-- 重建的 macOS 程序通过整包、离线分析、隔离 Native 和安装器生命周期检查；维护者 Mac 的真实 Chrome 配对、视口/整页采集、分析、三模式标注与 PNG/Markdown/JSON 导出通过。
-- Windows CI 使用 Windows Server 2022，不是 Windows 11 用户电脑。Windows 11 安装、真实 Chrome 采集、生命周期和离线 OCR 验收继续保留为待完成。
+## 功能
 
-### 验证记录 · 2026-10-12
+- 本地 OpenCV 分析与可选 PaddleOCR；检测和评分不依赖 AI。
+- 开发图标注、平铺对比、透明度叠加三种模式，支持统一标注开关及标记与问题联动。
+- PNG/JPG 导入、Chrome 当前视口/整页采集，以及可选的 Figma Frame 导入。
+- PNG、Markdown、JSON 导出；AI 问题解释与业务逻辑推断共用弹窗，按任务展示内容，每次请求单独授权。
+- 项目与验收历史、九种内置主题及自定义主题、Native Messaging 按需启动与引导配对。
 
-- 127 项 JS/TS 测试、11 项 Python 测试、类型检查与生产构建通过。
-- 50 对合成图片的 500 处已标注差异全部匹配；该结果不代表真实业务页面的生产准确率。
-- macOS 整包完整性与私有路径检查、离线分析、Native 集成，以及隔离安装、更新、回退、修复和卸载测试通过。
-- [GitHub CI](https://github.com/lukidesign/Vigour-UI-Review/actions/runs/38237762236) 完成源码验证、生产依赖审计、Windows 离线分析与凭据/Native 烟测，以及图形安装器打包。
+## 本地开发
 
-详细证据见[交付记录](docs/DELIVERY-STATUS.md)和[变更记录](CHANGELOG.md)。安装器仍未签名；公证、干净机器/最低 macOS 版本安装和休眠/空闲行为仍待验收。商店草稿 ID `dmkfgmpbomjjhalgnfhcpalobdnklchh` 不代表上架或审核通过，未打包扩展必须使用 Chrome 实际显示的 ID 配对。
-
-![Vigour UI Review 工作台](docs/assets/workbench-overview.jpg)
-
-*上图为使用合成演示数据的早期工作台截图，尚未展示上述 v0.0.2 界面优化。*
-
-## 核心能力
-
-- OpenCV/PaddleOCR 本地分析，检测和评分不依赖 AI。
-- Chrome Manifest V3 当前视口和整页采集。
-- 开发图标注、平铺对比、透明度叠加三种模式。
-- 项目导航、对比画布、问题清单固定三栏工作台。
-- 像素级大白话问题描述、严重程度和同元素分组。
-- PNG、Markdown、JSON 导出。
-- 使用最小权限 PAT 导入指定 Figma Frame。
-- 可选 OpenAI、Gemini、Kimi、DeepSeek 解释，并使用一次性同意回执。
-- 九套内置主题，以及自定义主题导入、编辑、复制和导出。
-- 凭据存入 macOS 钥匙串，本地 API 只监听 `127.0.0.1`。
-
-## 安装旧版 v0.0.1 预览包
-
-1. 从 [GitHub Releases](../../releases/latest) 下载 `Vigour-UI-Review-v0.0.1-macos-arm64.zip` 和对应 `.sha256`。
-2. 校验文件：
-
-   ```bash
-   shasum -a 256 -c Vigour-UI-Review-v0.0.1-macos-arm64.zip.sha256
-   ```
-
-3. 解压后，首次启动请按住 Control 点击 `start.command`，选择“打开”。`v0.0.1` 尚未签名。
-4. 等待浏览器自动打开 `http://127.0.0.1:4179/`。OCR 首次冷启动可能需要约 30 秒。
-
-安装 Chrome 采集扩展：打开 `chrome://extensions`，启用“开发者模式”，选择“加载已解压的扩展程序”，然后选择安装包中的 `chrome-extension/`。令牌配对和故障排查见[安装说明](docs/INSTALL.md)。
-
-## 从源码运行
-
-请使用本 v0.0.2 源码树执行以下命令。Windows 构建请使用 [Windows 构建说明](docs/WINDOWS-BETA-STATUS.md)。
-
-环境要求：macOS 14+ Apple Silicon、Node.js 24+、pnpm 11+、[uv](https://docs.astral.sh/uv/)。
+macOS 环境需要 Apple Silicon、macOS 14+、Node.js 24+、pnpm 11+ 和 [uv](https://docs.astral.sh/uv/)。Windows 请使用 [Windows 构建指南](docs/WINDOWS-BETA-STATUS.md)。
 
 ```bash
 pnpm install --frozen-lockfile
@@ -87,46 +42,26 @@ pnpm release:check
 pnpm start:local
 ```
 
-生成 macOS 离线包（v0.0.2 Native Host 还需要 Rust 编译器）：
-
-```bash
-pnpm package:dev
-pnpm package:check
-pnpm package:smoke
-pnpm package:archive
-```
-
-依赖目录、虚拟环境、基准输出、构建产物和安装包均不会进入 Git。
-
-## 合成演示数据
-
-[`examples/demo`](examples/demo) 中的图片由程序生成，不包含任何真实用户或第三方产品数据。将 `design.png` 作为设计图、`implementation.png` 作为开发实现图上传，即可试跑本地流程。
-
-## 隐私模型
-
-核心对比完全离线，应用不包含遥测。Figma 与 AI 均为可选集成，使用用户自行提供的凭据。每次 AI 调用前，界面会明确展示供应商、模型、任务、问题范围和是否包含图片；同意回执十分钟后失效且只能使用一次。
-
-运行数据位于：
+可使用[公开示例图片](examples/demo)体验走查。测试、打包与目录职责见[贡献指南](.github/CONTRIBUTING.md)、[脚本索引](scripts/README.md)和[仓库结构说明](docs/architecture/REPOSITORY.md)。
 
 ```text
-~/Library/Application Support/Vigour UI Review/
+apps/       工作台、扩展、本地服务、视觉引擎与原生安装器
+packages/   共享协议与评分逻辑
+scripts/    开发、校验与打包入口
+docs/       使用指南、架构、规格、发布说明与历史记录
+examples/   公开合成示例
+licenses/   第三方许可证原文
+.github/    工作流、安全与社区协作文件
 ```
 
-首次启动会将旧版 `Design Acceptance 2.0` 数据原子复制到新目录，同时保留旧目录用于恢复。详情见[隐私说明](docs/PRIVACY.md)和[安全说明](docs/SECURITY.md)。
+## 隐私与验收状态
 
-## 已知限制
+核心对比在本地完成，无遥测。Figma/AI 为可选集成，需要用户提供凭据；AI 请求必须明确授权。凭据使用 macOS 钥匙串或 Windows 凭据管理器，本地 API 只监听回环地址。详见[隐私说明](docs/PRIVACY.md)和[安全策略](docs/SECURITY.md)。
 
-- 已发布的 v0.0.1 仅支持 macOS Apple Silicon；v0.0.2 增加 Windows 11 x64 内测候选包，普通用户真机安装尚待验收。目前没有 macOS Intel 构建。
-- 开发者安装包尚未签名和 notarization。
-- Chrome 扩展尚未上架 Chrome Web Store。
-- 界面以中文为主，英文商店文案不代表英文界面已完成。桌面宽度 1920、1440 已有检查记录，900、720 仍有溢出。
-- 当前是合成回归基准，仍需补充人工标注的真实页面盲测。
-- Canvas、WebGL、视频内部、跨域 iframe 和交互回放不属于 `v0.0.1` 范围。
+合成基准不代表真实网站准确率。Windows 11 真机验收仍待完成；不支持 macOS Intel。界面以中文为主，窄屏布局仍有限制。详细验证证据与剩余门槛见[交付记录](docs/DELIVERY-STATUS.md)和[基准说明](docs/BENCHMARK.md)。
 
-## 参与贡献
+## 参与贡献与许可
 
-欢迎提交 Issue 和 Pull Request。请先阅读[贡献指南](CONTRIBUTING.md)和[行为准则](CODE_OF_CONDUCT.md)。安全漏洞请按照[安全说明](docs/SECURITY.md)私密报告。
+欢迎提交问题与 PR。请阅读[贡献指南](.github/CONTRIBUTING.md)及[行为准则](.github/CODE_OF_CONDUCT.md)；安全漏洞请按[安全策略](docs/SECURITY.md)私下报告。
 
-## 许可证
-
-Copyright © 2026 LukiDesign。基于 [MIT License](LICENSE) 开源。
+Copyright © 2026 LukiDesign。[MIT 许可证](LICENSE) · [第三方声明](THIRD_PARTY_NOTICES.md)。

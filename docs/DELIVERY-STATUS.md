@@ -46,7 +46,7 @@
 - 图形安装、更新、修复、同结构回退及保留用户数据卸载。
 - 工作台平铺/缩放修复、图标、商店素材、隐私说明和 LukiDesign 署名。
 
-完整历史证据见[阶段 A](STAGE-A-REVIEW.md)、[阶段 B](STAGE-B-REVIEW.md)、[阶段 C](STAGE-C-REVIEW.md)。不要改写历史报告来冒充新验证结果。
+完整历史证据见[阶段 A](archive/STAGE-A-REVIEW.md)、[阶段 B](archive/STAGE-B-REVIEW.md)、[阶段 C](archive/STAGE-C-REVIEW.md)。不要改写历史报告来冒充新验证结果。
 
 ## 验证记录与缺口
 

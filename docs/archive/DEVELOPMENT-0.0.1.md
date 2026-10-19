@@ -37,8 +37,8 @@
 
 需求最终沉淀为产品 SPEC 和技术架构文档：
 
-- [产品 SPEC](spec/PRODUCT_SPEC.md)
-- [技术架构](architecture/TECHNICAL_ARCHITECTURE.md)
+- [产品 SPEC](../spec/PRODUCT_SPEC.md)
+- [技术架构](../architecture/TECHNICAL_ARCHITECTURE.md)
 
 ## 3. 第一性原理拆解
 
@@ -335,8 +335,8 @@ pnpm release:check
 | 安装说明 | `docs/INSTALL.md` |
 | 安全说明 | `docs/SECURITY.md` |
 | 基准说明 | `docs/BENCHMARK.md` |
-| 产品 SPEC | [PRODUCT_SPEC.md](spec/PRODUCT_SPEC.md) |
-| 技术架构 | [TECHNICAL_ARCHITECTURE.md](architecture/TECHNICAL_ARCHITECTURE.md) |
+| 产品 SPEC | [PRODUCT_SPEC.md](../spec/PRODUCT_SPEC.md) |
+| 技术架构 | [TECHNICAL_ARCHITECTURE.md](../architecture/TECHNICAL_ARCHITECTURE.md) |
 
 最终安装目录约 1.03 GB，ZIP 约 322 MB，面向 macOS Apple Silicon。双击 `start.command` 后，本地服务会启动并自动打开工作台。仓库同时包含只读 CI、版本标签触发的自动 Release、Dependabot、Issue 模板、贡献指南、行为准则、隐私与第三方许可说明。
 

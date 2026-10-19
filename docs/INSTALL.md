@@ -96,7 +96,7 @@ node scripts/register-native.mjs --package /absolute/path/to/companion --extensi
 
 来源只授权一个明确扩展 ID，不允许 `chrome-extension://*`。注册脚本拒绝覆盖指向其他安装目录的清单；移动目录或更换扩展 ID 后需要重新配对。更新扩展后刷新目标页面，以清除旧常驻脚本。
 
-阶段 C 已加入图形安装、卸载、更新/修复与同数据结构回退的实现。商店 ID 已取得（`dmkfgmpbomjjhalgnfhcpalobdnklchh`），但扩展尚未上架；不要将它当作实际未打包扩展 ID。[阶段 B 记录](STAGE-B-REVIEW.md) 是历史状态。当前 Beta 下载和验收边界见本页顶部及[交付状态](DELIVERY-STATUS.md)，不能将任意开发构建当作稳定版分发。
+阶段 C 已加入图形安装、卸载、更新/修复与同数据结构回退的实现。商店 ID 已取得（`dmkfgmpbomjjhalgnfhcpalobdnklchh`），但扩展尚未上架；不要将它当作实际未打包扩展 ID。[阶段 B 记录](archive/STAGE-B-REVIEW.md) 是历史状态。当前 Beta 下载和验收边界见本页顶部及[交付状态](DELIVERY-STATUS.md)，不能将任意开发构建当作稳定版分发。
 
 采集时请保持目标标签页不变。支持取消未提交的采集；开始提交后不能取消。如果提示“提交未确认”，先检查工作台“最近采集”，避免重复提交。采集故障后若页面未恢复，可刷新目标页。
 
@@ -147,7 +147,7 @@ pnpm test:installer
 
 异常断电/崩溃后的 `install.lock` 暂不自动抢占。若持续提示忙，不要盲删锁或程序目录；先核实旧安装进程已退出并保留现场，由开发者协助恢复。这也是公开发布前的恢复体验待办。
 
-开发验证与剩余门槛见 [阶段 C 记录](STAGE-C-REVIEW.md)，商店草稿见 [材料包](store/README.md)。
+开发验证与剩余门槛见 [阶段 C 记录](archive/STAGE-C-REVIEW.md)，商店草稿见 [材料包](store/README.md)。
 
 ## 常见问题
 

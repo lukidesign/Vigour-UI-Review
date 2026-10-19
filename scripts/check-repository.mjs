@@ -73,7 +73,7 @@ for (const file of files) {
   }
 }
 
-const requiredFiles = ['LICENSE', 'README.md', 'README.zh-CN.md', 'CHANGELOG.md', 'CONTRIBUTING.md', 'CODE_OF_CONDUCT.md', 'THIRD_PARTY_NOTICES.md', 'docs/PRIVACY.md', 'docs/SECURITY.md', 'docs/assets/workbench-overview.jpg', 'examples/demo/design.png', 'examples/demo/implementation.png', '.github/dependabot.yml', '.github/workflows/ci.yml', '.github/workflows/release.yml'];
+const requiredFiles = ['LICENSE', 'README.md', 'README.zh-CN.md', 'CHANGELOG.md', '.github/CONTRIBUTING.md', '.github/CODE_OF_CONDUCT.md', 'THIRD_PARTY_NOTICES.md', 'docs/README.md', 'docs/archive/README.md', 'docs/architecture/REPOSITORY.md', 'scripts/README.md', 'docs/PRIVACY.md', 'docs/SECURITY.md', 'docs/assets/workbench-overview.jpg', 'examples/demo/design.png', 'examples/demo/implementation.png', '.github/dependabot.yml', '.github/workflows/ci.yml', '.github/workflows/release.yml'];
 for (const file of requiredFiles) if (!files.includes(file)) fail(`Required public file is missing: ${file}`);
 const license = await readFile(resolve(root, 'LICENSE'), 'utf8');
 if (!license.includes('Copyright (c) 2026 LukiDesign')) fail('MIT copyright attribution is incorrect');

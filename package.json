@@ -31,6 +31,7 @@
     "package:extension": "node scripts/package-extension.mjs",
     "benchmark": "uv run --project apps/vision-engine python apps/vision-engine/benchmark/run_benchmark.py",
     "repository:check": "node scripts/check-repository.mjs",
+    "docs:screenshots": "tsx scripts/capture-readme.ts",
     "release:verify-tag": "node scripts/verify-release-tag.mjs",
     "release:check": "node scripts/release-check.mjs",
     "test": "vitest run",

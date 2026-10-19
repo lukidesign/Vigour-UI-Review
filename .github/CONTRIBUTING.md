@@ -16,7 +16,9 @@ uv sync --project apps/vision-engine --python 3.12 --extra dev --extra ocr --fro
 pnpm release:check
 ```
 
-The supported runtime target for `v0.0.1` is macOS 14+ on Apple Silicon. TypeScript-only changes may be developed elsewhere, but release acceptance must pass on the supported target.
+Current public testing targets are macOS 14+ Apple Silicon and Windows x64 in v0.0.2-beta.1. Windows 11 real-machine acceptance remains pending. See the [installation guide](../docs/INSTALL.md) and [delivery status](../docs/DELIVERY-STATUS.md); passing CI does not imply platform acceptance.
+
+See the [repository layout](../docs/architecture/REPOSITORY.md), [documentation index](../docs/README.md), and [script index](../scripts/README.md) before adding new files. Keep package/runtime configuration at its discovery location; preserve published entry points unless a migration is explicitly planned.
 
 ## Pull requests
 
