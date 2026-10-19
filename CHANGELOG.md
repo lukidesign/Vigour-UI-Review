@@ -6,13 +6,13 @@ All notable changes to Vigour UI Review are documented here. The project follows
 
 Source-only development update; no new downloadable release or store approval is implied. Existing v0.0.1 artifacts are unchanged. See [delivery status](docs/DELIVERY-STATUS.md) for acceptance gates.
 
-The unreleased source version is 0.0.2 for a Windows 11 x64 tester candidate. Its installer and matching unpacked extension are not publicly distributed.
+The unreleased source version is 0.0.2. Successful PR #10 builds may upload an unsigned Windows tester installer and matching unpacked extension as public-repository Actions artifacts with three-day retention. These are not permanent Release downloads or Windows 11 acceptance evidence.
 
 ### Added
 
 - Native Messaging host with constrained commands, exact extension-origin pairing, process reuse, one-time workbench tickets, and idle lifecycle management.
 - Apple Silicon graphical companion installer with payload verification, install/update/repair, same-schema rollback, and data-preserving uninstall.
-- Windows 11 x64 current-user companion installer source and matched 0.0.2 tester-candidate staging; no public installer distribution or Windows 11 user acceptance yet.
+- Windows 11 x64 current-user companion installer source and matched 0.0.2 tester-candidate staging; no permanent installer Release or Windows 11 user acceptance yet.
 - Extension icons, bilingual store copy, actual synthetic-demo screenshots, privacy disclosures, and private-beta checklists.
 - Regression coverage for capture cancellation, Native framing/session lifecycle, installer ownership, and workbench authentication.
 
@@ -34,6 +34,9 @@ The unreleased source version is 0.0.2 for a Windows 11 x64 tester candidate. It
 
 ### Fixed
 
+- Consume AI UI confirmation on every attempt; invalidate it when the provider, model, task, run, issue selection, image option, or dialog state changes. Snapshot the submitted context and suppress stale asynchronous results.
+- Disclose that optional AI image input contains the complete annotated evidence image, not only the selected component, and describe both supported system credential stores.
+- Patch production dependencies to Fastify 5.12.5, fast-uri 3.1.8/4.1.5, and brace-expansion 5.0.12; production audit reported no known vulnerabilities on October 19, 2026.
 - Bind capture to the initiating document and viewport; cancel safely on navigation, tab changes, timeout, or user cancellation, with page restoration safeguards.
 - Keep side-by-side image edges reachable and preserve horizontal access when zooming the canvas.
 - Replace the opaque `ANALYSIS_FAILED` response for incompatible images with a structured size and aspect-ratio explanation.

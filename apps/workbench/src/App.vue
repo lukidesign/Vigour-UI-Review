@@ -10,6 +10,7 @@ import {
 import workbenchPackage from '../package.json';
 import { ApiError, assetBlobUrl, clearSessionToken, download, sessionToken, setSessionToken, initializeSessionFromLocation, startWorkbenchLease } from './api';
 import { useWorkbenchStore } from './stores/workbench';
+import { useOneTimeConsent } from './ai-consent';
 import { applyTheme, loadCustomTheme, loadThemeId, saveCustomThemeValue, themes, type ThemePreset } from './themes';
 import type { Issue, Severity } from './types';
 
@@ -37,7 +38,6 @@ const aiTask = ref<'explain' | 'business-logic'>('explain');
 const aiApiKey = ref('');
 const aiConfigured = ref<Record<'openai' | 'gemini' | 'kimi' | 'deepseek', boolean>>({ openai: false, gemini: false, kimi: false, deepseek: false });
 const aiIncludeImage = ref(false);
-const aiConsent = ref(false);
 const aiBusy = ref(false);
 const aiSettingsOpen = ref<string[]>([]);
 const aiResult = ref<{ summary: string; businessLogic?: string; fixes: Array<{ issueId: string; explanation: string; cssPatch?: string }>; warnings: string[] }>();
@@ -84,6 +84,13 @@ const selectedIssueGroup = computed(() => selectedIssueGroupAll.value.slice(0, 2
 const aiIssueIds = computed(() => aiTask.value === 'business-logic'
   ? selectedIssueGroup.value.map((issue) => issue.id)
   : selectedIssue.value ? [selectedIssue.value.id] : []);
+const aiRequestScope = computed(() => JSON.stringify({
+  provider: aiProvider.value, model: aiModel.value, task: aiTask.value,
+  runId: store.activeRun?.id, issueIds: aiIssueIds.value,
+  includeImage: aiIncludeImage.value, open: aiModal.value,
+}));
+const { confirmed: aiConsent, consume: consumeAIConsent, isCurrent: isAIConsentCurrent } = useOneTimeConsent(aiRequestScope);
+watch(aiRequestScope, () => { aiResult.value = undefined; }, { flush: 'sync' });
 const aiTaskCopy = computed(() => aiTask.value === 'explain' ? {
   title: 'AI 解释当前问题',
   eyebrow: '问题解释',
@@ -206,17 +213,23 @@ watch(aiProvider, (provider) => {
   if (!aiConfigured.value[provider]) aiSettingsOpen.value = ['settings'];
 });
 async function runAI() {
-  if (!selectedIssue.value || !aiConsent.value) return;
+  if (aiBusy.value || !selectedIssue.value || !store.activeRun || !aiModel.value.trim() || !aiKeyReady.value || !aiIssueIds.value.length) return;
+  const scope = consumeAIConsent();
+  if (scope === undefined) return;
+  const input = { provider: aiProvider.value, model: aiModel.value, task: aiTask.value, issueIds: [...aiIssueIds.value], includeImage: aiIncludeImage.value };
+  const apiKey = aiApiKey.value.trim();
   aiBusy.value = true;
   try {
-    if (!aiConfigured.value[aiProvider.value]) {
-      if (!aiApiKey.value.trim()) throw new Error('请先填写 API Key');
-      await store.saveAIKey(aiProvider.value, aiApiKey.value.trim()); aiConfigured.value[aiProvider.value] = true; aiApiKey.value = '';
+    if (!aiConfigured.value[input.provider]) {
+      if (!apiKey) throw new Error('请先填写 API Key');
+      await store.saveAIKey(input.provider, apiKey); aiConfigured.value[input.provider] = true;
+      if (aiApiKey.value.trim() === apiKey) aiApiKey.value = '';
     }
-    const response = await store.analyzeWithAI({ provider: aiProvider.value, model: aiModel.value, task: aiTask.value, issueIds: aiIssueIds.value, includeImage: aiIncludeImage.value });
-    aiResult.value = response.result;
+    if (!isAIConsentCurrent(scope)) throw new Error('发送内容已改变，请重新确认后提交');
+    const response = await store.analyzeWithAI(input);
+    if (isAIConsentCurrent(scope)) aiResult.value = response.result;
   } catch (error) { message.error(error instanceof Error ? error.message : 'AI 分析失败'); }
-  finally { aiBusy.value = false; }
+  finally { aiBusy.value = false; aiConsent.value = false; }
 }
 async function copyAIResult() {
   if (!aiResult.value) return;
@@ -444,13 +457,13 @@ onBeforeUnmount(() => { stopLease?.(); revoke(designUrl.value); revoke(implement
             <a-form layout="vertical"><a-form-item label="服务商"><a-select v-model:value="aiProvider"><a-select-option value="openai">OpenAI</a-select-option><a-select-option value="gemini">Gemini</a-select-option><a-select-option value="kimi">Kimi</a-select-option><a-select-option value="deepseek">DeepSeek</a-select-option></a-select></a-form-item></a-form>
             <a-form layout="vertical"><a-form-item label="模型"><a-input v-model:value="aiModel" /></a-form-item></a-form>
           </div>
-          <div v-if="!aiConfigured[aiProvider]" class="ai-key-field"><a-input-password v-model:value="aiApiKey" placeholder="输入 API Key" /><small>提交分析时将直接保存到 macOS 钥匙串，不写入项目或浏览器存储。</small></div>
+          <div v-if="!aiConfigured[aiProvider]" class="ai-key-field"><a-input-password v-model:value="aiApiKey" placeholder="输入 API Key" /><small>提交分析时保存到系统凭据库（macOS 钥匙串 / Windows 凭据管理器），不写入项目或浏览器存储。</small></div>
         </a-collapse-panel>
       </a-collapse>
 
       <div class="ai-privacy-options">
-        <a-checkbox v-model:checked="aiIncludeImage" :disabled="aiProvider === 'kimi' || aiProvider === 'deepseek'" class="ai-check"><strong>附带局部标注证据图</strong><small>{{ aiProvider === 'kimi' || aiProvider === 'deepseek' ? '当前服务商不支持图片输入' : '可提高视觉判断准确度，默认不发送' }}</small></a-checkbox>
-        <a-checkbox v-model:checked="aiConsent" class="ai-check"><strong>确认本次发送</strong><small>向 {{ aiProviderName }} / {{ aiModel }} 发送{{ aiTask === 'explain' ? '当前问题' : `当前组件的 ${aiIssueIds.length} 条关联差异${selectedIssueGroupAll.length > 20 ? '（受接口上限限制，仅发送前 20 条）' : ''}` }}{{ aiIncludeImage ? '和局部证据图' : '' }}；确认仅本次有效。</small></a-checkbox>
+        <a-checkbox v-model:checked="aiIncludeImage" :disabled="aiProvider === 'kimi' || aiProvider === 'deepseek'" class="ai-check"><strong>附带完整标注证据图</strong><small>{{ aiProvider === 'kimi' || aiProvider === 'deepseek' ? '当前服务商不支持图片输入' : '发送本次分析的完整标注图，可能包含其他页面内容；默认不发送' }}</small></a-checkbox>
+        <a-checkbox v-model:checked="aiConsent" class="ai-check"><strong>确认本次发送</strong><small>向 {{ aiProviderName }} / {{ aiModel }} 发送{{ aiTask === 'explain' ? '当前问题' : `当前组件的 ${aiIssueIds.length} 条关联差异${selectedIssueGroupAll.length > 20 ? '（受接口上限限制，仅发送前 20 条）' : ''}` }}{{ aiIncludeImage ? '和完整标注证据图（不限于当前组件）' : '' }}；确认仅本次有效。</small></a-checkbox>
       </div>
       <a-button class="ai-submit" type="primary" block :loading="aiBusy" :disabled="!aiConsent || !aiModel || !aiKeyReady || !aiIssueIds.length" @click="runAI">{{ aiTaskCopy.action }}</a-button>
 

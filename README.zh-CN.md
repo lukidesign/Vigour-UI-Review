@@ -4,17 +4,43 @@
 
 Vigour UI Review 是一款本地优先的 Web 设计验收工作台。它将开发实现图与设计源进行对齐，检测位置、尺寸、颜色、缺失、多余及可选 OCR 文字差异，并转换为可复核的问题和可导出的证据。
 
-> 当前状态：`v0.0.1` 是面向 macOS 14+ Apple Silicon 的未签名开发者预览版。当前准确率基准来自确定性合成图片，不能等同于真实业务页面的生产准确率。
+> 更新于 2026-10-19：**本源码树为尚未发布的 v0.0.2 开发候选版本**，集成记录见 [PR #10](https://github.com/lukidesign/Vigour-UI-Review/pull/10)。GitHub 已发布的最新 Release 仍为 **v0.0.1**。源码合并不等于安装包发布；验证日期和待完成的验收门槛见下文。
 
-## 未发布的源码更新
+## v0.0.2 开发进展
 
-当前源码已加入采集安全加固、Native Messaging 按需启动、一次性工作台配对，以及 Apple Silicon 和 Windows 11 x64 图形安装器源码。**这些改动不在已有 v0.0.1 下载包中**，不要混用新版扩展与旧配套程序。
+v0.0.2 源码包含以下更新：
 
-已取得商店草稿 ID：`dmkfgmpbomjjhalgnfhcpalobdnklchh`，不代表审核通过或可安装。源码已统一递增至未发布的 0.0.2，用于 Windows 11 x64 候选包；已发布的 v0.0.1 下载不变。真实 Chrome 工具栏采集、新机器安装、签名/公证、休眠及空闲退出仍需验收。
+- 项目栏默认收起，更新产品 Logo 与版本展示，缩放图标居中，并区分首次走查与重新走查。
+- 开发图标注、平铺对比、透明度叠加均支持问题标注，可统一显示/隐藏，点击标注可定位问题清单。
+- 导出和 AI 入口集中到问题清单头部；问题解释与组件业务逻辑推断共用弹窗，根据任务展示说明、结果及单次发送确认。
+- 引导式本地连接恢复、Native Messaging 按需启动与一次性工作台配对。
+- 重新构建 macOS Apple Silicon 离线配套程序、图形安装器，以及 Windows 11 x64 未签名内测候选包。
 
-最新进度和发布门槛见[交付状态](docs/DELIVERY-STATUS.md)，功能变更见[变更记录](CHANGELOG.md#unreleased)。阶段 A/B/C 文档保留当时证据，不作为当前发布状态。
+**这些更新尚未包含在 v0.0.1 下载包中。** 请使用同一次构建中的配套扩展和本地程序。
+
+### 下载与构建状态
+
+| 版本 / 平台 | 当前状态 | 获取方式 |
+| --- | --- | --- |
+| v0.0.2 源码 | 未发布的开发候选版本 | [集成状态：PR #10](https://github.com/lukidesign/Vigour-UI-Review/pull/10) |
+| v0.0.2 Windows 11 x64 | 未签名内测安装器及匹配扩展 | [构建记录及可用附件](https://github.com/lukidesign/Vigour-UI-Review/actions/workflows/ci.yml) |
+| v0.0.2 macOS Apple Silicon | 离线程序与图形安装器已在本地重新构建并验证 | 暂无公开的 v0.0.2 macOS 下载链接 |
+| v0.0.1 macOS Apple Silicon | 旧版未签名开发者预览包 | [已发布版本](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.1) |
+
+Windows 内测附件仅由 PR #10 的成功构建上传，需要登录 GitHub，保留期为三天。main 分支 CI 不发布安装包，过期附件不是永久下载入口。安装前请阅读 [Windows 内测指南](docs/WINDOWS-TESTER-GUIDE.md)。Windows 11 普通用户真机与 Chrome 完整流程仍待验收。
+
+### 验证记录 · 2026-10-12
+
+- 127 项 JS/TS 测试、11 项 Python 测试、类型检查与生产构建通过。
+- 50 对合成图片的 500 处已标注差异全部匹配；该结果不代表真实业务页面的生产准确率。
+- macOS 整包完整性与私有路径检查、离线分析、Native 集成，以及隔离安装、更新、回退、修复和卸载测试通过。
+- [GitHub CI](https://github.com/lukidesign/Vigour-UI-Review/actions/runs/38237762236) 完成源码验证、生产依赖审计、Windows 离线分析与凭据/Native 烟测，以及图形安装器打包。
+
+详细证据见 [v0.0.2 交付记录](https://github.com/lukidesign/Vigour-UI-Review/blob/codex/windows-11-x64-beta/docs/DELIVERY-STATUS.md)和[变更记录](https://github.com/lukidesign/Vigour-UI-Review/blob/codex/windows-11-x64-beta/CHANGELOG.md#unreleased)。安装器仍未签名；macOS 公证、干净机器安装、真实 Chrome 采集和休眠/空闲行为仍待验收。商店草稿 ID `dmkfgmpbomjjhalgnfhcpalobdnklchh` 不代表上架或审核通过。
 
 ![Vigour UI Review 工作台](docs/assets/workbench-overview.jpg)
+
+*上图为使用合成演示数据的早期工作台截图，尚未展示上述 v0.0.2 界面优化。*
 
 ## 核心能力
 
@@ -29,7 +55,7 @@ Vigour UI Review 是一款本地优先的 Web 设计验收工作台。它将开�
 - 九套内置主题，以及自定义主题导入、编辑、复制和导出。
 - 凭据存入 macOS 钥匙串，本地 API 只监听 `127.0.0.1`。
 
-## 安装预览版
+## 安装旧版 v0.0.1 预览包
 
 1. 从 [GitHub Releases](../../releases/latest) 下载 `Vigour-UI-Review-v0.0.1-macos-arm64.zip` 和对应 `.sha256`。
 2. 校验文件：
@@ -45,6 +71,8 @@ Vigour UI Review 是一款本地优先的 Web 设计验收工作台。它将开�
 
 ## 从源码运行
 
+请使用本 v0.0.2 源码树执行以下命令。Windows 构建请使用 [Windows 构建说明](docs/WINDOWS-BETA-STATUS.md)。
+
 环境要求：macOS 14+ Apple Silicon、Node.js 24+、pnpm 11+、[uv](https://docs.astral.sh/uv/)。
 
 ```bash
@@ -54,7 +82,7 @@ pnpm release:check
 pnpm start:local
 ```
 
-生成完整离线安装包：
+生成 macOS 离线包（v0.0.2 Native Host 还需要 Rust 编译器）：
 
 ```bash
 pnpm package:dev
@@ -83,7 +111,7 @@ pnpm package:archive
 
 ## 已知限制
 
-- 仅支持 Apple Silicon；[当前 PaddlePaddle macOS 包支持 arm64、不支持 x86_64](https://www.paddlepaddle.org.cn/documentation/docs/en/install/pip/macos-pip_en.html)。
+- 已发布的 v0.0.1 仅支持 macOS Apple Silicon；v0.0.2 增加 Windows 11 x64 内测候选包，普通用户真机安装尚待验收。目前没有 macOS Intel 构建。
 - 开发者安装包尚未签名和 notarization。
 - Chrome 扩展尚未上架 Chrome Web Store。
 - 界面以中文为主，英文商店文案不代表英文界面已完成。桌面宽度 1920、1440 已有检查记录，900、720 仍有溢出。
