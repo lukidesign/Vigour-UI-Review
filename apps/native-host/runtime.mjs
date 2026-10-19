@@ -93,7 +93,7 @@ export async function ensureService(root, config) {
           VIGOUR_UI_REVIEW_DATA_DIR: dataRoot, VIGOUR_UI_REVIEW_NATIVE_MODE: '1',
           VIGOUR_UI_REVIEW_INSTALLATION_ROOT: root,
           VIGOUR_UI_REVIEW_ALLOWED_ORIGINS: `http://127.0.0.1:4173,http://127.0.0.1:4179,chrome-extension://${extensionId}`,
-          VIGOUR_UI_REVIEW_VISION_COMMAND: resolve(root, 'vision-engine/run'),
+          VIGOUR_UI_REVIEW_VISION_COMMAND: resolve(root, process.platform === 'win32' ? 'vision-engine/run.exe' : 'vision-engine/run'),
           VIGOUR_UI_REVIEW_WORKBENCH_ROOT: resolve(root, 'workbench') },
       });
       await new Promise((done, reject) => { child.once('spawn', done); child.once('error', reject); });

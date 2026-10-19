@@ -2,6 +2,8 @@
 
 > 版本边界：GitHub 已发布的 v0.0.1 仍是下方的终端启动流程。当前源码已加入 Native Messaging 开发实现，但尚未发布新版图形安装器；不要混用新扩展和旧配套程序。
 
+Windows 11 x64 版本目前处于源码开发与验证阶段，尚不能作为普通用户下载入口。构建与验收进度见 [Windows 内测状态](WINDOWS-BETA-STATUS.md)。
+
 ## 直接使用开发者安装包
 
 交付包支持 macOS 14+、Apple Silicon，不需要另装 Node.js、Python、PaddleOCR 或项目依赖。
@@ -102,7 +104,7 @@ pnpm package:smoke
 pnpm package:archive
 ```
 
-开发者目录位于 `release/Vigour-UI-Review-v0.0.1-macos-arm64/`，ZIP 和 SHA-256 文件位于 `release-artifacts/`。当前版本号尚未递增，新包不得覆盖已发布的同版本下载资产。Native 构建需要 Rust；`start.command` 仍作为手动开发入口保留。Rust 运行库许可随新包提供，Python 依赖按锁文件及哈希安装。发布前仍需正式版本整包复验。
+当前源码生成的开发者目录位于 `release/Vigour-UI-Review-v0.0.2-macos-arm64/`，ZIP 和 SHA-256 文件位于 `release-artifacts/`。已发布的 v0.0.1 下载资产仍保持不变，新包未验收、不得据此发布。Native 构建需要 Rust；`start.command` 仍作为手动开发入口保留。Rust 运行库许可随新包提供，Python 依赖按锁文件及哈希安装。发布前仍需正式版本整包复验。
 
 ## 图形安装助手（阶段 C，未发布开发构建）
 

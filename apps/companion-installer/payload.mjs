@@ -4,15 +4,22 @@ import { lstat, readFile, readdir, readlink, realpath, writeFile } from 'node:fs
 import { resolve, relative, isAbsolute } from 'node:path';
 
 export const PRODUCT = 'com.vigour-ui-review.companion';
-export const REQUIRED = ['VERSION', 'runtime/node', 'service/main.js', 'vision-engine/run', 'runtime/python/bin/python3.12', 'workbench/index.html', 'native/vigour-ui-review-host', 'native/host.mjs', 'native/protocol.mjs', 'native/runtime.mjs'];
+const COMMON_REQUIRED = ['VERSION', 'service/main.js', 'workbench/index.html', 'native/host.mjs', 'native/protocol.mjs', 'native/runtime.mjs'];
+export const REQUIRED = [...COMMON_REQUIRED, 'runtime/node', 'vision-engine/run', 'runtime/python/bin/python3.12', 'native/vigour-ui-review-host'];
+export const WINDOWS_REQUIRED = [...COMMON_REQUIRED, 'runtime/node.exe', 'vision-engine/run.exe', 'runtime/python/python.exe', 'native/vigour-ui-review-host.exe', 'native/vigour-ui-review-credentials.exe'];
+export function requiredFor(platform) {
+  if (platform === 'darwin-arm64') return REQUIRED;
+  if (platform === 'win32-x64') return WINDOWS_REQUIRED;
+  throw new Error('INVALID_PACKAGE_PLATFORM');
+}
 export function within(root, path) { const value = relative(root, path); return value !== '' && !value.startsWith('..') && !isAbsolute(value); }
 export async function inventory(root, { installed = false } = {}) {
   root = await realpath(root); const entries = [];
   async function walk(directory) {
     for (const name of (await readdir(directory)).sort()) {
-      const path = resolve(directory, name); const key = relative(root, path);
+      const path = resolve(directory, name); const key = relative(root, path).replaceAll('\\', '/');
       if (key === 'payload.json') continue;
-      if (key === 'native/host-config.json') {
+      if (key === 'native/host-config.json' || key === 'native/native-messaging.json') {
         if (!installed || !(await lstat(path)).isFile()) throw new Error('PERSONAL_CONFIG_IN_PACKAGE');
         continue;
       }
@@ -30,18 +37,19 @@ export async function inventory(root, { installed = false } = {}) {
   }
   await walk(root); return entries;
 }
-export async function seal(root) {
+export async function seal(root, { platform = 'darwin-arm64' } = {}) {
   const version = (await readFile(resolve(root, 'VERSION'), 'utf8')).trim();
   if (!/^\d+\.\d+\.\d+$/.test(version)) throw new Error('INVALID_PACKAGE_VERSION');
-  for (const file of REQUIRED) if (!(await lstat(resolve(root, file))).isFile() && !(await lstat(resolve(root, file))).isSymbolicLink()) throw new Error('INCOMPLETE_PACKAGE');
-  const result = { product: PRODUCT, schema: 1, version, platform: 'darwin-arm64', entries: await inventory(root) };
+  for (const file of requiredFor(platform)) if (!(await lstat(resolve(root, file))).isFile() && !(await lstat(resolve(root, file))).isSymbolicLink()) throw new Error('INCOMPLETE_PACKAGE');
+  const result = { product: PRODUCT, schema: 1, version, platform, entries: await inventory(root) };
   await writeFile(resolve(root, 'payload.json'), `${JSON.stringify(result)}\n`, { mode: 0o644 }); return result;
 }
 export async function verify(root, options = {}) {
   const manifest = JSON.parse(await readFile(resolve(root, 'payload.json'), 'utf8'));
-  if (manifest.product !== PRODUCT || manifest.schema !== 1 || manifest.platform !== 'darwin-arm64') throw new Error('INVALID_PACKAGE');
+  if (manifest.product !== PRODUCT || manifest.schema !== 1 || !['darwin-arm64', 'win32-x64'].includes(manifest.platform)
+    || (options.expectedPlatform && manifest.platform !== options.expectedPlatform)) throw new Error('INVALID_PACKAGE');
   if (JSON.stringify(manifest.entries) !== JSON.stringify(await inventory(root, options))) throw new Error('PACKAGE_INTEGRITY_FAILED');
-  for (const file of REQUIRED) if (!manifest.entries.some((entry) => entry.path === file)) throw new Error('INCOMPLETE_PACKAGE');
+  for (const file of requiredFor(manifest.platform)) if (!manifest.entries.some((entry) => entry.path === file)) throw new Error('INCOMPLETE_PACKAGE');
   if ((await readFile(resolve(root, 'VERSION'), 'utf8')).trim() !== manifest.version || !/^\d+\.\d+\.\d+$/.test(manifest.version)) throw new Error('INVALID_PACKAGE_VERSION');
   return manifest;
 }

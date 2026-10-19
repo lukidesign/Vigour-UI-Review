@@ -4,11 +4,11 @@
 
 Vigour UI Review is a local-first visual acceptance workbench for comparing a Web implementation with its design source. It detects and quantifies position, size, color, missing, extra, and optional OCR text differences, then turns them into reviewable issues and exportable evidence.
 
-> Updated October 13, 2026: **v0.0.2 is a development candidate in [PR #10](https://github.com/lukidesign/Vigour-UI-Review/pull/10)**. Source verification and Windows packaging CI passed. The latest GitHub Release remains **v0.0.1**; the new macOS installer has been rebuilt and tested locally.
+> Updated October 19, 2026: **this source tree is the unreleased v0.0.2 development candidate**, tracked in [PR #10](https://github.com/lukidesign/Vigour-UI-Review/pull/10). The latest published GitHub Release remains **v0.0.1**. Source integration is not an installer release; see the dated verification evidence and outstanding acceptance gates below.
 
 ## v0.0.2 development update
 
-The [development branch](https://github.com/lukidesign/Vigour-UI-Review/tree/codex/windows-11-x64-beta), currently under review in PR #10, includes:
+The v0.0.2 source includes:
 
 - A collapsed-by-default project sidebar, updated product mark and version display, centered zoom controls, and clearer first-run/review states.
 - Issue annotations in all three comparison modes, a shared visibility switch, and marker-to-issue navigation.
@@ -16,18 +16,18 @@ The [development branch](https://github.com/lukidesign/Vigour-UI-Review/tree/cod
 - Guided connection recovery, Native Messaging on-demand startup, and one-time workbench pairing.
 - Rebuilt macOS Apple Silicon companion/graphical installer and a Windows 11 x64 unsigned tester candidate.
 
-These changes are **not included in the v0.0.1 download or the application source on main yet**. Use the matching extension and companion from the same build.
+These changes are **not included in the v0.0.1 download**. Use the matching extension and companion from the same build.
 
 ### Downloads and build status
 
 | Version / platform | Status | Access |
 | --- | --- | --- |
-| v0.0.2 source | Development branch, PR #10 pending | [Browse source](https://github.com/lukidesign/Vigour-UI-Review/tree/codex/windows-11-x64-beta) |
-| v0.0.2 Windows 11 x64 | Unsigned test-only installer and matching extension; CI passed | [Actions download](https://github.com/lukidesign/Vigour-UI-Review/actions/runs/38237762236/artifacts/11740879600) |
+| v0.0.2 source | Unreleased development candidate | [Integration status: PR #10](https://github.com/lukidesign/Vigour-UI-Review/pull/10) |
+| v0.0.2 Windows 11 x64 | Unsigned test-only installer and matching extension | [Builds and any available artifacts](https://github.com/lukidesign/Vigour-UI-Review/actions/workflows/ci.yml) |
 | v0.0.2 macOS Apple Silicon | Offline companion and graphical installer rebuilt and tested locally | No public v0.0.2 macOS download yet |
 | v0.0.1 macOS Apple Silicon | Previous unsigned developer preview | [Published release](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.1) |
 
-The Windows artifact requires a GitHub sign-in and is retained for three days. If expired, check [PR #10](https://github.com/lukidesign/Vigour-UI-Review/pull/10) for a newer successful build. Read the [Windows tester guide](https://github.com/lukidesign/Vigour-UI-Review/blob/codex/windows-11-x64-beta/docs/WINDOWS-TESTER-GUIDE.md) before installation. Windows 11 end-user/Chrome acceptance remains pending.
+Windows test artifacts are uploaded only by successful PR #10 builds, require a GitHub sign-in, and expire after three days. Main-branch CI does not publish installers; an expired artifact is not a permanent download. Read the [Windows tester guide](docs/WINDOWS-TESTER-GUIDE.md) before installation. Windows 11 end-user/Chrome acceptance remains pending.
 
 ### Verification — October 12, 2026
 
@@ -71,7 +71,7 @@ To install the Chrome capture extension, open `chrome://extensions`, enable Deve
 
 ## Build from source
 
-For v0.0.2, check out `codex/windows-11-x64-beta` before running the commands below. Windows builders should follow the [Windows build guide](https://github.com/lukidesign/Vigour-UI-Review/blob/codex/windows-11-x64-beta/docs/WINDOWS-BETA-STATUS.md).
+Use this v0.0.2 source tree for the commands below. Windows builders should follow the [Windows build guide](docs/WINDOWS-BETA-STATUS.md).
 
 Requirements:
 

@@ -4,7 +4,7 @@ import { dirname, relative, resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '..');
 const manifest = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8'));
-if (process.platform !== 'darwin' || process.arch !== 'arm64') throw new Error('The v0.0.1 offline package supports macOS arm64 only.');
+if (process.platform !== 'darwin' || process.arch !== 'arm64') throw new Error('The macOS offline package supports Apple Silicon only.');
 const packageName = `Vigour-UI-Review-v${manifest.version}-macos-arm64`;
 const target = process.env.VIGOUR_UI_REVIEW_PACKAGE_DIR
   ? resolve(process.env.VIGOUR_UI_REVIEW_PACKAGE_DIR)

@@ -4,11 +4,11 @@
 
 Vigour UI Review 是一款本地优先的 Web 设计验收工作台。它将开发实现图与设计源进行对齐，检测位置、尺寸、颜色、缺失、多余及可选 OCR 文字差异，并转换为可复核的问题和可导出的证据。
 
-> 更新于 2026-10-13：**v0.0.2 开发候选版本已提交到 [PR #10](https://github.com/lukidesign/Vigour-UI-Review/pull/10)**，源码验证与 Windows 打包 CI 均通过。GitHub 正式 Releases 仍为 **v0.0.1**；新版 macOS 安装器已在本地重新打包并验证。
+> 更新于 2026-10-19：**本源码树为尚未发布的 v0.0.2 开发候选版本**，集成记录见 [PR #10](https://github.com/lukidesign/Vigour-UI-Review/pull/10)。GitHub 已发布的最新 Release 仍为 **v0.0.1**。源码合并不等于安装包发布；验证日期和待完成的验收门槛见下文。
 
 ## v0.0.2 开发进展
 
-以下更新位于[开发分支](https://github.com/lukidesign/Vigour-UI-Review/tree/codex/windows-11-x64-beta)，正在 PR #10 中等待合并：
+v0.0.2 源码包含以下更新：
 
 - 项目栏默认收起，更新产品 Logo 与版本展示，缩放图标居中，并区分首次走查与重新走查。
 - 开发图标注、平铺对比、透明度叠加均支持问题标注，可统一显示/隐藏，点击标注可定位问题清单。
@@ -16,18 +16,18 @@ Vigour UI Review 是一款本地优先的 Web 设计验收工作台。它将开�
 - 引导式本地连接恢复、Native Messaging 按需启动与一次性工作台配对。
 - 重新构建 macOS Apple Silicon 离线配套程序、图形安装器，以及 Windows 11 x64 未签名内测候选包。
 
-**这些更新尚未包含在 v0.0.1 下载包或 main 的应用源码中。** 请使用同一次构建中的配套扩展和本地程序。
+**这些更新尚未包含在 v0.0.1 下载包中。** 请使用同一次构建中的配套扩展和本地程序。
 
 ### 下载与构建状态
 
 | 版本 / 平台 | 当前状态 | 获取方式 |
 | --- | --- | --- |
-| v0.0.2 源码 | 开发分支，PR #10 待合并 | [查看源码](https://github.com/lukidesign/Vigour-UI-Review/tree/codex/windows-11-x64-beta) |
-| v0.0.2 Windows 11 x64 | 未签名内测安装器及匹配扩展，CI 通过 | [下载 Actions 附件](https://github.com/lukidesign/Vigour-UI-Review/actions/runs/38237762236/artifacts/11740879600) |
+| v0.0.2 源码 | 未发布的开发候选版本 | [集成状态：PR #10](https://github.com/lukidesign/Vigour-UI-Review/pull/10) |
+| v0.0.2 Windows 11 x64 | 未签名内测安装器及匹配扩展 | [构建记录及可用附件](https://github.com/lukidesign/Vigour-UI-Review/actions/workflows/ci.yml) |
 | v0.0.2 macOS Apple Silicon | 离线程序与图形安装器已在本地重新构建并验证 | 暂无公开的 v0.0.2 macOS 下载链接 |
 | v0.0.1 macOS Apple Silicon | 旧版未签名开发者预览包 | [已发布版本](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.1) |
 
-Windows 附件需要登录 GitHub，保留期为三天；过期后请在 [PR #10](https://github.com/lukidesign/Vigour-UI-Review/pull/10) 查找更新的成功构建。安装前请阅读 [Windows 内测指南](https://github.com/lukidesign/Vigour-UI-Review/blob/codex/windows-11-x64-beta/docs/WINDOWS-TESTER-GUIDE.md)。Windows 11 普通用户真机与 Chrome 完整流程仍待验收。
+Windows 内测附件仅由 PR #10 的成功构建上传，需要登录 GitHub，保留期为三天。main 分支 CI 不发布安装包，过期附件不是永久下载入口。安装前请阅读 [Windows 内测指南](docs/WINDOWS-TESTER-GUIDE.md)。Windows 11 普通用户真机与 Chrome 完整流程仍待验收。
 
 ### 验证记录 · 2026-10-12
 
@@ -71,7 +71,7 @@ Windows 附件需要登录 GitHub，保留期为三天；过期后请在 [PR #10
 
 ## 从源码运行
 
-运行 v0.0.2 工作台及安装器更新前，请先切换到 `codex/windows-11-x64-beta` 分支。Windows 构建请使用 [Windows 构建说明](https://github.com/lukidesign/Vigour-UI-Review/blob/codex/windows-11-x64-beta/docs/WINDOWS-BETA-STATUS.md)。
+请使用本 v0.0.2 源码树执行以下命令。Windows 构建请使用 [Windows 构建说明](docs/WINDOWS-BETA-STATUS.md)。
 
 环境要求：macOS 14+ Apple Silicon、Node.js 24+、pnpm 11+、[uv](https://docs.astral.sh/uv/)。
 

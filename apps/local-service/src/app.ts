@@ -47,7 +47,7 @@ export function buildApp(db: DatabaseSync, security: SecurityConfig, assetRoot =
   const session = integrations.session ?? new LocalSession(security.sessionToken);
   registerLocalSession(app, session, integrations.stopNative);
 
-  app.get('/health', async () => ({ status: 'ok', service: 'vigour-ui-review-local', version: '0.0.1', protocol: NATIVE_PROTOCOL, instanceId: session.instanceId }));
+  app.get('/health', async () => ({ status: 'ok', service: 'vigour-ui-review-local', version: '0.0.2', protocol: NATIVE_PROTOCOL, instanceId: session.instanceId }));
   app.get('/api/v1/capabilities', async () => ({
     capture: true,
     localVision: Boolean(vision),
