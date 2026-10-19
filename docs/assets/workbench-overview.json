@@ -1,0 +1,28 @@
+{
+  "generatedAt": "2026-10-19T08:28:42.977Z",
+  "product": "Vigour UI Review",
+  "version": "0.0.2",
+  "applicationSourceCommit": "d6d9a2ca5e0ca932ee11d9f749d9c83d3b50852c",
+  "browser": "155.0.8059.80",
+  "viewport": {
+    "width": 1600,
+    "height": 1000
+  },
+  "deviceScaleFactor": 1,
+  "inputs": [
+    {
+      "path": "examples/demo/design.png",
+      "sha256": "7ca76539fc9377bb90bd9d124fb6bc731cbc336a3b26c2d5abeb3000a5c1dcc3"
+    },
+    {
+      "path": "examples/demo/implementation.png",
+      "sha256": "e21d293d0826b83ad70eecb51f811b8b56a377248673cbef437bf685b9f2fa98"
+    }
+  ],
+  "analysis": "actual local vision engine; OCR disabled; no AI",
+  "issueCount": 10,
+  "isolation": "temporary database and assets; in-memory Fastify transport; empty credential store; external browser requests blocked",
+  "screenshot": "docs/assets/workbench-overview.jpg",
+  "sha256": "9bbfec28e4a600a4a94356b17d3ea70776c955a3a5f8214ed4d101b42cdb7d12",
+  "note": "Real workbench rendering, not proof of Chrome extension capture, clean-machine installation or Windows 11 acceptance."
+}
