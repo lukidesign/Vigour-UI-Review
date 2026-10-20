@@ -47,6 +47,8 @@ describe('store documentation consistency (not store approval)', () => {
     expect(readiness).toContain('当前不建议直接提交审核');
     expect(read('docs/store/REVIEWER-NOTES.md')).toContain('extension actually submitted for review');
     expect(read('docs/store/DRAFT-UPLOAD.md')).toContain('既有条目');
+    expect(read('docs/store/DRAFT-UPLOAD.md')).toContain('不要直接上传 Release');
+    expect(readiness).toContain('chrome-extension/manifest.json');
     expect(read('docs/store/ASSETS.md')).toContain('2026-09-16');
   });
 });

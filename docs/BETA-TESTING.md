@@ -20,6 +20,8 @@
 
 Release 附件不受旧 Actions 七天留存限制，但仍以发布页实际附件为准。不要下载“Source code”代替安装包；不要将 0.0.2 扩展与旧 0.0.1 程序混装。当前不提供 Intel Mac、Windows ARM、Linux 或 ChromeOS 测试包。
 
+扩展 ZIP 是供用户解压加载的包，不是可原样上传 Chrome 商店的提交包；提审需另行制作扩展专用 ZIP。
+
 ## 二、Windows 安装与启动
 
 1. 完整解压 Windows ZIP，保留该目录。

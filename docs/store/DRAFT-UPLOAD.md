@@ -6,6 +6,8 @@
 
 当前 GitHub 已发布 [v0.0.2-beta.1](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1)，应用/扩展数值版本 0.0.2。这不是商店发布记录；Windows 11 真机验收仍待完成。
 
+**不要直接上传 Release 的 `Vigour-UI-Review-extension-v0.0.2.zip`。** 本次检查确认它有 `chrome-extension/` 外层目录和 `._*` macOS 附加文件，是供用户解压加载的包。商店专用包应另行生成并验收；不覆盖这个已有下载附件。
+
 ## 下次获得提交授权后
 
 1. 先关闭 [READINESS.md](READINESS.md) 阻断项。账号持有人检查官方后台中的身份/联系验证、两步验证和发布商归属。

@@ -7,7 +7,7 @@
 ### macOS Apple Silicon
 
 1. 在上述 Beta 发布页下载 macOS Setup ZIP、extension ZIP 和 `SHA256SUMS.txt`。最低目标 macOS 14；最低系统及干净机器验收尚未完成。
-2. 完整解压两个 ZIP，将扩展目录放在固定位置。Chrome 打开 `chrome://extensions`，停用旧版扩展，开启开发者模式，加载解压后直接包含 `manifest.json` 的扩展文件夹，复制其实际 32 位 ID。独立扩展 ZIP 不一定带 `chrome-extension` 外层目录。
+2. 完整解压两个 ZIP，将扩展目录放在固定位置。Chrome 打开 `chrome://extensions`，停用旧版扩展，开启开发者模式，加载解压后的 `chrome-extension` 文件夹（其内直接包含 `manifest.json`），复制实际 32 位 ID。
 3. 打开解压后的 Setup 应用，安装或更新配套程序，填写上述实际扩展 ID。安装限定当前用户，并保留已有项目数据。不要填写商店草稿 ID。
 4. 从 Chrome 工具栏打开 Vigour UI Review，再打开工作台。自动配对无需复制令牌。
 
