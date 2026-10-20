@@ -20,7 +20,8 @@ describe('store documentation consistency (not store approval)', () => {
     for (const path of ['docs/PRIVACY.md', 'docs/store/PRIVACY.zh-CN.md']) {
       const text = read(path);
       for (const term of ['2026-10-20', '0.0.2', 'v0.0.2-beta.1', '%LOCALAPPDATA%', 'chrome.storage.session', 'session-token',
-        'com.vigour-ui-review.local', 'Limited Use', 'api.openai.com', 'api.moonshot.cn', 'api.deepseek.com', 'generativelanguage.googleapis.com']) {
+        'com.vigour-ui-review.local', 'Limited Use', 'api.openai.com', 'api.moonshot.cn', 'api.deepseek.com', 'generativelanguage.googleapis.com',
+        'huggingface.co', 'aistudio.baidu.com', 'modelscope.cn', 'paddle-model-ecology.bj.bcebos.com']) {
         expect(text, `${path}: ${term}`).toContain(term);
       }
     }

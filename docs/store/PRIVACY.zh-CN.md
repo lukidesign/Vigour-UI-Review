@@ -41,12 +41,14 @@ Figma PAT 与 AI Key 经系统凭据设施保存，不设计写入项目数据�
 | --- | --- |
 | 导入 Figma Frame | 向 Figma HTTPS API 发送 PAT 和所选文件/节点标识；下载设计元数据和 Figma 返回的 HTTPS 地址上的图片。 |
 | AI 问题解释或组件业务逻辑推断 | 向选定服务商发送结构化问题上下文：验收标识/结果、描述、位置、期望/实际值及已有 CSS 建议。明确勾选且支持时，还发送**完整标注证据图**，不限于当前组件。 |
-| OCR 初始化缺少模型 | 向模型下载服务发起下载请求，包含通常的网络信息；推理设计为本地执行，不保证首次或断网 OCR 可用。 |
+| OCR 初始化缺少模型 | PaddleOCR/PaddleX 可能从 Hugging Face（`huggingface.co`）、百度 AI Studio（`aistudio.baidu.com`）、ModelScope（`modelscope.cn`）或百度 BOS（`paddle-model-ecology.bj.bcebos.com`）及其分发主机下载模型。对方接收模型请求和通常的网络信息，该模型下载路径不发送待分析图片。推理设计为本地执行，不保证首次或断网 OCR 可用。 |
 | 打开下载、支持或服务商链接 | GitHub 或对应网站接收访问，适用其政策。 |
 
 AI 接收方为 OpenAI（`api.openai.com`）、Google Gemini（`generativelanguage.googleapis.com`）、Kimi/Moonshot（`api.moonshot.cn`）或 DeepSeek（`api.deepseek.com`），使用 HTTPS 及对应凭据。当前 OpenAI/Gemini 支持图片，Kimi/DeepSeek 适配器不支持。每次请求需对服务商、模型、任务、上下文/图片选项确认；回执十分钟过期、仅使用一次，范围改变或重试需重新确认。
 
 AI 输出用于人工复核，不是已证实业务事实，也不会自动执行生成代码。第三方保留期限、人工访问、训练、处理地域和费用取决于其条款及账户设置，本产品不承诺零保留或不用于训练，请在确认前核查。正常使用不会把验收数据发给开发者；导出可能含页面内容，由你决定是否分享。
+
+随包 OCR 依赖默认优先 Hugging Face，失败时可能尝试上述其他模型源。禁用启动连通性探测不等于禁止模型下载；高级环境配置可能改变下载端点/缓存，请检查自己的配置。干净安装中的实际下载和跳转行为仍需在提审前验证。
 
 ## 保留与删除
 

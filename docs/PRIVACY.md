@@ -41,12 +41,14 @@ Local pixel comparison does not require Figma or AI. Saving an API key alone doe
 | --- | --- |
 | Import a Figma frame | Figma's HTTPS API receives the PAT and selected file/node identifiers; the companion downloads design metadata and the image from Figma's supplied HTTPS image location. |
 | Request AI explanation or component business-logic inference | The selected provider receives structured issue context: run identifiers/result, descriptions, geometry, expected/actual values and suggested CSS where present. If explicitly enabled and supported, it also receives the **complete annotated evidence image**, not just the selected component. |
-| Initialize OCR with missing models | Model download services receive download requests and ordinary network metadata. Inference is intended to run locally; first-use or offline OCR success is not guaranteed. |
+| Initialize OCR with missing models | PaddleOCR/PaddleX may download from Hugging Face (`huggingface.co`), Baidu AI Studio (`aistudio.baidu.com`), ModelScope (`modelscope.cn`) or Baidu BOS (`paddle-model-ecology.bj.bcebos.com`), including their delivery hosts. They receive model requests and ordinary network metadata, not images through this model-download path. Inference is intended to run locally; first-use or offline OCR success is not guaranteed. |
 | Open download/support/provider links | GitHub or the chosen website receives the visit under its own policies. |
 
 AI destinations are OpenAI (`api.openai.com`), Google Gemini (`generativelanguage.googleapis.com`), Kimi/Moonshot (`api.moonshot.cn`) or DeepSeek (`api.deepseek.com`), over HTTPS with the corresponding credential. Current adapters support images for OpenAI/Gemini, not Kimi/DeepSeek. Each request requires confirmation for its provider, model, task and context/image option. Receipts expire after ten minutes and are single-use; changed scope or retry requires renewed consent.
 
 AI output is inference for human review, not verified business facts or automatically executed code. Provider retention, human access, training, processing regions and charges depend on the provider's terms and account settings; this application does not promise zero retention or no training. Review those terms before consenting. The developer does not receive review data by default. Exports may contain page content and are shared through actions you take.
+
+The bundled OCR dependency defaults to Hugging Face and may fall back to the listed model hosts. Disabling its startup connectivity probe does not disable model downloads. Advanced environment overrides can change a model endpoint/cache; review your configuration. Exact download/redirect behavior in a clean install still needs verification before store submission.
 
 ## Retention and removal
 
