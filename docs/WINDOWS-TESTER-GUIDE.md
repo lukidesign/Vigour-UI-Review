@@ -2,6 +2,10 @@
 
 这是 LukiDesign 的 **v0.0.2-beta.1 未签名公开预发布包**，程序和扩展版本为 **0.0.2**。目标平台为 Windows 11 x64（Intel/AMD），**Windows 11 真机测试仍待完成**；Windows Server 构建机测试不能替代普通用户电脑验收。这不是稳定版或 Chrome 商店版本。不要用旧版 v0.0.1 配套程序混装。
 
+更新补充（2026-10-20）：[双平台测试说明与回传模板](https://github.com/lukidesign/Vigour-UI-Review/blob/main/docs/BETA-TESTING.md)包含当前 Windows/Mac 下载和完整测试清单。以下说明适用于 GitHub 解压版，不代替实际提交到商店的扩展验收；已经发布的 ZIP 内文档不会随仓库更新。
+
+采集前阅读[隐私说明](https://github.com/lukidesign/Vigour-UI-Review/blob/main/docs/store/PRIVACY.zh-CN.md)：点击采集会处理完整 URL、截图、文字和 DOM/CSS；视口模式也可能包含视口外 DOM/文字，无自动脱敏，项目文件没有应用层静态加密。请仅用公开合成或授权测试内容。
+
 ## 安装（普通用户不用终端）
 
 1. 从 [v0.0.2-beta.1 发布页](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1) 下载 Windows x64 ZIP 并完整解压。确认目录内同时有 `chrome-extension`、`Vigour-UI-Review-0.0.2-windows-x64-dev-setup.exe` 和本文档。

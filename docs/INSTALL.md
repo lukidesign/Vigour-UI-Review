@@ -7,7 +7,7 @@
 ### macOS Apple Silicon
 
 1. 在上述 Beta 发布页下载 macOS Setup ZIP、extension ZIP 和 `SHA256SUMS.txt`。最低目标 macOS 14；最低系统及干净机器验收尚未完成。
-2. 完整解压两个 ZIP，将扩展目录放在固定位置。Chrome 打开 `chrome://extensions`，关闭旧版扩展，开启开发者模式，加载新包的 `chrome-extension` 文件夹，复制其实际 32 位 ID。
+2. 完整解压两个 ZIP，将扩展目录放在固定位置。Chrome 打开 `chrome://extensions`，停用旧版扩展，开启开发者模式，加载解压后直接包含 `manifest.json` 的扩展文件夹，复制其实际 32 位 ID。独立扩展 ZIP 不一定带 `chrome-extension` 外层目录。
 3. 打开解压后的 Setup 应用，安装或更新配套程序，填写上述实际扩展 ID。安装限定当前用户，并保留已有项目数据。不要填写商店草稿 ID。
 4. 从 Chrome 工具栏打开 Vigour UI Review，再打开工作台。自动配对无需复制令牌。
 
@@ -102,11 +102,11 @@ node scripts/register-native.mjs --package /absolute/path/to/companion --extensi
 
 ## Figma
 
-在 Figma 创建只包含 `file_content:read` 权限的 Personal Access Token。工作台首次导入 Frame 时会把 Token 写入 macOS 钥匙串；SQLite、浏览器存储、URL 和日志均不保存 Token。OAuth 接口已预留，但不属于当前个人版。
+在 Figma 创建只包含 `file_content:read` 权限的 Personal Access Token。通过工作台保存后，Token 使用 macOS 钥匙串或 Windows 凭据管理器存储，不设计写入 SQLite、浏览器持久存储、URL 或日志。当前 Figma 界面仍有仅提及 macOS 钥匙串的旧文字，Windows 实际实现使用凭据管理器；此界面缺口列入[提审准备度](store/READINESS.md)。OAuth 接口已预留，但不属于当前个人版。
 
 ## 可选 AI
 
-AI 不参与检测和评分，只解释已经产生的结构化差异。支持 OpenAI、Gemini、Kimi 和 DeepSeek。API Key 只存 macOS 钥匙串；每次外发前都必须勾选数据范围，并生成 10 分钟内有效、只能消费一次的同意回执。
+AI 不参与检测和评分，用于解释结构化差异或推断组件业务逻辑。支持 OpenAI、Gemini、Kimi 和 DeepSeek。API Key 使用 macOS 钥匙串或 Windows 凭据管理器；每次外发需明确确认，回执十分钟有效、单次使用。图片默认关闭，启用时发送完整标注证据图，不限于当前组件；范围改变或重试需重新确认。第三方处理和费用依其条款，见[隐私说明](store/PRIVACY.zh-CN.md)。
 
 ## 制作开发者安装包
 
