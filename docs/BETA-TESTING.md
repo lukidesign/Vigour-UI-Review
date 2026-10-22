@@ -1,24 +1,25 @@
-# Vigour UI Review 0.0.2 双平台测试说明
+# Vigour UI Review 0.0.2 Windows / Mac 测试说明
 
-更新：**2026-10-22**。发布商：LukiDesign。
+更新：**2026-10-23**。发布商：LukiDesign。
 
-请协助测试 **Windows v0.0.2-beta.2 / Mac v0.0.2-beta.1 未签名预发布版**；程序与 Chrome 扩展显示 **0.0.2**。Windows 新包重点复测拼接、错误提示、修复配对、卸载退出和 Markdown 导出；必须使用同次构建的扩展与安装器。
+请协助测试 **Windows v0.0.2-beta.2 / Apple Silicon v0.0.2-beta.1 / Intel Mac v0.0.2-beta.3 未签名预发布版**；程序与 Chrome 扩展显示 **0.0.2**。Windows 新包重点复测拼接、错误提示、修复配对、卸载退出和 Markdown 导出；Intel 包只提供核心功能，不含本地 OCR。必须使用同平台、同次构建的扩展与安装器。
 
-**Windows 11 真机验收仍待完成。** macOS 已有维护者本机流程记录，但不代表所有机器通过。两平台都不是已签名稳定版，Mac 未公证；本说明也不代表 Chrome Web Store 已批准或上架。
+**Windows 11 真机验收仍待完成。Intel Mac 真机及 macOS 14 最低系统验收待完成。** Apple Silicon 已有维护者本机流程记录，但不代表所有机器通过。所有包都不是已签名稳定版，Mac 未公证；本说明也不代表 Chrome Web Store 已批准或上架。
 
 ## 一、下载正确的测试包
 
-从下表对应的 GitHub Release 的 **Assets** 下载，不使用过期 Actions 附件。Windows beta.2 不更新 Mac beta.1。
+从下表对应的 GitHub Release 的 **Assets** 下载，不使用过期 Actions 附件。三个渠道分别构建，beta.3 不替换 Windows beta.2 或 Apple Silicon beta.1。
 
 | 平台 | 下载与文件名 |
 | --- | --- |
 | Windows 11，Intel/AMD 64 位 | [完整 Windows ZIP，新修复测试包](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.2/Vigour-UI-Review-v0.0.2-beta.2-windows-x64-unsigned.zip)：`Vigour-UI-Review-v0.0.2-beta.2-windows-x64-unsigned.zip` |
+| macOS 14+，Intel x64 | [Intel 核心版完整 ZIP，约 113 MB](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.3/Vigour-UI-Review-Setup-v0.0.2-beta.3-macos-x64-core-unsigned.zip)：`Vigour-UI-Review-Setup-v0.0.2-beta.3-macos-x64-core-unsigned.zip`；含安装器和匹配扩展，不含本地 OCR |
 | macOS 14+，Apple Silicon | [Mac 图形安装器 ZIP，约 317 MB](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-Setup-v0.0.2-beta.1-macos-arm64-unsigned.zip)：`Vigour-UI-Review-Setup-v0.0.2-beta.1-macos-arm64-unsigned.zip` |
 | Mac beta.1 配套 Chrome 扩展 | [0.0.2 扩展 ZIP](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-extension-v0.0.2.zip)：`Vigour-UI-Review-extension-v0.0.2.zip`；Windows beta.2 请只用其完整包内的 `chrome-extension` |
 
 发布页同时提供 `SHA256SUMS.txt` 和 `BUILD-PROVENANCE.json`。前者用于核验下载，后者记录各平台真实构建来源；不能把最新 README 提交号当作包的源码号。需要帮助校验时联系发布者，不要求普通测试者使用终端。
 
-Release 附件不受旧 Actions 七天留存限制，但仍以发布页实际附件为准。不要下载“Source code”代替安装包；不要将 0.0.2 扩展与旧 0.0.1 程序混装。Intel Mac 新增独立 beta.3 核心版候选（不含本地 OCR），见 [Intel 安装与复测指南](INTEL-MAC-TESTER-GUIDE.md)，真机验收待完成；仅使用发布页实际列出的附件。当前不提供 Windows ARM、Linux 或 ChromeOS 测试包。
+Release 附件不受旧 Actions 七天留存限制，但仍以发布页实际附件为准。不要下载“Source code”代替安装包；不要将 0.0.2 扩展与旧 0.0.1 程序混装。Intel Mac beta.3 已公开发布，见 [Intel 安装与复测指南](INTEL-MAC-TESTER-GUIDE.md)，真机验收待完成。当前不提供 Windows ARM、Linux 或 ChromeOS 测试包。
 
 扩展 ZIP 是供用户解压加载的包，不是可原样上传 Chrome 商店的提交包；提审需另行制作扩展专用 ZIP。
 
@@ -35,6 +36,8 @@ Release 附件不受旧 Actions 七天留存限制，但仍以发布页实际附
 
 ## 三、Mac 安装与启动
 
+### Apple Silicon · beta.1
+
 1. 确认是 Apple Silicon 芯片、macOS 14 或更高版本；Intel Mac 不适用。
 2. 下载并解压 Mac Setup ZIP 和配套 0.0.2 扩展 ZIP，保留扩展目录。
 3. 在 Chrome 扩展管理页开启开发者模式，加载解压后**直接包含 `manifest.json`**的扩展目录，复制实际 32 位 ID。
@@ -42,6 +45,16 @@ Release 附件不受旧 Actions 七天留存限制，但仍以发布页实际附
 5. 确认新扩展 0.0.2 启用、旧版停用，从工具栏点击“打开工作台”。
 
 本轮测试图形安装与 Native 自动连接，不使用旧 0.0.1 的 `start.command` 或手动令牌流程。若 Gatekeeper、未知开发者或组织策略阻止启动，请记录并反馈；**不要关闭 Gatekeeper、删除隔离标记或降低安全设置来绕过测试。**
+
+### Intel x64 · beta.3
+
+1. 确认“关于本机”显示 Intel 处理器，系统为 macOS 14 或更高版本。
+2. 完整解压 Intel ZIP，保留 `intel-stage` 目录；其内同时包含 Setup 应用和 `chrome-extension`。
+3. 停用旧扩展，在 Chrome 加载该目录中的扩展，复制实际 32 位 ID。
+4. 打开同目录 `Vigour UI Review Setup.app`，选择安装/更新并配对，填入 ID，再从扩展打开工作台。
+5. 使用“像素 + 结构分析”；本地 OCR 入口应禁用并说明原因。断网只验证核心图片分析，OCR 记录为“不适用（未随包提供）”。
+
+安全拦截处理与上文一致；不要使用 Apple Silicon 安装器或其他构建的扩展替代。详细步骤与验收项目见 [Intel 指南](INTEL-MAC-TESTER-GUIDE.md)。
 
 ## 四、采集前的隐私提示
 
@@ -65,7 +78,7 @@ Release 附件不受旧 Actions 七天留存限制，但仍以发布页实际附
 | 异常操作 | 分别测试取消、切换标签、刷新/导航、关闭弹窗；检查是否安全结束并恢复页面，不能错采其他页面。提交本地服务阶段取消按钮会停用。 |
 | 重启与恢复 | 重启 Chrome、电脑睡眠恢复后重新打开；关闭全部工作台标签、无任务时等待约 15 分钟再试，记录是否空闲退出及启动时长，实际宽限时间可能更长。 |
 | 显示适配 | 优先 1920×1080，另测 1440 宽度；记录 Windows 100%/125%/150% 缩放，检查遮挡、截断和滚动。 |
-| 离线分析 | 断网后用已有本地图片测试核心分析；OCR 离线能力独立记录，仍是观察项，不能当成已保证通过。 |
+| 离线分析 | 断网后用已有本地图片测试核心分析；Windows / Apple Silicon 的 OCR 离线能力独立记录，仍是观察项。Intel 不含本地 OCR，记录“不适用”，确认入口禁用且不尝试下载模型。 |
 | 卸载/重装 | Windows 从“已安装的应用”卸载；Mac 用 Setup 卸载。预期项目、截图和系统凭据保留。重装后验证；扩展需要单独移除。 |
 
 升级/回退需发布者提供第二个匹配候选包，不拿旧版异构包混测。需要彻底删除数据时按隐私说明单独处理，不把“卸载保留数据”误当删除失败。
@@ -74,11 +87,11 @@ Release 附件不受旧 Actions 七天留存限制，但仍以发布页实际附
 
 ```text
 测试人（可用匿名编号）/ 日期：
-渠道：Windows v0.0.2-beta.2 / Mac v0.0.2-beta.1（按实际填写）
+渠道：Windows v0.0.2-beta.2 / Apple Silicon v0.0.2-beta.1 / Intel Mac v0.0.2-beta.3（按实际填写）
 程序版本 / 扩展版本：0.0.2 / ______
 扩展来源：本地解压 / 商店（填写真实来源）
 测试包完整文件名：
-源码来源：Windows 从 CANDIDATE.json；Mac 从 Release BUILD-PROVENANCE.json
+源码来源：Windows / Intel 从 CANDIDATE.json；各平台均可从 Release BUILD-PROVENANCE.json 核对
 系统完整版本：
 CPU / 架构 / 内存：
 Chrome 版本：
@@ -96,7 +109,7 @@ PNG / Markdown / JSON 导出：____ / ____ / ____
 Chrome 重启 / 空闲再启动 / 睡眠恢复：
 显示适配：
 核心离线分析：
-OCR 离线（独立观察项）：
+OCR 离线（独立观察项；Intel 填“不适用，未随包提供”）：
 卸载 / 重装 / 项目和凭据保留：
 可选 AI/Figma：未测 / 仅界面检查 / 实际请求（说明范围，勿附密钥）
 

@@ -1,6 +1,30 @@
 # 源码更新与交付状态
 
-更新：2026-10-20。发布商/版权署名：LukiDesign；产品名：Vigour UI Review。
+更新：2026-10-23。发布商/版权署名：LukiDesign；产品名：Vigour UI Review。
+
+## 当前交付摘要 · 2026-10-23 核对
+
+下表为当前公开下载状态。后文各日期章节是历史记录，不应覆盖本摘要。程序与扩展均显示 **0.0.2**，不能仅靠界面版本号区分平台或构建。
+
+| 平台 | 已发布测试包 | 验收边界 |
+| --- | --- | --- |
+| macOS 14+ Intel x64 | [v0.0.2-beta.3](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.3)，2026-10-22 发布；完整 ZIP 含匹配扩展 | 核心版，不含本地 OCR；原生 Intel CI 通过；用户真机、干净机及最低系统验收待完成 |
+| Windows 11 x64 | [v0.0.2-beta.2](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.2)，2026-10-22 发布；完整 ZIP 含匹配扩展 | Windows Server CI 通过；Windows 11 真机复测、离线 OCR 待完成；原卸载卡住问题未作真机关闭结论 |
+| macOS 14+ Apple Silicon | [v0.0.2-beta.1](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1)，2026-10-19 发布；安装器与扩展分别下载 | 维护者本机 Chrome 核心流程有记录；干净机、最低系统及空闲/睡眠验收待完成 |
+
+全部为未签名预发布，Mac 未公证；不代表稳定版或 Chrome 商店批准。旧 v0.0.1 和既有附件保留，GitHub 的 Latest 仍指向 v0.0.1。各平台必须使用对应发布页的匹配文件，不能把 beta.3 当作 Windows 或 Apple Silicon 更新。
+
+### 2026-10-22 发布来源与验证
+
+- Windows 修复通过 [PR #20](https://github.com/lukidesign/Vigour-UI-Review/pull/20) 合并。附件源码为 `5f510f6a6145d6ff0c171065df570e726fa00295`，[main CI #39751419563](https://github.com/lukidesign/Vigour-UI-Review/actions/runs/39751419563) 成功。修复与复测范围见 [Windows 验证记录](WINDOWS-FIX-VERIFICATION.md)。
+- Intel 核心版通过 [PR #21](https://github.com/lukidesign/Vigour-UI-Review/pull/21) 合并。附件源码为 `cdc0909c0bec5602d24e5c8f289fd6c59f1b70bd`，[原生 Intel main CI #39756142234](https://github.com/lukidesign/Vigour-UI-Review/actions/runs/39756142234) 成功，覆盖 x64 打包、Mach-O 架构/部署目标、完整性、核心分析及隔离安装生命周期。原生构建机不是普通用户真机验收。
+- 两个新发布均提供 `SHA256SUMS.txt`、`BUILD-PROVENANCE.json`，发布时完成附件下载回读与校验；不重写 Apple Silicon beta.1 或历史发布附件。准确包来源以对应来源记录为准，不使用后续文档提交号代替。
+
+2026-10-23 本轮仅同步中英文首页、安装/测试说明与交付导航，不重建安装器、不改运行时代码或版本、不提交商店。安装步骤和反馈模板见 [Windows / Mac 测试说明](BETA-TESTING.md)；商店独立门槛仍见[提审准备度](store/READINESS.md)。
+
+## 历史交付记录
+
+以下保留各日期的原始判断和未完成清单；“本次”“当前”等措辞仅适用于该历史日期。
 
 ## 2026-10-20 测试与商店材料核查
 

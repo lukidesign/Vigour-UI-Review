@@ -6,7 +6,7 @@
 
 ## 下载与安装
 
-仅下载 [Intel 预发布页](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.3) Assets 实际列出的附件，未列出即尚未发布：
+2026-10-22 已公开发布。请从 [Intel 预发布页](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.3) 的 Assets 下载：
 
 - `Vigour-UI-Review-Setup-v0.0.2-beta.3-macos-x64-core-unsigned.zip`
 - `SHA256SUMS.txt`、`BUILD-PROVENANCE.json`

@@ -38,9 +38,29 @@ describe('store documentation consistency (not store approval)', () => {
       'Vigour-UI-Review-extension-v0.0.2.zip',
     ]) expect(guide).toContain(`/releases/download/v0.0.2-beta.1/${name}`);
     expect(guide).toContain('/releases/download/v0.0.2-beta.2/Vigour-UI-Review-v0.0.2-beta.2-windows-x64-unsigned.zip');
+    expect(guide).toContain('/releases/download/v0.0.2-beta.3/Vigour-UI-Review-Setup-v0.0.2-beta.3-macos-x64-core-unsigned.zip');
     expect(guide).not.toContain('/releases/download/v0.0.2-beta.1/Vigour-UI-Review-v0.0.2-beta.1-windows-x64-unsigned.zip');
     expect(guide).toContain('Windows 11 真机验收仍待完成');
     expect(guide).toContain('不是商店安装流程');
+  });
+
+  it('keeps published platform downloads and Intel OCR limits consistent across entry points', () => {
+    const intelAsset = '/releases/download/v0.0.2-beta.3/Vigour-UI-Review-Setup-v0.0.2-beta.3-macos-x64-core-unsigned.zip';
+    for (const path of ['README.md', 'README.zh-CN.md', 'docs/BETA-TESTING.md']) {
+      const text = read(path);
+      expect(text, path).toContain(intelAsset);
+      expect(text, path).toContain('/releases/download/v0.0.2-beta.2/Vigour-UI-Review-v0.0.2-beta.2-windows-x64-unsigned.zip');
+      expect(text, path).toContain('/releases/download/v0.0.2-beta.1/Vigour-UI-Review-Setup-v0.0.2-beta.1-macos-arm64-unsigned.zip');
+      expect(text, path).not.toMatch(/native Intel CI required before publication|原生 Intel CI 通过后才发布/);
+    }
+    const install = read('docs/INSTALL.md');
+    for (const tag of ['v0.0.2-beta.1', 'v0.0.2-beta.2', 'v0.0.2-beta.3']) {
+      expect(install).toContain(`/releases/tag/${tag}`);
+    }
+    const guide = read('docs/BETA-TESTING.md');
+    expect(guide).toContain('Intel Mac 真机及 macOS 14 最低系统验收待完成');
+    expect(guide).toContain('Intel 不含本地 OCR，记录“不适用”');
+    expect(guide).toContain('Intel Mac v0.0.2-beta.3（按实际填写）');
   });
 
   it('keeps store readiness separate from a documentation pass', () => {
