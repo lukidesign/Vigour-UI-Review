@@ -1,0 +1,73 @@
+name: Apple Silicon preview
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: apple-silicon-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  apple-silicon:
+    name: Apple Silicon arm64 installer
+    runs-on: macos-15
+    timeout-minutes: 60
+    env:
+      MACOSX_DEPLOYMENT_TARGET: '14.0'
+      PYTHONDONTWRITEBYTECODE: '1'
+      VIGOUR_UI_REVIEW_PACKAGE_DIR: ${{ github.workspace }}/release/arm64-payload
+      VIGOUR_INSTALLER_OUTPUT: ${{ github.workspace }}/release/arm64-stage/Vigour UI Review Setup.app
+      VIGOUR_INSTALLER_PAYLOAD: ${{ github.workspace }}/release/arm64-stage/Vigour UI Review Setup.app/Contents/Resources/companion
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          architecture: arm64
+          package-manager-cache: false
+      - run: npm install --global pnpm@11.22.0
+      - uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9 # v9.0.0
+        with:
+          version: '0.12.0'
+          enable-cache: true
+          cache-dependency-glob: apps/vision-engine/uv.lock
+      - name: Require a native Apple Silicon build host
+        run: node -e "if(process.platform!=='darwin'||process.arch!=='arm64') process.exit(1)"
+      - run: pnpm install --frozen-lockfile
+      - name: Install locked dependencies including OCR
+        run: uv sync --project apps/vision-engine --python 3.12 --extra dev --extra ocr --frozen
+      - name: Source tests and synthetic baseline
+        run: pnpm release:check
+      - name: Build native arm64 offline payload
+        run: pnpm package:dev
+      - name: Integrity and private-path checks
+        run: pnpm package:check
+      - name: Core analysis and bundled OCR capability
+        run: pnpm package:smoke
+      - name: Compile GUI installer
+        run: pnpm build:installer
+      - name: Verify Mach-O architecture and deployment target
+        run: node scripts/check-macos-architecture.mjs
+      - name: Download and verify the published beta.1 upgrade fixture
+        run: node scripts/fetch-arm64-upgrade-fixture.mjs
+      - name: Isolated beta.1 data migration and current installer lifecycle
+        env:
+          VIGOUR_LEGACY_INSTALLER_PAYLOAD: ${{ github.workspace }}/release/arm64-upgrade-fixture/payload
+        run: pnpm test:installer
+      - name: Archive matched preview with provenance
+        env:
+          VIGOUR_SOURCE_COMMIT: ${{ github.sha }}
+        run: node scripts/stage-arm64-candidate.mjs
+      - name: Upload checked Apple Silicon candidate
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: Vigour-UI-Review-v0.0.2-beta.4-macos-arm64-unsigned
+          path: release-artifacts/arm64-candidate/*
+          if-no-files-found: error
+          retention-days: 7

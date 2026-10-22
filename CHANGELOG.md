@@ -4,6 +4,8 @@ All notable changes to Vigour UI Review are documented here. The project follows
 
 ## [Unreleased]
 
+Apple Silicon beta.4 release preparation: native arm64 CI with retained OCR dependencies, immutable candidate staging, and checksum-pinned beta.1-to-current isolated data migration checks. This does not replace a published asset or establish real-machine acceptance. See [beta.4 notes](docs/releases/v0.0.2-beta.4.md).
+
 Documentation follow-up (2026-10-23): synchronize published platform downloads, installation/testing instructions and delivery evidence for Intel beta.3, Windows beta.2 and Apple Silicon beta.1. No runtime, version, tag or existing release-asset changes; real-machine acceptance remains pending as documented.
 
 ## [0.0.2-beta.3] - 2026-10-22
