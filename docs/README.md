@@ -5,6 +5,7 @@
 ## 使用与安全
 
 - [安装、配对与故障排查](INSTALL.md)
+- [Intel Mac 核心版安装与复测](INTEL-MAC-TESTER-GUIDE.md)：不含本地 OCR，真机及最低系统验收待完成。
 - [0.0.2 双平台测试说明与回传模板](BETA-TESTING.md)：当前下载、Mac/Windows 安装及隐私注意事项。
 - [Windows 测试者指南](WINDOWS-TESTER-GUIDE.md)：Windows 11 真机验收仍待完成。
 - [隐私说明](PRIVACY.md)与[安全策略](SECURITY.md)

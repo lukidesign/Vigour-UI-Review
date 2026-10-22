@@ -1,6 +1,7 @@
 import { homedir } from 'node:os';
 import { resolve } from 'node:path';
 import { createInstaller } from './installer-core.mjs';
+import { macPlatform } from './platform.mjs';
 
 const messages = {
   INVALID_EXTENSION_ID: '请填写 Chrome 扩展管理页中的完整 32 位扩展 ID。',
@@ -15,7 +16,7 @@ const messages = {
   INVALID_PACKAGE: '安装包格式不匹配。', PERSONAL_CONFIG_IN_PACKAGE: '安装包混入个人配对配置，请使用原始安装包。',
 };
 try {
-  if (process.platform !== 'darwin' || process.arch !== 'arm64') throw new Error('仅支持 Apple Silicon 内测。');
+  macPlatform();
   const action = process.argv[2];
   const installer = await createInstaller(homedir());
   const result = action === 'status' ? await installer.status()

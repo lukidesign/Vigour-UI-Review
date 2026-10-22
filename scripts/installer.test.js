@@ -9,18 +9,30 @@ const roots = [];
 const id = 'a'.repeat(32);
 const offline = async () => { throw Object.assign(new Error('offline'), { cause: { code: 'ECONNREFUSED' } }); };
 afterEach(async () => { for (const root of roots.splice(0)) await rm(root, { recursive: true, force: true }); });
-async function fixture() {
+async function fixture(arch = process.arch) {
   const root = await realpath(await mkdtemp(join(tmpdir(), 'vigour-installer-test-'))); roots.push(root);
   const home = join(root, 'home'); const source = join(root, 'package'); await mkdir(home); await mkdir(source);
   for (const file of REQUIRED) { const path = join(source, file); await mkdir(join(path, '..'), { recursive: true }); await writeFile(path, file === 'VERSION' ? '0.0.1\n' : `fixture:${file}`, { mode: 0o755 }); }
-  await seal(source);
-  const installer = await createInstaller(home, { request: offline });
+  await seal(source, { platform: `darwin-${arch}` });
+  const installer = await createInstaller(home, { request: offline, arch });
   const managed = join(home, 'Library/Application Support/Vigour UI Review Companion');
   const registry = join(home, 'Library/Application Support/Google/Chrome/NativeMessagingHosts/com.vigour_ui_review.local.json');
   const data = join(home, 'Library/Application Support/Vigour UI Review');
   return { root, home, source, installer, managed, registry, data, record: async () => JSON.parse(await readFile(join(managed, 'current.json'), 'utf8')) };
 }
 describe('companion installer safety', () => {
+  it.each(['arm64', 'x64'])('supports %s and rejects the opposite architecture before mutation', async (arch) => {
+    const h = await fixture(arch);
+    const wrong = await createInstaller(h.home, { request: offline, arch: arch === 'x64' ? 'arm64' : 'x64' });
+    await expect(wrong.perform('install', { source: h.source, extensionId: id })).rejects.toThrow('INVALID_PACKAGE');
+    expect(await h.installer.status()).toEqual({ installed: false });
+    await h.installer.perform('install', { source: h.source, extensionId: id });
+    await h.installer.perform('install', { source: h.source, extensionId: id });
+    await h.installer.perform('rollback');
+    await h.installer.perform('repair');
+    await h.installer.perform('uninstall');
+    expect(await h.installer.status()).toEqual({ installed: false });
+  });
   it('installs an immutable version, updates, rolls back, repairs and uninstalls without deleting data', async () => {
     const h = await fixture(); expect(await h.installer.status()).toEqual({ installed: false });
     await h.installer.perform('install', { source: h.source, extensionId: id });

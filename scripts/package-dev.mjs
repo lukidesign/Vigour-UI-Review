@@ -1,11 +1,12 @@
 import { spawn } from 'node:child_process';
 import { chmod, cp, lstat, mkdir, readFile, readlink, readdir, realpath, rm, stat, symlink, unlink, writeFile } from 'node:fs/promises';
 import { dirname, relative, resolve } from 'node:path';
+import { macPlatform } from '../apps/companion-installer/platform.mjs';
 
 const root = resolve(import.meta.dirname, '..');
 const manifest = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8'));
-if (process.platform !== 'darwin' || process.arch !== 'arm64') throw new Error('The macOS offline package supports Apple Silicon only.');
-const packageName = `Vigour-UI-Review-v${manifest.version}-macos-arm64`;
+const platform = macPlatform();
+const packageName = `Vigour-UI-Review-v${manifest.version}-macos-${platform.arch}`;
 const target = process.env.VIGOUR_UI_REVIEW_PACKAGE_DIR
   ? resolve(process.env.VIGOUR_UI_REVIEW_PACKAGE_DIR)
   : resolve(root, 'release', packageName);
@@ -64,7 +65,7 @@ del _VigourPath, _vigour_prefix
 const packagedPythonLibrary = resolve(packagedPythonRoot, 'lib/libpython3.12.dylib');
 await run('/usr/bin/install_name_tool', ['-id', '@rpath/libpython3.12.dylib', packagedPythonLibrary]);
 await run('/usr/bin/codesign', ['--force', '--sign', '-', packagedPythonLibrary]);
-const pythonRequirements = await capture('uv', ['export', '--project', 'apps/vision-engine', '--extra', 'ocr', '--no-dev', '--no-emit-project', '--format', 'requirements-txt', '--frozen']);
+const pythonRequirements = await capture('uv', ['export', '--project', 'apps/vision-engine', ...(platform.localOcr ? ['--extra', 'ocr'] : []), '--no-dev', '--no-emit-project', '--format', 'requirements-txt', '--frozen']);
 const pythonRequirementsPath = resolve(target, 'vision-engine/requirements.lock.txt');
 await writeFile(pythonRequirementsPath, `${pythonRequirements}\n`, { mode: 0o644 });
 await run('uv', ['pip', 'install', '--python', resolve(target, 'runtime/python/bin/python3.12'), '--target', resolve(target, 'vision-engine/site-packages'), '--require-hashes', '--no-deps', '-r', pythonRequirementsPath]);
@@ -133,4 +134,5 @@ for (const [reportedLicense, dependencies] of Object.entries(licenseReport)) {
 javascriptDependencies.sort((left, right) => `${left.name}@${left.version}`.localeCompare(`${right.name}@${right.version}`));
 await writeFile(resolve(thirdPartyRoot, 'javascript/DEPENDENCIES.json'), `${JSON.stringify(javascriptDependencies, null, 2)}\n`, { mode: 0o644 });
 await writeFile(resolve(target, 'VERSION'), `${manifest.version}\n`, { mode: 0o644 });
+await writeFile(resolve(target, 'PLATFORM.json'), `${JSON.stringify({ ...platform, unsigned: true, realMachineAcceptance: 'pending' }, null, 2)}\n`);
 console.log(`Developer package created at ${target}`);

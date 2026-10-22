@@ -29,6 +29,19 @@ afterEach(async () => {
 });
 
 describe('local API', () => {
+  it.each([false, true])('reports actual OCR availability (%s), independently of core vision', async (localOcr) => {
+    const candidate = buildApp(db, security, mkdtempSync(join(tmpdir(), 'core-profile-')), { request: async () => ({}) }, { localOcr });
+    try {
+      const response = await candidate.inject({ method: 'GET', url: '/api/v1/capabilities', headers: authenticatedHeaders });
+      expect(response.json()).toMatchObject({ localVision: true, localOcr });
+      if (!localOcr) for (const url of ['/api/v1/vision/analyze', '/api/v1/runs/analyze']) {
+        const rejected = await candidate.inject({ method: 'POST', url, headers: authenticatedHeaders,
+          payload: { projectId: 'test', referenceAssetId: 'test', candidateAssetId: 'test', useOcr: true } });
+        expect(rejected.statusCode).toBe(409);
+        expect(rejected.json().code).toBe('LOCAL_OCR_UNAVAILABLE');
+      }
+    } finally { await candidate.close(); }
+  });
   it('does not report ready when image attachment fails', async () => {
     db.exec("CREATE TRIGGER fail_capture_attach BEFORE UPDATE OF image_asset_id ON captures BEGIN SELECT RAISE(FAIL, 'private database detail'); END");
     const response = await app.inject({ method: 'POST', url: '/api/v1/captures', headers: authenticatedHeaders, payload: {

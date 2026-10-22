@@ -18,7 +18,7 @@
 
 发布页同时提供 `SHA256SUMS.txt` 和 `BUILD-PROVENANCE.json`。前者用于核验下载，后者记录各平台真实构建来源；不能把最新 README 提交号当作包的源码号。需要帮助校验时联系发布者，不要求普通测试者使用终端。
 
-Release 附件不受旧 Actions 七天留存限制，但仍以发布页实际附件为准。不要下载“Source code”代替安装包；不要将 0.0.2 扩展与旧 0.0.1 程序混装。当前不提供 Intel Mac、Windows ARM、Linux 或 ChromeOS 测试包。
+Release 附件不受旧 Actions 七天留存限制，但仍以发布页实际附件为准。不要下载“Source code”代替安装包；不要将 0.0.2 扩展与旧 0.0.1 程序混装。Intel Mac 新增独立 beta.3 核心版候选（不含本地 OCR），见 [Intel 安装与复测指南](INTEL-MAC-TESTER-GUIDE.md)，真机验收待完成；仅使用发布页实际列出的附件。当前不提供 Windows ARM、Linux 或 ChromeOS 测试包。
 
 扩展 ZIP 是供用户解压加载的包，不是可原样上传 Chrome 商店的提交包；提审需另行制作扩展专用 ZIP。
 

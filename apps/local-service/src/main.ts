@@ -5,6 +5,7 @@ import { openDatabase } from './db.js';
 import { newSessionToken, persistSessionToken, parseAllowedOrigins } from './security.js';
 import { LocalSession, NATIVE_PROTOCOL } from './local-session.js';
 import { VisionClient } from './vision-client.js';
+import { probeVision } from './vision-capabilities.js';
 import { resolveDatabasePath } from './product-migration.js';
 
 const dataDir = process.env.VIGOUR_UI_REVIEW_DATA_DIR ?? process.env.DESIGN_ACCEPTANCE_DATA_DIR ?? resolve(process.cwd(), '.data');
@@ -16,14 +17,15 @@ const configuredOrigins = parseAllowedOrigins(process.env.VIGOUR_UI_REVIEW_ALLOW
 const visionCommand = process.env.VIGOUR_UI_REVIEW_VISION_COMMAND ?? process.env.DESIGN_ACCEPTANCE_VISION_COMMAND ?? resolve(import.meta.dirname, '../../vision-engine/.venv/bin/vigour-ui-review-vision');
 const vision = new VisionClient(visionCommand, ['--data-root', dataDir]);
 let visionAvailable = false;
+let localOcr = false;
 try {
-  await vision.request('ping', {}, 30_000);
+  localOcr = (await probeVision(vision)).localOcr;
   visionAvailable = true;
 } catch {
   await vision.close();
 }
 const staticRoot = process.env.VIGOUR_UI_REVIEW_WORKBENCH_ROOT ?? process.env.DESIGN_ACCEPTANCE_WORKBENCH_ROOT ?? resolve(import.meta.dirname, '../../workbench/dist');
-const app = buildApp(db, { sessionToken, allowedOrigins: configuredOrigins }, resolve(dataDir, 'assets'), visionAvailable ? vision : undefined, { staticRoot, session, stopNative: () => close() });
+const app = buildApp(db, { sessionToken, allowedOrigins: configuredOrigins }, resolve(dataDir, 'assets'), visionAvailable ? vision : undefined, { localOcr, staticRoot, session, stopNative: () => close() });
 const statePath = resolve(dataDir, 'native-state.json');
 let closing = false;
 let idleTimer: ReturnType<typeof setInterval> | undefined;

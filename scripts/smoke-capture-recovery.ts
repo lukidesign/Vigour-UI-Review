@@ -49,6 +49,7 @@ try {
   const failed = await post('/api/v1/captures', { ...payload, title: '失败采集合成示例' });
   assert.equal(failed.processingError, 'SEGMENT_DIMENSION_MISMATCH');
   const pending = new CaptureStore(db, join(scratch, 'assets')).create({ ...payload, title: '处理中合成示例' });
+  await post('/api/v1/projects', { name: 'Core-only UI validation', description: 'Synthetic test data' });
   browser = await chromium.launch({ executablePath: chromePath, headless: true });
   const results = [];
   for (const theme of ['dark', 'light']) {
@@ -96,6 +97,21 @@ try {
     await pendingRow.getByText('VISION_TIMEOUT', { exact: false }).waitFor();
     await page.keyboard.press('Escape');
     await modal.waitFor({ state: 'hidden' });
+    await page.locator('input[type="file"]').nth(0).setInputFiles(join(root, 'examples/demo/design.png'));
+    await page.locator('input[type="file"]').nth(1).setInputFiles(join(root, 'examples/demo/implementation.png'));
+    for (const width of [1920, 1440, 900, 720]) {
+      await page.setViewportSize({ width, height: 1000 });
+      await page.locator('.analysis-button').hover();
+      const ocr = page.getByRole('menuitem', { name: '本地 OCR 不可用（当前安装包）' });
+      await ocr.waitFor();
+      assert.equal(await ocr.getAttribute('aria-disabled'), 'true');
+      const menu = page.getByRole('menu');
+      const menuBox = await menu.boundingBox();
+      assert(menuBox && menuBox.x >= 0 && menuBox.x + menuBox.width <= width);
+      await menu.screenshot({ path: join(screenshots, `core-menu-${theme}-${width}.png`) });
+      await page.locator('.brand').hover();
+      await ocr.waitFor({ state: 'hidden' });
+    }
     assert.deepEqual(errors, []);
     // Restore test state for the next theme only, never touch user data.
     db.prepare("UPDATE captures SET processing_state = 'processing', processing_error = NULL WHERE id = ?").run(pending.id);

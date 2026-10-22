@@ -6,7 +6,7 @@ import { spawn } from 'node:child_process';
 
 const root = resolve(import.meta.dirname, '..');
 const manifest = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8'));
-const packageName = `Vigour-UI-Review-v${manifest.version}-macos-arm64`;
+const packageName = `Vigour-UI-Review-v${manifest.version}-macos-${process.arch}`;
 const packageRoot = process.env.VIGOUR_UI_REVIEW_PACKAGE_DIR ? resolve(process.env.VIGOUR_UI_REVIEW_PACKAGE_DIR) : resolve(root, 'release', packageName);
 await stat(resolve(packageRoot, 'VERSION'));
 const artifactRoot = resolve(root, 'release-artifacts');
