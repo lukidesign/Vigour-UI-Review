@@ -9,8 +9,8 @@
   <meta property="og:title" content="Vigour UI Review — 让设计还原，有据可循">
   <meta property="og:description" content="把设计稿与真实网页放在一起，让每一处差异都说得清。了解功能与下载适配设备的 Beta 版本。">
   <link rel="icon" href="assets/logo.png" type="image/png">
-  <link rel="stylesheet" href="styles.css?v=20261023-feature-layout">
-  <script src="main.js?v=20261023-real-comparison" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20261023-three-views">
+  <script src="main.js?v=20261023-three-views" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">跳到主要内容</a>
@@ -87,11 +87,29 @@
         <div class="section-heading"><div><h2 id="features-title"><span class="heading-phrase">看清设计与实现</span><span class="heading-phrase">的差异。</span></h2></div></div>
         <div class="feature-grid">
           <figure class="comparison-card">
-            <div class="card-topline"><span><span class="status-dot" aria-hidden="true"></span> 平铺对比</span><span class="small-label">实际界面 · 示例数据</span></div>
-            <a class="comparison-screenshot screenshot-link" href="assets/workbench-comparison.jpg" target="_blank" rel="noopener" aria-label="在新标签页查看完整平铺对比截图">
-              <img src="assets/workbench-comparison.jpg" width="1600" height="800" loading="lazy" alt="Vigour UI Review 实际平铺对比界面：左侧设计原图，右侧开发实现图及差异标注，最右侧为本地分析生成的问题清单；Studio 为虚构示例项目">
-            </a>
-            <figcaption class="comparison-caption"><span>工作台实拍 · Studio 虚构项目</span><a href="assets/workbench-comparison.jpg" target="_blank" rel="noopener">查看原图 ↗</a></figcaption>
+            <div class="card-topline"><span><span class="status-dot" aria-hidden="true"></span><span id="workbench-view-name" aria-live="polite">开发图标注</span></span><span class="small-label">实际界面 · 示例数据</span></div>
+            <div class="workbench-view" id="workbench-view-annotation" data-view-name="开发图标注">
+              <a class="comparison-screenshot screenshot-link" href="assets/workbench-view-annotation.jpg" target="_blank" rel="noopener" aria-label="在新标签页查看完整开发图标注截图">
+                <img src="assets/workbench-view-annotation.jpg" width="1600" height="800" loading="lazy" alt="真实工作台的开发图标注视图：在 Studio 示例开发图上标出差异位置，右侧显示本地分析生成的问题清单">
+              </a>
+            </div>
+            <div class="workbench-view" id="workbench-view-side-by-side" data-view-name="平铺对比" hidden>
+              <a class="comparison-screenshot screenshot-link" href="assets/workbench-view-side-by-side.jpg" target="_blank" rel="noopener" aria-label="在新标签页查看完整平铺对比截图">
+                <img src="assets/workbench-view-side-by-side.jpg" width="1600" height="800" loading="lazy" alt="真实工作台的平铺对比视图：Studio 示例设计原图和开发实现图左右并排，开发图带有差异标注，右侧保留问题清单">
+              </a>
+            </div>
+            <div class="workbench-view" id="workbench-view-overlay" data-view-name="透明度叠加" hidden>
+              <a class="comparison-screenshot screenshot-link" href="assets/workbench-view-overlay.jpg" target="_blank" rel="noopener" aria-label="在新标签页查看完整透明度叠加截图">
+                <img src="assets/workbench-view-overlay.jpg" width="1600" height="800" loading="lazy" alt="真实工作台的透明度叠加视图：Studio 示例开发图以 50% 透明度覆盖设计原图，顶部显示实际透明度控件，右侧保留问题清单">
+              </a>
+            </div>
+            <div class="view-switch" role="group" aria-label="切换真实工作台截图" hidden>
+              <button type="button" data-workbench-view="annotation" aria-label="开发图标注" aria-pressed="true" aria-controls="workbench-view-annotation"><span>开发图</span><span>标注</span></button>
+              <button type="button" data-workbench-view="side-by-side" aria-pressed="false" aria-controls="workbench-view-side-by-side">平铺对比</button>
+              <button type="button" data-workbench-view="overlay" aria-label="透明度叠加" aria-pressed="false" aria-controls="workbench-view-overlay"><span>透明度</span><span>叠加</span></button>
+            </div>
+            <figcaption class="comparison-caption"><span>工作台实拍 · Studio 虚构项目</span><a id="workbench-original" href="assets/workbench-view-annotation.jpg" target="_blank" rel="noopener" aria-label="查看开发图标注原图，在新标签页打开">查看原图 ↗</a></figcaption>
+            <noscript><div class="view-fallback" aria-label="三种视图原图"><a href="assets/workbench-view-annotation.jpg" target="_blank" rel="noopener">开发图标注 ↗</a><a href="assets/workbench-view-side-by-side.jpg" target="_blank" rel="noopener">平铺对比 ↗</a><a href="assets/workbench-view-overlay.jpg" target="_blank" rel="noopener">透明度叠加 ↗</a></div></noscript>
           </figure>
           <div class="feature-copy">
             <article class="feature-item"><span class="feature-number">01</span><div><h3>三种视图，灵活对比</h3><p>开发图标注、平铺对比、透明度叠加，按需核对设计还原。</p></div></article>

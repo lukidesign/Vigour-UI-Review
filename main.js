@@ -55,3 +55,22 @@ function selectPlatform(platform) {
 platformButtons.forEach(button => button.addEventListener('click', () => selectPlatform(button.dataset.platform)));
 document.querySelectorAll('[data-install]').forEach(link => link.addEventListener('click', () => selectPlatform(link.dataset.install)));
 selectPlatform('mac');
+
+const viewButtons = [...document.querySelectorAll('[data-workbench-view]')];
+const viewPanels = [...document.querySelectorAll('.workbench-view')];
+const viewName = document.querySelector('#workbench-view-name');
+const originalImageLink = document.querySelector('#workbench-original');
+
+function selectWorkbenchView(view) {
+  const panel = viewPanels.find(item => item.id === `workbench-view-${view}`);
+  if (!panel) return;
+  viewButtons.forEach(button => button.setAttribute('aria-pressed', String(button.dataset.workbenchView === view)));
+  viewPanels.forEach(item => { item.hidden = item !== panel; });
+  viewName.textContent = panel.dataset.viewName;
+  originalImageLink.href = panel.querySelector('a').href;
+  originalImageLink.setAttribute('aria-label', `查看${panel.dataset.viewName}原图，在新标签页打开`);
+}
+
+viewButtons.forEach(button => button.addEventListener('click', () => selectWorkbenchView(button.dataset.workbenchView)));
+document.querySelector('.view-switch').hidden = false;
+selectWorkbenchView('annotation');

@@ -112,6 +112,13 @@ h2 { font-size: 2.875rem; line-height: 1.4; font-weight: 650; letter-spacing: -1
 .small-label { color: #596a84; font-size: 0.75rem; font-weight: 400; }
 .comparison-screenshot { overflow: hidden; border: 1px solid #d7e0ed; border-radius: 10px; background: #101724; }
 .comparison-screenshot img { width: 100%; height: auto; }
+.view-switch { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; margin-top: 16px; }
+.view-switch button { min-width: 0; min-height: 44px; padding: 8px 6px; border: 1px solid #d0daeb; border-radius: 7px; background: #ffffffba; color: #52627b; font-size: .875rem; line-height: 1.5; transition: background var(--ease), border-color var(--ease); }
+.view-switch button:hover { border-color: #92abd2; background: #fff; }
+.view-switch button[aria-pressed="true"] { border-color: #283e62; background: #283e62; color: #fff; }
+.view-switch button span { display: inline-block; max-width: 100%; overflow-wrap: anywhere; }
+.view-fallback { display: flex; flex-wrap: wrap; gap: 4px 16px; margin-top: 8px; font-size: .875rem; color: #234984; }
+.view-fallback a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: 4px; }
 .comparison-caption { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 4px 20px; margin-top: 10px; color: #596a84; font-size: .875rem; }
 .comparison-caption a { display: inline-flex; align-items: center; min-height: 44px; color: #234984; }
 .comparison-caption a:hover { text-decoration: underline; text-underline-offset: 4px; }
