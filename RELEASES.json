@@ -1,29 +1,23 @@
 {
-  "verifiedAt": "2026-10-22T10:41:13.021Z",
+  "verifiedAt": "2026-10-22T18:33:26Z",
   "source": "https://api.github.com/repos/lukidesign/Vigour-UI-Review/releases?per_page=10",
-  "sourceCommit": "cdc0909c0bec5602d24e5c8f289fd6c59f1b70bd",
+  "repositoryCommitAtVerification": "b174966e97f36fe7badf50d15935d600f54a3dfa",
   "applicationVersion": "0.0.2",
   "platforms": {
     "mac": {
-      "tag": "v0.0.2-beta.1",
-      "releaseUrl": "https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1",
-      "publishedAt": "2026-10-19T07:53:17Z",
-      "name": "Vigour-UI-Review-Setup-v0.0.2-beta.1-macos-arm64-unsigned.zip",
-      "url": "https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-Setup-v0.0.2-beta.1-macos-arm64-unsigned.zip",
-      "sizeBytes": 316829139,
-      "sha256": "35af45dc6327c136327f064d320facdd66a999f59aa2c6ddb874fac22200162b",
-      "checksumUrl": "https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/SHA256SUMS.txt",
-      "extension": {
-        "tag": "v0.0.2-beta.1",
-        "releaseUrl": "https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1",
-        "publishedAt": "2026-10-19T07:53:17Z",
-        "name": "Vigour-UI-Review-extension-v0.0.2.zip",
-        "url": "https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-extension-v0.0.2.zip",
-        "sizeBytes": 22242,
-        "sha256": "a84002bade3d8619f3780c514b979833abbc1ba8b41fc9310f71e336fb5b1a16",
-        "checksumUrl": "https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/SHA256SUMS.txt"
-      },
-      "extensionBundled": false
+      "tag": "v0.0.2-beta.4",
+      "sourceCommit": "06e5f1df8c5b09a9782f5862e4fa4cd6f07c9495",
+      "releaseUrl": "https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.4",
+      "publishedAt": "2026-10-22T18:19:21Z",
+      "name": "Vigour-UI-Review-Setup-v0.0.2-beta.4-macos-arm64-unsigned.zip",
+      "url": "https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.4/Vigour-UI-Review-Setup-v0.0.2-beta.4-macos-arm64-unsigned.zip",
+      "sizeBytes": 308264073,
+      "sha256": "f8af26f309b3ee40d303b0ed5a6a0ead7e403d516146ab3d4cff624ba54bf10c",
+      "checksumUrl": "https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.4/SHA256SUMS.txt",
+      "extensionBundled": true,
+      "minimumMacOS": "14.5",
+      "ocrDependenciesIncluded": true,
+      "acceptance": "Pending: real Chrome, clean machine, minimum macOS, idle/sleep and offline OCR."
     },
     "intel": {
       "tag": "v0.0.2-beta.3",
