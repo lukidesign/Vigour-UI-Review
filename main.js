@@ -42,26 +42,6 @@ document.addEventListener('focusin', (event) => {
   if (!event.target.closest('.site-header')) closeMenu();
 });
 
-const range = document.querySelector('#comparison-range');
-const comparison = document.querySelector('#comparison-stage');
-const comparisonButtons = [...document.querySelectorAll('[data-compare]')];
-document.querySelector('.comparison-controls').hidden = false;
-
-function updateComparison(value) {
-  const percent = Math.max(0, Math.min(100, Number(value)));
-  range.value = String(percent);
-  comparison.style.setProperty('--split', `${percent}%`);
-  range.setAttribute('aria-valuetext', `显示 ${percent}% 设计稿`);
-  comparisonButtons.forEach(button => button.setAttribute('aria-pressed', String(Number(button.dataset.compare) === percent)));
-  comparison.querySelector('.label-design').hidden = percent === 0;
-  comparison.querySelector('.label-implementation').hidden = percent === 100;
-  comparison.querySelector('.comparison-line').hidden = percent === 0 || percent === 100;
-}
-
-range.addEventListener('input', () => updateComparison(range.value));
-comparisonButtons.forEach(button => button.addEventListener('click', () => updateComparison(button.dataset.compare)));
-updateComparison(range.value);
-
 const platformButtons = [...document.querySelectorAll('[data-platform]')];
 const installationPanels = [...document.querySelectorAll('.installation-panel')];
 document.querySelector('.platform-switch').hidden = false;

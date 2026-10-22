@@ -9,8 +9,8 @@
   <meta property="og:title" content="Vigour UI Review — 让设计还原，有据可循">
   <meta property="og:description" content="把设计稿与真实网页放在一起，让每一处差异都说得清。了解功能与下载适配设备的 Beta 版本。">
   <link rel="icon" href="assets/logo.png" type="image/png">
-  <link rel="stylesheet" href="styles.css?v=20261022-platforms">
-  <script src="main.js?v=20261022-platforms" defer></script>
+  <link rel="stylesheet" href="styles.css?v=20261023-real-comparison">
+  <script src="main.js?v=20261023-real-comparison" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#main">跳到主要内容</a>
@@ -86,23 +86,15 @@
       <div class="container">
         <div class="section-heading"><div><h2 id="features-title"><span class="heading-phrase">看清设计与实现</span><span class="heading-phrase">的差异。</span></h2></div></div>
         <div class="feature-grid">
-          <div class="comparison-card">
-            <div class="card-topline"><span><span class="status-dot"></span> 设计与实现对比</span><span class="small-label">Studio · 示例数据</span></div>
-            <div class="comparison-stage" id="comparison-stage">
-              <img src="assets/studio-implementation.svg" width="1200" height="800" loading="lazy" alt="Studio 仪表盘实现示例：新建项目按钮和状态标签变色、本周完成数字右移、交付率图标缺失">
-              <div class="comparison-design"><img src="assets/studio-design.svg" width="1200" height="800" loading="lazy" alt="Studio 仪表盘设计稿：蓝色按钮、对齐的指标数字、完整的图标与绿色状态标签"></div>
-              <div class="comparison-line" aria-hidden="true"><span>↔</span></div>
-              <span class="image-label label-design" aria-hidden="true">设计稿</span><span class="image-label label-implementation" aria-hidden="true">开发实现</span>
-            </div>
-            <div class="comparison-controls" hidden>
-              <label for="comparison-range">拖动对比</label>
-              <div class="range-row"><span aria-hidden="true">实现</span><input id="comparison-range" type="range" min="0" max="100" value="50" aria-label="设计稿显示比例" aria-valuetext="显示 50% 设计稿"><span aria-hidden="true">设计</span></div>
-              <div class="comparison-presets" aria-label="示例对比快捷操作"><button type="button" data-compare="0">查看实现</button><button type="button" data-compare="50" aria-pressed="true">各看一半</button><button type="button" data-compare="100">查看设计</button></div>
-            </div>
-            <p class="demo-caption">留意按钮颜色、数字位置与缺失图标。图片为合成示例。</p>
-          </div>
+          <figure class="comparison-card">
+            <div class="card-topline"><span><span class="status-dot" aria-hidden="true"></span> 平铺对比</span><span class="small-label">实际界面 · 示例数据</span></div>
+            <a class="comparison-screenshot screenshot-link" href="assets/workbench-comparison.jpg" target="_blank" rel="noopener" aria-label="在新标签页查看完整平铺对比截图">
+              <img src="assets/workbench-comparison.jpg" width="1600" height="800" loading="lazy" alt="Vigour UI Review 实际平铺对比界面：左侧设计原图，右侧开发实现图及差异标注，最右侧为本地分析生成的问题清单；Studio 为虚构示例项目">
+            </a>
+            <figcaption class="comparison-caption"><span>工作台实拍 · Studio 虚构项目</span><a href="assets/workbench-comparison.jpg" target="_blank" rel="noopener">查看原图 ↗</a></figcaption>
+          </figure>
           <div class="feature-copy">
-            <article class="feature-item"><span class="feature-number">01</span><div><h3>三种视图，灵活对比</h3><p>在标注、平铺和叠加视图中核对设计还原。</p></div></article>
+            <article class="feature-item"><span class="feature-number">01</span><div><h3>三种视图，灵活对比</h3><p>开发图标注、平铺对比、透明度叠加，按需核对设计还原。</p></div></article>
             <article class="feature-item"><span class="feature-number">02</span><div><h3>定位视觉差异</h3><p>查看位置、尺寸、颜色、缺失与多余元素的问题清单。</p></div></article>
             <article class="feature-item"><span class="feature-number">03</span><div><h3>导出验收报告</h3><p>支持 PNG、Markdown、JSON，保留项目与验收历史。</p></div></article>
           </div>
