@@ -121,6 +121,10 @@ const migrations = [
   `CREATE INDEX IF NOT EXISTS idx_ai_consent_expiry ON ai_consent_receipts(expires_at, used_at)`,
   `ALTER TABLE issues ADD COLUMN suggested_css_patch TEXT`,
   `ALTER TABLE captures ADD COLUMN image_asset_id TEXT REFERENCES image_assets(id)`,
+  `ALTER TABLE captures ADD COLUMN processing_state TEXT NOT NULL DEFAULT 'failed' CHECK (processing_state IN ('processing','ready','failed'))`,
+  `ALTER TABLE captures ADD COLUMN processing_error TEXT`,
+  `UPDATE captures SET processing_state = CASE WHEN image_asset_id IS NOT NULL THEN 'ready' ELSE 'failed' END,
+    processing_error = CASE WHEN image_asset_id IS NULL THEN 'LEGACY_CAPTURE_FAILED' ELSE NULL END`,
 ] as const;
 
 export function openDatabase(path: string): DatabaseSync {

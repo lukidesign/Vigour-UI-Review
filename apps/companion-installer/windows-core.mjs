@@ -20,10 +20,13 @@ export class WindowsNativeRegistry {
   async command(args) {
     return await new Promise((done, reject) => {
       const child = spawn(this.executable, args, { windowsHide: true, stdio: ['ignore', 'pipe', 'ignore'] });
+      const timer = setTimeout(() => { child.kill(); reject(new Error('REGISTRY_TIMEOUT')); }, 10_000);
+      child.once('close', () => clearTimeout(timer));
+      child.once('error', () => clearTimeout(timer));
       let output = ''; let overflow = false;
       child.stdout.on('data', (part) => { output += String(part); if (output.length > 8192) { overflow = true; child.kill(); } });
       child.once('error', reject);
-      child.once('exit', (code) => overflow ? reject(new Error('FOREIGN_NATIVE_REGISTRATION')) : done({ code, output }));
+      child.once('close', (code) => overflow ? reject(new Error('FOREIGN_NATIVE_REGISTRATION')) : done({ code, output }));
     });
   }
   async read() {
@@ -47,7 +50,7 @@ export class WindowsNativeRegistry {
   }
 }
 
-export async function createWindowsInstaller(localAppData, { registry = new WindowsNativeRegistry(), request = fetch } = {}) {
+export async function createWindowsInstaller(localAppData, { registry = new WindowsNativeRegistry(), request = fetch, progress = async () => {} } = {}) {
   if (!isAbsolute(localAppData)) throw new Error('UNSAFE_INSTALL_PATH');
   localAppData = await realpath(localAppData);
   const root = join(localAppData, 'Vigour UI Review Companion');
@@ -55,6 +58,7 @@ export async function createWindowsInstaller(localAppData, { registry = new Wind
   const marker = join(root, 'ownership.json');
   const current = join(root, 'current.json');
   const pending = join(root, 'pending.json');
+  const uninstallPending = join(data, 'uninstall-pending.json');
   async function safePath(path) {
     if (!within(localAppData, path)) throw new Error('UNSAFE_INSTALL_PATH');
     for (let cursor = path; cursor !== localAppData; cursor = dirname(cursor)) {
@@ -140,7 +144,29 @@ export async function createWindowsInstaller(localAppData, { registry = new Wind
   async function lock(path) {
     await safePath(path);
     let handle;
-    try { handle = await open(path, 'wx', 0o600); } catch (error) { if (error.code === 'EEXIST') throw new Error('INSTALL_BUSY'); throw error; }
+    try { handle = await open(path, 'wx', 0o600); }
+    catch (error) {
+      if (error.code !== 'EEXIST') throw error;
+      // Match Native Host's recovery mutex. Never remove a live, unknown or
+      // just-created writer's lock, even if a previous installer was killed.
+      const recoveryPath = `${path}.recovery`;
+      await safePath(recoveryPath);
+      let recovery;
+      try {
+        recovery = await open(recoveryPath, 'wx', 0o600);
+        const metadata = await lstat(path);
+        if (!metadata.isFile() || metadata.isSymbolicLink()) throw new Error('INSTALL_BUSY');
+        const saved = JSON.parse(await readFile(path, 'utf8'));
+        if (!Number.isSafeInteger(saved.pid) || saved.pid <= 0 || Date.now() - metadata.mtimeMs <= 1000) throw new Error('INSTALL_BUSY');
+        let dead = false;
+        try { process.kill(saved.pid, 0); }
+        catch (probe) { if (probe.code === 'ESRCH') dead = true; }
+        if (!dead) throw new Error('INSTALL_BUSY');
+        await unlink(path);
+        handle = await open(path, 'wx', 0o600);
+      } catch { throw new Error('INSTALL_BUSY'); }
+      finally { if (recovery) { await recovery.close(); await unlink(recoveryPath); } }
+    }
     await handle.writeFile(json({ pid: process.pid })); await handle.close();
     return async () => { try { if (JSON.parse(await readFile(path, 'utf8')).pid === process.pid) await unlink(path); } catch (error) { if (error.code !== 'ENOENT') throw error; } };
   }
@@ -171,24 +197,59 @@ export async function createWindowsInstaller(localAppData, { registry = new Wind
     if (record) await checkRegistration(record);
     return { installed: !!record, extensionId: record?.active.extensionId, canRollback: !!record?.previous };
   }
+  async function finishUninstallCleanup() {
+    await safePath(uninstallPending);
+    const saved = await optional(uninstallPending);
+    if (!saved) return;
+    const record = JSON.parse(saved);
+    if (record.product !== PRODUCT || typeof record.retired !== 'string' || !/^Vigour UI Review Companion Removed-[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/.test(record.retired)) throw new Error('UNSAFE_INSTALL_PATH');
+    const retired = join(localAppData, record.retired);
+    await safePath(retired);
+    const markerPath = join(retired, 'ownership.json');
+    await safePath(markerPath);
+    const owner = await optional(markerPath);
+    if (owner && JSON.parse(owner).product !== PRODUCT) throw new Error('INSTALL_NOT_OWNED');
+    await progress('remove-companion');
+    // The journal survives partial deletion, including deletion of the marker.
+    try { await rm(retired, { recursive: true, force: true, maxRetries: 3, retryDelay: 200 }); }
+    catch { throw new Error('UNINSTALL_FILES_LOCKED'); }
+    await unlink(uninstallPending);
+  }
   async function perform(action, { source, extensionId } = {}) {
     if (!['install', 'repair', 'rollback', 'uninstall'].includes(action)) throw new Error('INVALID_ACTION');
-    if (action === 'install' && !/^[a-p]{32}$/.test(extensionId ?? '')) throw new Error('INVALID_EXTENSION_ID');
+    if ((action === 'install' || (action === 'repair' && extensionId !== undefined)) && !/^[a-p]{32}$/.test(extensionId ?? '')) throw new Error('INVALID_EXTENSION_ID');
+    await progress('verify');
     const packageManifest = action === 'install' ? await verify(source, { expectedPlatform: 'win32-x64' }) : undefined;
-    if (action === 'install') await initialize(); else await owned();
     await directory(data);
-    const releaseInstall = await lock(join(root, 'install.lock'));
+    const releaseInstall = await lock(join(data, 'installer.lock'));
     let releaseLaunch;
     try {
       releaseLaunch = await lock(join(data, 'native-launch.lock'));
+      await safePath(marker);
+      if (action === 'uninstall' && !(await optional(marker))) {
+        // Resume outer Inno cleanup after an earlier successful companion removal.
+        await safePath(root);
+        try { await lstat(root); throw new Error('INSTALL_NOT_OWNED'); }
+        catch (error) { if (error.code !== 'ENOENT') throw error; }
+        if (await registry.read()) throw new Error('FOREIGN_NATIVE_REGISTRATION');
+        await finishUninstallCleanup();
+        await progress('complete');
+        return { ok: true, action, dataPreserved: true };
+      }
+      await safePath(uninstallPending);
+      // Do not mix a new installation with incomplete previous removal.
+      if (action !== 'uninstall' && await optional(uninstallPending)) throw new Error('UNINSTALL_FILES_LOCKED');
+      if (action === 'install') await initialize(); else await owned();
       await recoverPending();
       const before = await readRecord(); await checkRegistration(before);
+      await progress('stop-service');
       await stopManagedService(before);
       if (action === 'install') {
         await directory(join(root, 'versions'));
         const active = { directory: `${packageManifest.version}-${randomUUID()}`, extensionId };
         const target = slot(active); const staging = `${target}.staging`;
         try {
+          await progress('copy');
           await cp(source, staging, { recursive: true, dereference: false, errorOnExist: true, force: false });
           await verify(staging, { expectedPlatform: 'win32-x64' });
           await rename(staging, target);
@@ -196,26 +257,53 @@ export async function createWindowsInstaller(localAppData, { registry = new Wind
         } finally { await rm(staging, { recursive: true, force: true }); }
       } else {
         if (!before) throw new Error('NOT_INSTALLED');
-        if (action === 'repair') await activate(before, before);
+        if (action === 'repair') {
+          if (!extensionId || extensionId === before.active.extensionId) await activate(before, before);
+          else {
+            // Never edit the live slot in place. A failed switch must preserve
+            // the old extension's config, registration and installation record.
+            const sourceSlot = slot(before.active);
+            const manifest = await verify(sourceSlot, { installed: true, expectedPlatform: 'win32-x64' });
+            const active = { directory: `${manifest.version}-${randomUUID()}`, extensionId };
+            const target = slot(active); const staging = `${target}.staging`;
+            try {
+              await progress('copy');
+              await cp(sourceSlot, staging, { recursive: true, dereference: false, errorOnExist: true, force: false });
+              await verify(staging, { installed: true, expectedPlatform: 'win32-x64' });
+              await rename(staging, target);
+              await activate({ ...before, active, previous: before.active }, before);
+            } finally { await rm(staging, { recursive: true, force: true }); }
+          }
+        }
         if (action === 'rollback') {
           if (!before.previous) throw new Error('NO_ROLLBACK');
           await activate({ ...before, active: before.previous, previous: before.active }, before);
         }
         if (action === 'uninstall') {
+          await progress('unregister');
           const oldPath = await checkRegistration(before);
-          if (oldPath) await registry.remove();
-          const retired = join(localAppData, `Vigour UI Review Companion Removed-${randomUUID()}`);
-          try { await rename(root, retired); }
-          catch (error) { if (oldPath) await registry.write(oldPath); throw error; }
+          const retiredName = `Vigour UI Review Companion Removed-${randomUUID()}`;
+          const retired = join(localAppData, retiredName);
+          await safePath(uninstallPending);
+          await atomic(uninstallPending, json({ product: PRODUCT, retired: retiredName }));
+          try {
+            if (oldPath) await registry.remove();
+            await rename(root, retired);
+          } catch (error) {
+            if (oldPath) await registry.write(oldPath);
+            await unlink(uninstallPending);
+            throw error;
+          }
           // If a file is locked, leave the unregistered retired directory for
           // inspection rather than restoring a pointer to a partially deleted tree.
-          await rm(retired, { recursive: true, force: false });
+          await finishUninstallCleanup();
         }
       }
+      await progress('complete');
       return { ok: true, action, dataPreserved: true };
     } finally {
-      if (releaseLaunch) await releaseLaunch();
-      await releaseInstall();
+      try { if (releaseLaunch) await releaseLaunch(); }
+      finally { await releaseInstall(); }
     }
   }
   return { status, perform };

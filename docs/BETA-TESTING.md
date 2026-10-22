@@ -1,20 +1,20 @@
 # Vigour UI Review 0.0.2 双平台测试说明
 
-更新：**2026-10-20**。发布商：LukiDesign。
+更新：**2026-10-22**。发布商：LukiDesign。
 
-请协助测试 **v0.0.2-beta.1 未签名公开预发布版**；程序与 Chrome 扩展显示 **0.0.2**。本轮重点：普通用户能否完成安装、从扩展启动工作台、采集、分析和导出。
+请协助测试 **Windows v0.0.2-beta.2 / Mac v0.0.2-beta.1 未签名预发布版**；程序与 Chrome 扩展显示 **0.0.2**。Windows 新包重点复测拼接、错误提示、修复配对、卸载退出和 Markdown 导出；必须使用同次构建的扩展与安装器。
 
 **Windows 11 真机验收仍待完成。** macOS 已有维护者本机流程记录，但不代表所有机器通过。两平台都不是已签名稳定版，Mac 未公证；本说明也不代表 Chrome Web Store 已批准或上架。
 
 ## 一、下载正确的测试包
 
-从 [GitHub v0.0.2-beta.1 发布页](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1) 的 **Assets** 下载，不再使用旧文档中的临时 Actions 附件或过期日期。
+从下表对应的 GitHub Release 的 **Assets** 下载，不使用过期 Actions 附件。Windows beta.2 不更新 Mac beta.1。
 
 | 平台 | 下载与文件名 |
 | --- | --- |
-| Windows 11，Intel/AMD 64 位 | [完整 Windows ZIP，约 171 MB](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-v0.0.2-beta.1-windows-x64-unsigned.zip)：`Vigour-UI-Review-v0.0.2-beta.1-windows-x64-unsigned.zip` |
+| Windows 11，Intel/AMD 64 位 | [完整 Windows ZIP，新修复测试包](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.2/Vigour-UI-Review-v0.0.2-beta.2-windows-x64-unsigned.zip)：`Vigour-UI-Review-v0.0.2-beta.2-windows-x64-unsigned.zip` |
 | macOS 14+，Apple Silicon | [Mac 图形安装器 ZIP，约 317 MB](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-Setup-v0.0.2-beta.1-macos-arm64-unsigned.zip)：`Vigour-UI-Review-Setup-v0.0.2-beta.1-macos-arm64-unsigned.zip` |
-| 配套 Chrome 扩展 | [0.0.2 扩展 ZIP](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-extension-v0.0.2.zip)：`Vigour-UI-Review-extension-v0.0.2.zip`；Windows 完整包内已有 `chrome-extension` |
+| Mac beta.1 配套 Chrome 扩展 | [0.0.2 扩展 ZIP](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-extension-v0.0.2.zip)：`Vigour-UI-Review-extension-v0.0.2.zip`；Windows beta.2 请只用其完整包内的 `chrome-extension` |
 
 发布页同时提供 `SHA256SUMS.txt` 和 `BUILD-PROVENANCE.json`。前者用于核验下载，后者记录各平台真实构建来源；不能把最新 README 提交号当作包的源码号。需要帮助校验时联系发布者，不要求普通测试者使用终端。
 
@@ -74,7 +74,7 @@ Release 附件不受旧 Actions 七天留存限制，但仍以发布页实际附
 
 ```text
 测试人（可用匿名编号）/ 日期：
-渠道：v0.0.2-beta.1
+渠道：Windows v0.0.2-beta.2 / Mac v0.0.2-beta.1（按实际填写）
 程序版本 / 扩展版本：0.0.2 / ______
 扩展来源：本地解压 / 商店（填写真实来源）
 测试包完整文件名：

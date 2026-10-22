@@ -1,6 +1,6 @@
 # Vigour UI Review
 
-[简体中文](README.zh-CN.md) · [Downloads](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1) · [Installation](docs/INSTALL.md) · [Documentation](docs/README.md) · [Changelog](CHANGELOG.md)
+[简体中文](README.zh-CN.md) · [Downloads](https://github.com/lukidesign/Vigour-UI-Review/releases) · [Installation](docs/INSTALL.md) · [Documentation](docs/README.md) · [Changelog](CHANGELOG.md)
 
 A local-first visual acceptance workbench: compare a Web implementation with its design, review measurable differences, and export evidence.
 
@@ -10,14 +10,14 @@ A local-first visual acceptance workbench: compare a Web implementation with its
 
 ## Download and start
 
-> **v0.0.2-beta.1 is an unsigned public prerelease**, not a stable release. The application and extension display **0.0.2**. **Windows 11 real-machine acceptance is pending.** macOS signing/notarization, clean-machine/minimum-version installation and sleep/idle acceptance also remain pending.
+> **Windows: v0.0.2-beta.2; macOS: v0.0.2-beta.1.** Both are unsigned prereleases, not stable releases. App and extension display **0.0.2**; use matching files from the same platform/build. **Windows 11 real-machine retesting is pending.**
 
 | Platform | Download | Verification boundary |
 | --- | --- | --- |
 | macOS 14+ · Apple Silicon | [Graphical installer](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-Setup-v0.0.2-beta.1-macos-arm64-unsigned.zip) + [Chrome extension](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-extension-v0.0.2.zip) | Core Chrome workflow checked on the maintainer’s Mac; not clean-machine acceptance |
-| Windows · x64 | [Tester package](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-v0.0.2-beta.1-windows-x64-unsigned.zip) | Windows Server CI checked; Windows 11 user-PC testing pending |
+| Windows · x64 | [Tester package](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.2/Vigour-UI-Review-v0.0.2-beta.2-windows-x64-unsigned.zip) | Windows Server CI checked; Windows 11 user-PC testing pending |
 
-1. Download matching assets from the [beta release](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1), verify their checksums, and extract them.
+1. Download matching assets using the platform links above, verify their checksums, and extract them.
 2. In Chrome, load the unpacked extension folder and note its actual extension ID. Disable the old extension to avoid mixing versions.
 3. Follow the platform installer/pairing steps, open the workbench, and import a design and implementation image to start a review.
 

@@ -29,6 +29,45 @@ afterEach(async () => {
 });
 
 describe('local API', () => {
+  it('does not report ready when image attachment fails', async () => {
+    db.exec("CREATE TRIGGER fail_capture_attach BEFORE UPDATE OF image_asset_id ON captures BEGIN SELECT RAISE(FAIL, 'private database detail'); END");
+    const response = await app.inject({ method: 'POST', url: '/api/v1/captures', headers: authenticatedHeaders, payload: {
+      title: 'Synthetic', pageUrl: 'https://example.test/', mode: 'viewport',
+      viewport: { width: 1, height: 1, deviceScaleFactor: 1 }, page: { width: 1, height: 1 },
+      dom: [], segments: [{ y: 0, dataUrl: pngDataUrl(1, 1) }], capturedAt: new Date().toISOString(),
+    } });
+    expect(response.json()).toMatchObject({ analysisReady: false, processingState: 'failed', processingError: 'CAPTURE_PROCESSING_FAILED' });
+    expect(response.json().imageAssetId).toBeUndefined();
+    const refreshed = await app.inject({ method: 'GET', url: '/api/v1/captures', headers: authenticatedHeaders });
+    expect(refreshed.json()[0]).toMatchObject({ processingState: 'failed' });
+    expect(refreshed.body).not.toContain('private database detail');
+  });
+  it.each(['SEGMENT_DIMENSION_MISMATCH', 'VISION_TIMEOUT', 'SEGMENT_COVERAGE_GAP', 'decoder failed at /Users/private/session-token'])('persists safe capture processing failures: %s', async (failure) => {
+    const failing = buildApp(db, security, mkdtempSync(join(tmpdir(), 'capture-failed-')), { request: async () => { throw new Error(failure); } });
+    try {
+      const created = await failing.inject({ method: 'POST', url: '/api/v1/captures', headers: authenticatedHeaders, payload: {
+        title: 'Synthetic', pageUrl: 'https://example.test/', mode: 'full-page',
+        viewport: { width: 1, height: 1, deviceScaleFactor: 1 }, page: { width: 1, height: 1 },
+        dom: [], segments: [{ y: 0, dataUrl: pngDataUrl(1, 1) }], capturedAt: new Date().toISOString(),
+      } });
+      expect(created.statusCode).toBe(201);
+      const expected = failure.startsWith('decoder') ? 'CAPTURE_PROCESSING_FAILED' : failure;
+      expect(created.json()).toMatchObject({ analysisReady: false, processingState: 'failed', processingError: expected });
+      const refreshed = await failing.inject({ method: 'GET', url: '/api/v1/captures', headers: authenticatedHeaders });
+      expect(refreshed.json()[0]).toMatchObject({ id: created.json().id, processingState: 'failed', processingError: expected });
+      expect(refreshed.body).not.toMatch(/session-token|manifestPath|\/Users\/|decoder/);
+    } finally { await failing.close(); }
+  });
+
+  it('marks viewport captures ready and full pages without an engine failed', async () => {
+    const payload = { title: 'Synthetic', pageUrl: 'https://example.test/', mode: 'viewport',
+      viewport: { width: 1, height: 1, deviceScaleFactor: 1 }, page: { width: 1, height: 1 },
+      dom: [], segments: [{ y: 0, dataUrl: pngDataUrl(1, 1) }], capturedAt: new Date().toISOString() };
+    const ready = await app.inject({ method: 'POST', url: '/api/v1/captures', headers: authenticatedHeaders, payload });
+    expect(ready.json()).toMatchObject({ analysisReady: true, processingState: 'ready' });
+    const failed = await app.inject({ method: 'POST', url: '/api/v1/captures', headers: authenticatedHeaders, payload: { ...payload, mode: 'full-page' } });
+    expect(failed.json()).toMatchObject({ analysisReady: false, processingState: 'failed', processingError: 'VISION_UNAVAILABLE' });
+  });
   it('answers health checks', async () => {
     const response = await app.inject({ method: 'GET', url: '/health' });
     expect(response.statusCode).toBe(200);

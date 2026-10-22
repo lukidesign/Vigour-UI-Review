@@ -34,10 +34,11 @@ describe('store documentation consistency (not store approval)', () => {
   it('directs beta testers to versioned Release assets, not expiring Actions downloads', () => {
     const guide = read('docs/BETA-TESTING.md');
     for (const name of [
-      'Vigour-UI-Review-v0.0.2-beta.1-windows-x64-unsigned.zip',
       'Vigour-UI-Review-Setup-v0.0.2-beta.1-macos-arm64-unsigned.zip',
       'Vigour-UI-Review-extension-v0.0.2.zip',
     ]) expect(guide).toContain(`/releases/download/v0.0.2-beta.1/${name}`);
+    expect(guide).toContain('/releases/download/v0.0.2-beta.2/Vigour-UI-Review-v0.0.2-beta.2-windows-x64-unsigned.zip');
+    expect(guide).not.toContain('/releases/download/v0.0.2-beta.1/Vigour-UI-Review-v0.0.2-beta.1-windows-x64-unsigned.zip');
     expect(guide).toContain('Windows 11 真机验收仍待完成');
     expect(guide).toContain('不是商店安装流程');
   });

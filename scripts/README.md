@@ -17,6 +17,8 @@
 
 截图命令需要先完成 `pnpm build` 和视觉引擎环境安装；设置 `VIGOUR_SMOKE_PLAYWRIGHT` 为本机 Playwright 模块绝对路径、`VIGOUR_SMOKE_CHROME` 为 Chrome 可执行文件绝对路径。不安装新的项目依赖。它通过内存请求桥接运行真实本地服务，不占用 4179、不接触现有项目库或系统凭据，也不验证真实 Chrome 扩展采集。
 
+`pnpm exec tsx scripts/smoke-capture-recovery.ts` 使用相同环境变量，验证真实拼接与采集状态弹窗的成功、失败、处理中、刷新和深浅主题排版。截图输出到新建临时目录；不替换公开 README 图片。此脚本当前使用 macOS/Linux 虚拟环境入口，不等于 Windows 真机验收。
+
 ## macOS 与扩展打包
 
 | 命令 | 入口 |

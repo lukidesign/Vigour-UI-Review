@@ -46,6 +46,17 @@ function setup() {
 afterEach(() => vi.useRealTimers());
 
 describe('capture safety', () => {
+  it.each(['SEGMENT_DIMENSION_MISMATCH', 'VISION_TIMEOUT', '/private/token=secret'])('does not call failed processing a successful capture: %s', async (processingError) => {
+    const h = setup();
+    h.request.mockImplementation(async (url) => String(url).endsWith('/capabilities')
+      ? Response.json({ localVision: true }) : Response.json({ id: 'capture_one', analysisReady: false, processingError }));
+    const result = await h.controller.capture('full-page');
+    expect(result).toMatchObject({ ok: false, id: 'capture_one' });
+    expect(h.controller.status().text).toContain('处理失败');
+    expect(h.controller.status().text).not.toContain('secret');
+    expect(h.controller.status().busy).toBe(false);
+    expect(h.uploads()).toHaveLength(1);
+  });
   it('checks service before injection, binds messages to a document and restores before upload', async () => {
     const h = setup();
     expect(await h.controller.capture('viewport')).toMatchObject({ ok: true });
@@ -193,9 +204,15 @@ describe('capture safety', () => {
     h.request.mockResolvedValueOnce(Response.json({})).mockImplementationOnce(async () => {
       expect(h.controller.status().canCancel).toBe(false);
       h.controller.cancel();
-      return Response.json({ id: 'saved' });
+      return Response.json({ id: 'saved', analysisReady: true });
     });
     expect(await h.controller.capture('viewport')).toMatchObject({ ok: true, id: 'saved' });
+  });
+
+  it('does not infer analysis readiness from a saved capture ID alone', async () => {
+    const h = setup();
+    h.request.mockResolvedValueOnce(Response.json({})).mockResolvedValueOnce(Response.json({ id: 'saved' }));
+    expect(await h.controller.capture('viewport')).toMatchObject({ ok: false, id: 'saved', code: 'CAPTURE_PROCESSING_FAILED' });
   });
 
   it('does not submit if restoration cannot be confirmed', async () => {

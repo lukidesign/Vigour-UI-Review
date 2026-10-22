@@ -22,7 +22,7 @@ describe('repository presentation', () => {
   });
 
   it('retains the Windows 11 pending-acceptance warning in both languages', () => {
-    expect(read('README.md')).toContain('Windows 11 real-machine acceptance is pending');
+    expect(read('README.md')).toContain('Windows 11 real-machine retesting is pending');
     expect(read('README.zh-CN.md')).toContain('Windows 11 真机验收仍待完成');
   });
 

@@ -27,7 +27,8 @@ def dispatch(root: Path, method: str, params: dict[str, Any]) -> object:
     if method == "stitch":
         manifest = safe_path(root, params["manifest_path"])
         output = safe_path(root, params["output_path"], must_exist=False)
-        return stitch_segments(manifest, output, int(params["page_width"]), int(params["page_height"]), float(params["dpr"]))
+        return stitch_segments(manifest, output, int(params["page_width"]), int(params["page_height"]), float(params["dpr"]),
+                               int(params["viewport_height"]) if "viewport_height" in params else None)
     if method == "analyze":
         reference = safe_path(root, params["reference_path"])
         candidate = safe_path(root, params["candidate_path"])

@@ -1,7 +1,7 @@
 import Fastify from 'fastify';
 import fastifyStatic from '@fastify/static';
 import type { DatabaseSync } from 'node:sqlite';
-import { captureUploadSchema, taskKindSchema } from '@vigour-ui-review/contracts';
+import { captureUploadSchema, taskKindSchema, safeCaptureProcessingError, type CaptureProcessingError } from '@vigour-ui-review/contracts';
 import { z } from 'zod';
 import { TaskStore } from './task-machine.js';
 import { registerSecurity, type SecurityConfig } from './security.js';
@@ -21,6 +21,7 @@ import { createProviderRegistry, type AIAdapter } from './ai-providers.js';
 import { buildAIContext, makeAIPrompt } from './ai-context.js';
 import { incompatibleImageResponse, planImageNormalization } from './image-normalization.js';
 import { LocalSession, registerLocalSession, NATIVE_PROTOCOL } from './local-session.js';
+import { markdownReport } from './markdown-report.js';
 
 const createTaskBody = z.object({ kind: taskKindSchema });
 
@@ -320,9 +321,7 @@ export function buildApp(db: DatabaseSync, security: SecurityConfig, assetRoot =
         return reply.type('application/json; charset=utf-8').header('content-disposition', `attachment; filename="${run.id}.json"`)
           .send({ schemaVersion: '1.0', run, issues });
       }
-      const escape = (value: string) => value.replaceAll('|', '\\|').replaceAll('\n', ' ');
-      const rows = issues.map((issue) => `| ${issue.severity} | ${issue.type} | ${escape(issue.plainDescription)} | ${issue.status} |`).join('\n');
-      const markdown = `# Vigour UI Review 验收报告\n\n- 评分：${run.score ?? '-'}\n- 结果：${run.passed ? '通过' : '未通过'}\n- 问题数：${issues.length}\n\n| 严重度 | 类型 | 问题 | 状态 |\n| --- | --- | --- | --- |\n${rows}\n`;
+      const markdown = markdownReport(run, issues, Boolean(projects.getEvidenceAssetId(run.id)));
       return reply.type('text/markdown; charset=utf-8').header('content-disposition', `attachment; filename="${run.id}.md"`).send(markdown);
     } catch { return reply.code(404).send({ code: 'RUN_NOT_FOUND' }); }
   });
@@ -332,7 +331,7 @@ export function buildApp(db: DatabaseSync, security: SecurityConfig, assetRoot =
     try {
       const capture = captures.create(parsed.data);
       let imageAssetId: string | undefined;
-      let processingError: string | undefined;
+      let processingError: CaptureProcessingError | undefined;
       try {
         if (parsed.data.mode === 'viewport') {
           const asset = images.create('implementation', `${parsed.data.title || '页面'}-视口.png`, parsed.data.segments[0]!.dataUrl);
@@ -344,6 +343,7 @@ export function buildApp(db: DatabaseSync, security: SecurityConfig, assetRoot =
             await vision.request('stitch', {
               manifest_path: stored.manifestPath, output_path: stitchedPath,
               page_width: stored.viewport.width, page_height: stored.page.height, dpr: stored.viewport.deviceScaleFactor,
+              viewport_height: stored.viewport.height,
             });
             const dataUrl = `data:image/png;base64,${readFileSync(stitchedPath).toString('base64')}`;
             imageAssetId = images.create('implementation', `${parsed.data.title || '页面'}-整页.png`, dataUrl).id;
@@ -351,11 +351,16 @@ export function buildApp(db: DatabaseSync, security: SecurityConfig, assetRoot =
         } else processingError = 'VISION_UNAVAILABLE';
         if (imageAssetId) captures.attachImage(capture.id, imageAssetId);
       } catch (error) {
-        processingError = error instanceof Error && ['IMAGE_LIMIT_EXCEEDED', 'SEGMENT_COVERAGE_GAP', 'VISION_TIMEOUT'].includes(error.message) ? error.message : 'CAPTURE_PROCESSING_FAILED';
+        // An image file alone is not a usable capture until DB attachment succeeds.
+        imageAssetId = undefined;
+        processingError = safeCaptureProcessingError(error instanceof Error ? error.message : undefined);
       }
-      return reply.code(201).send({ ...capture, imageAssetId, analysisReady: Boolean(imageAssetId), ...(processingError ? { processingError } : {}) });
+      if (!imageAssetId) captures.fail(capture.id, processingError ?? 'CAPTURE_PROCESSING_FAILED');
+      return reply.code(201).send({ ...capture, imageAssetId, analysisReady: Boolean(imageAssetId),
+        processingState: imageAssetId ? 'ready' : 'failed', ...(!imageAssetId ? { processingError: processingError ?? 'CAPTURE_PROCESSING_FAILED' } : {}) });
     } catch (error) {
-      const code = error instanceof Error ? error.message : 'CAPTURE_STORE_FAILED';
+      const safeCodes = ['CAPTURE_TOO_LARGE', 'IMAGE_LIMIT_EXCEEDED', 'INVALID_PNG', 'CAPTURE_DIMENSION_MISMATCH'];
+      const code = error instanceof Error && safeCodes.includes(error.message) ? error.message : 'CAPTURE_STORE_FAILED';
       const status = ['CAPTURE_TOO_LARGE', 'IMAGE_LIMIT_EXCEEDED'].includes(code) ? 413 : 400;
       return reply.code(status).send({ code });
     }

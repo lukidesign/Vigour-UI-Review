@@ -15,6 +15,7 @@
 - [技术架构](architecture/TECHNICAL_ARCHITECTURE.md)
 - [贡献指南](../.github/CONTRIBUTING.md)与[脚本索引](../scripts/README.md)
 - [视觉基准](BENCHMARK.md)与 [Windows 构建状态](WINDOWS-BETA-STATUS.md)
+- [Windows 测试反馈修复与复测清单](WINDOWS-FIX-VERIFICATION.md)：2026-10-22 beta.2 修复，Windows 11 真机复测待完成。
 
 ## 需求与发布
 

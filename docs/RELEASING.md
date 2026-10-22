@@ -2,6 +2,17 @@
 
 Vigour UI Review uses tag-triggered GitHub Releases.
 
+## Windows prerelease refresh (beta.2)
+
+For this unsigned Windows-only refresh, keep the internal application/extension version 0.0.2 and use a new immutable prerelease tag `v0.0.2-beta.2`. The stable macOS tag workflow intentionally skips prerelease tags.
+
+1. Submit a scoped PR; do not include unrelated local website work. Run adversarial review and `pnpm release:check` before publishing.
+2. Wait for source verification and the Windows Server 2022 CI job (payload checks, smoke tests, installer compilation, candidate staging).
+3. Merge only when checks pass. Prefer the completed main-branch build so `CANDIDATE.json.sourceCommit` is exactly the release tag commit.
+4. Download the candidate artifact, verify every entry of its internal `SHA256SUMS.txt`, and confirm the installer hash, extension version, source commit, candidate tag and `windows11Acceptance: pending`.
+5. Package the complete candidate plus a separate ZIP of the exact same extension directory. Generate external SHA-256 and provenance records. Create a draft prerelease, upload and re-download/verify the files, then publish as prerelease with Latest disabled.
+6. Keep all beta.1/macOS and v0.0.1 assets unchanged. Windows 11 real-machine retesting stays pending; CI is not GUI acceptance, signing or store approval.
+
 ## Prerequisites
 
 - The repository is public and GitHub Actions is enabled.

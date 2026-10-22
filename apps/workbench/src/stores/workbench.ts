@@ -15,7 +15,8 @@ export const useWorkbenchStore = defineStore('workbench', () => {
   const implementationAsset = ref<ImageAsset>();
   const busy = ref(false);
   const error = ref('');
-  const captures = ref<Array<{ id: string; title: string; pageUrl: string; mode: string; imageAssetId?: string; createdAt: string }>>([]);
+  const captures = ref<Array<{ id: string; title: string; pageUrl: string; mode: string; imageAssetId?: string; createdAt: string;
+    processingState?: 'processing' | 'ready' | 'failed'; processingError?: string }>>([]);
   const activeProject = computed(() => projects.value.find((project) => project.id === activeProjectId.value));
 
   async function loadProjects() {

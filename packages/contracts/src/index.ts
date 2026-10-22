@@ -1,4 +1,5 @@
 import { z } from 'zod';
+export { captureProcessingErrors, safeCaptureProcessingError, type CaptureProcessingError } from './capture-errors.js';
 
 export const idSchema = z.string().min(1).max(128).regex(/^[A-Za-z0-9_-]+$/);
 export const isoDateSchema = z.iso.datetime({ offset: true });

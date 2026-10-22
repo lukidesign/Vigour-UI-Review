@@ -1,5 +1,7 @@
 # Windows 11 x64 内测状态
 
+2026-10-22 更新：Windows 测试包刷新为 [v0.0.2-beta.2](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.2)，程序/扩展仍为 0.0.2。仅采用发布页实际附件，不覆盖旧版。新增修复、验证边界与真机复测清单见[修复记录](WINDOWS-FIX-VERIFICATION.md)。**Windows 11 真机复测仍待完成；原卸载卡住问题未作真机关闭结论。** 以下 10 月 19 日条目为历史构建证据，不代表 beta.2 已通过相同真机测试。
+
 更新：2026-10-19。适用范围：[已确认 SPEC](spec/WINDOWS-BETA-SPEC.md)。用户新增授权：与 macOS 同步交付未签名公开预发布版，**保留 Windows 11 真机测试待完成**。下载入口为 [v0.0.2-beta.1](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1)，不标记为稳定版或已完成 Windows 11 验收。
 
 ## 已写入源码

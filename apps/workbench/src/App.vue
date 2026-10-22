@@ -13,6 +13,7 @@ import { useWorkbenchStore } from './stores/workbench';
 import { useOneTimeConsent } from './ai-consent';
 import { applyTheme, loadCustomTheme, loadThemeId, saveCustomThemeValue, themes, type ThemePreset } from './themes';
 import type { Issue, Severity } from './types';
+import { captureProcessingErrors, safeCaptureProcessingError } from '@vigour-ui-review/contracts';
 
 const store = useWorkbenchStore();
 const needsToken = ref(false);
@@ -31,6 +32,7 @@ const figmaPat = ref('');
 const figmaUrl = ref('');
 const figmaBusy = ref(false);
 const captureModal = ref(false);
+const captureListBusy = ref(false);
 const aiModal = ref(false);
 const aiProvider = ref<'openai' | 'gemini' | 'kimi' | 'deepseek'>('openai');
 const aiModel = ref('gpt-5');
@@ -176,7 +178,18 @@ async function runAnalysis(useOcr = false) {
     } else message.error(error instanceof Error ? error.message : '分析失败');
   }
 }
-async function openCaptures() { await store.refreshCaptures(); captureModal.value = true; }
+async function openCaptures() { captureModal.value = true; await refreshCaptureList(); }
+async function refreshCaptureList() {
+  if (captureListBusy.value) return;
+  captureListBusy.value = true;
+  try { await store.refreshCaptures(); }
+  catch { message.error('无法刷新采集列表，请检查本地程序连接后重试。'); }
+  finally { captureListBusy.value = false; }
+}
+function captureFailureDescription(capture: typeof store.captures[number]) {
+  const code = safeCaptureProcessingError(capture.processingError);
+  return `${captureProcessingErrors[code]} 采集编号：${capture.id}；错误码：${code}`;
+}
 function chooseCapture(capture: typeof store.captures[number]) {
   try { store.useCapture(capture); captureModal.value = false; message.success('已选用浏览器采集图'); }
   catch (error) { message.error(error instanceof Error ? error.message : '采集不可用'); }
@@ -441,7 +454,26 @@ onBeforeUnmount(() => { stopLease?.(); revoke(designUrl.value); revoke(implement
       <a-form layout="vertical"><a-form-item label="Figma Frame 链接"><a-input v-model:value="figmaUrl" placeholder="https://www.figma.com/design/...?...node-id=1-2" /></a-form-item></a-form>
       <a-button type="primary" block :loading="figmaBusy" :disabled="!figmaConfigured || !figmaUrl" @click="importFigmaFrame">导入渲染图与节点语义</a-button>
     </a-modal>
-    <a-modal v-model:open="captureModal" title="选择浏览器采集" :footer="null"><a-list :data-source="store.captures" bordered><template #renderItem="{ item }"><a-list-item><a-list-item-meta :title="item.title" :description="`${item.mode === 'full-page' ? '整页' : '视口'} · ${new Date(item.createdAt).toLocaleString('zh-CN')}`" /><a-button :disabled="!item.imageAssetId" @click="chooseCapture(item)">{{ item.imageAssetId ? '使用' : '处理失败' }}</a-button></a-list-item></template></a-list><a-empty v-if="!store.captures.length" description="还没有浏览器采集，请先使用 Chrome 插件" /></a-modal>
+    <a-modal v-model:open="captureModal" title="选择浏览器采集" :footer="null">
+      <p>重新采集：返回目标网页，点击 Chrome 工具栏中的 Vigour UI Review。提交结果未确认时，请先刷新列表，避免重复采集。</p>
+      <a-button size="small" :loading="captureListBusy" @click="refreshCaptureList"><ReloadOutlined /> 刷新状态</a-button>
+      <a-list class="capture-list" :data-source="store.captures" :loading="captureListBusy" bordered>
+        <template #renderItem="{ item }">
+          <a-list-item>
+            <a-list-item-meta :title="item.title">
+              <template #description>
+                <div>{{ item.mode === 'full-page' ? '整页' : '视口' }} · {{ new Date(item.createdAt).toLocaleString('zh-CN') }}</div>
+                <div v-if="!item.imageAssetId" class="capture-processing-detail" role="status" aria-live="polite">
+                  {{ item.processingState === 'processing' ? '正在处理，请稍后刷新状态。' : captureFailureDescription(item) }}
+                </div>
+              </template>
+            </a-list-item-meta>
+            <a-button :disabled="!item.imageAssetId" @click="chooseCapture(item)">{{ item.imageAssetId ? '使用' : item.processingState === 'processing' ? '处理中' : '处理失败' }}</a-button>
+          </a-list-item>
+        </template>
+      </a-list>
+      <a-empty v-if="!captureListBusy && !store.captures.length" description="还没有浏览器采集，请先使用 Chrome 插件" />
+    </a-modal>
     <a-modal v-model:open="aiModal" :title="aiTaskCopy.title" :footer="null" width="640px" wrap-class-name="ai-modal">
       <section class="ai-task-summary" aria-labelledby="ai-task-heading">
         <RobotOutlined />
@@ -483,6 +515,13 @@ onBeforeUnmount(() => { stopLease?.(); revoke(designUrl.value); revoke(implement
     </a-modal>
   </a-config-provider>
 </template>
+
+<style>
+.capture-list .ant-list-item-meta { flex: 1; min-width: 0; margin-inline-end: 16px; }
+.capture-list .ant-list-item-meta-content { min-width: 0; }
+.capture-list .ant-list-item > .ant-btn { flex: none; }
+.capture-processing-detail { overflow-wrap: anywhere; color: var(--text); }
+</style>
 
 <script lang="ts">
 import { Empty } from 'ant-design-vue';

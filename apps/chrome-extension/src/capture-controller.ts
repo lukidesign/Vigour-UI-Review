@@ -1,4 +1,5 @@
 import { CaptureError, captureFailure } from './capture-errors';
+import { captureProcessingErrors, safeCaptureProcessingError } from '@vigour-ui-review/contracts';
 
 interface Prepared {
   title: string;
@@ -162,9 +163,15 @@ export function createCaptureController(browser: typeof chrome, request: typeof 
       if (response.status === 401) throw new CaptureError('UNAUTHORIZED');
       if (response.status === 403) throw new CaptureError('ORIGIN_NOT_ALLOWED');
       if (!response.ok) throw new CaptureError('UPLOAD_FAILED');
-      const result = await response.json() as { id?: unknown; analysisReady?: boolean; segmentCount?: number };
+      const result = await response.json() as { id?: unknown; analysisReady?: boolean; segmentCount?: number; processingError?: unknown };
       if (typeof result.id !== 'string') throw new CaptureError('UPLOAD_FAILED');
-      setStatus('finished', result.analysisReady ? '采集完成，请到工作台“最近采集”中查看。' : '采集已保存，请到工作台“最近采集”查看处理状态。');
+      if (!result.analysisReady) {
+        const code = safeCaptureProcessingError(result.processingError);
+        const error = `截图已保存，但处理失败：${captureProcessingErrors[code]}（${code}）`;
+        setStatus('finished', error);
+        return { ok: false as const, id: result.id, code, error };
+      }
+      setStatus('finished', '采集完成，请到工作台“最近采集”中查看。');
       return { ok: true as const, id: result.id };
     } catch (error) {
       const failure = captureFailure(uploading && !(error instanceof CaptureError) ? new CaptureError('UPLOAD_FAILED')
