@@ -9,6 +9,7 @@
     "typecheck": "vue-tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@vigour-ui-review/contracts": "workspace:*",
     "@ant-design/icons-vue": "7.0.1",
     "ant-design-vue": "4.2.6",
     "pinia": "4.0.3",

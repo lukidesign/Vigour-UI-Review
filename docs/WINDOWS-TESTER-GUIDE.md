@@ -1,6 +1,6 @@
 # Vigour UI Review · Windows x64 未签名 Beta 测试指南
 
-这是 LukiDesign 的 **v0.0.2-beta.1 未签名公开预发布包**，程序和扩展版本为 **0.0.2**。目标平台为 Windows 11 x64（Intel/AMD），**Windows 11 真机测试仍待完成**；Windows Server 构建机测试不能替代普通用户电脑验收。这不是稳定版或 Chrome 商店版本。不要用旧版 v0.0.1 配套程序混装。
+这是 LukiDesign 的 **v0.0.2-beta.2 未签名公开预发布包**，程序和扩展版本为 **0.0.2**。目标平台为 Windows 11 x64（Intel/AMD），**Windows 11 真机复测仍待完成**；Windows Server 构建机测试不能替代普通用户电脑验收。这不是稳定版或 Chrome 商店版本。不要混用 beta.1 或 v0.0.1 的配套文件。以 `CANDIDATE.json` 的标签、源码提交和构建号确认新包。
 
 更新补充（2026-10-20）：[双平台测试说明与回传模板](https://github.com/lukidesign/Vigour-UI-Review/blob/main/docs/BETA-TESTING.md)包含当前 Windows/Mac 下载和完整测试清单。以下说明适用于 GitHub 解压版，不代替实际提交到商店的扩展验收；已经发布的 ZIP 内文档不会随仓库更新。
 
@@ -8,7 +8,7 @@
 
 ## 安装（普通用户不用终端）
 
-1. 从 [v0.0.2-beta.1 发布页](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1) 下载 Windows x64 ZIP 并完整解压。确认目录内同时有 `chrome-extension`、`Vigour-UI-Review-0.0.2-windows-x64-dev-setup.exe` 和本文档。
+1. 从 [v0.0.2-beta.2 发布页](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.2) 下载 Windows x64 ZIP 并完整解压。确认目录内同时有 `chrome-extension`、`Vigour-UI-Review-0.0.2-windows-x64-dev-setup.exe`、`CANDIDATE.json` 和本文档。
 2. Chrome 打开 `chrome://extensions`，开启“开发者模式”，点击“加载已解压的扩展程序”，选择解压后的 `chrome-extension` 文件夹。复制 Chrome 显示的 **32 位扩展 ID**。不要直接选择外层 ZIP 或安装器。
 3. 双击安装器，选择“安装或更新”，将刚复制的扩展 ID 填入配对页面。安装只作用于当前用户，不应要求管理员权限、Node、Python 或命令行。
 4. 在 Chrome 工具栏点击 Vigour UI Review，再选择“打开工作台”。如提示扩展未配对，先检查安装器里填的 ID 是否与 `chrome://extensions` 中一致。
@@ -18,6 +18,8 @@
 `SHA256SUMS.txt` 提供给发布者或希望自行核验文件的高级用户；普通测试者无需运行 `shasum`、PowerShell 或其他校验命令。
 
 ## 验收时记录
+
+本轮重点复测整页 1/3/10 段、错误提示、新 ID 修复配对、卸载退出及 Markdown 证据。包内 `RETEST-CHECKLIST.md` 有完整清单；原报告的卸载卡住不能因源码修改而直接标记通过。
 
 - Windows 11 版本、CPU、Chrome 版本、显示缩放比例（100% / 125% / 150%）及 `CANDIDATE.json` 中的源码提交号。
 - 能否从工具栏打开工作台、采集视口与整页、导入设计图、完成分析，并导出 PNG / Markdown / JSON。不要把包含客户或个人信息的页面用于测试，除非已获许可。

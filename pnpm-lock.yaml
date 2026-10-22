@@ -28,6 +28,10 @@ importers:
         version: 4.1.11(@types/node@26.4.0)(vite@8.2.2(@types/node@26.4.0)(esbuild@0.28.2)(tsx@4.23.12))
 
   apps/chrome-extension:
+    dependencies:
+      '@vigour-ui-review/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
     devDependencies:
       '@types/chrome':
         specifier: 0.1.37
@@ -63,6 +67,9 @@ importers:
       '@ant-design/icons-vue':
         specifier: 7.0.1
         version: 7.0.1(vue@3.5.42(typescript@5.9.3))
+      '@vigour-ui-review/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
       ant-design-vue:
         specifier: 4.2.6
         version: 4.2.6(vue@3.5.42(typescript@5.9.3))

@@ -2,7 +2,7 @@ import { randomUUID } from 'node:crypto';
 import { mkdirSync, renameSync, rmSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { DatabaseSync } from 'node:sqlite';
-import type { CaptureUpload } from '@vigour-ui-review/contracts';
+import { safeCaptureProcessingError, type CaptureUpload, type CaptureProcessingError } from '@vigour-ui-review/contracts';
 
 const PNG_SIGNATURE = Buffer.from([137, 80, 78, 71, 13, 10, 26, 10]);
 const MAX_TOTAL_BYTES = 25 * 1024 * 1024;
@@ -50,8 +50,8 @@ export class CaptureStore {
       renameSync(temporaryDirectory, finalDirectory);
 
       this.db.prepare(`INSERT INTO captures
-        (id, page_url, title, mode, viewport_json, page_json, dom_path, segment_manifest_path, created_at)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`)
+        (id, page_url, title, mode, viewport_json, page_json, dom_path, segment_manifest_path, created_at, processing_state)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'processing')`)
         .run(id, input.pageUrl, input.title, input.mode, JSON.stringify(input.viewport), JSON.stringify(input.page),
           join(finalDirectory, 'dom.json'), join(finalDirectory, 'segments.json'), input.capturedAt);
       return { id, segmentCount: manifest.length, createdAt: input.capturedAt };
@@ -63,8 +63,13 @@ export class CaptureStore {
   }
 
   attachImage(id: string, imageAssetId: string) {
-    const result = this.db.prepare('UPDATE captures SET image_asset_id = ? WHERE id = ? AND image_asset_id IS NULL').run(imageAssetId, id);
+    const result = this.db.prepare("UPDATE captures SET image_asset_id = ?, processing_state = 'ready', processing_error = NULL WHERE id = ? AND image_asset_id IS NULL").run(imageAssetId, id);
     if (result.changes !== 1) throw new Error('CAPTURE_ATTACH_FAILED');
+  }
+
+  fail(id: string, code: CaptureProcessingError) {
+    this.db.prepare("UPDATE captures SET processing_state = 'failed', processing_error = ? WHERE id = ? AND image_asset_id IS NULL")
+      .run(safeCaptureProcessingError(code), id);
   }
 
   get(id: string) {
@@ -75,6 +80,8 @@ export class CaptureStore {
       viewport: JSON.parse(String(row.viewport_json)) as { width: number; height: number; deviceScaleFactor: number },
       page: JSON.parse(String(row.page_json)) as { width: number; height: number },
       manifestPath: String(row.segment_manifest_path), imageAssetId: row.image_asset_id ? String(row.image_asset_id) : undefined,
+      processingState: row.processing_state as 'processing' | 'ready' | 'failed',
+      ...(row.processing_state === 'failed' ? { processingError: safeCaptureProcessingError(row.processing_error) } : {}),
       createdAt: String(row.created_at),
     };
   }

@@ -1,6 +1,6 @@
 # Vigour UI Review
 
-[English](README.md) · [下载](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1) · [安装指南](docs/INSTALL.md) · [文档导航](docs/README.md) · [更新记录](CHANGELOG.md)
+[English](README.md) · [下载](https://github.com/lukidesign/Vigour-UI-Review/releases) · [安装指南](docs/INSTALL.md) · [文档导航](docs/README.md) · [更新记录](CHANGELOG.md)
 
 本地优先的 UI 视觉验收工作台：对照设计稿与 Web 实现，量化差异、走查问题并导出验收证据。
 
@@ -10,14 +10,14 @@
 
 ## 下载与开始使用
 
-> **v0.0.2-beta.1 是未签名的公开预发布版，不是稳定版。** 程序和扩展显示 **0.0.2**。**Windows 11 真机验收仍待完成。** macOS 签名/公证、干净机器/最低系统版本安装及休眠/空闲验收也仍待完成。
+> **Windows 更新为 v0.0.2-beta.2；macOS 保持 v0.0.2-beta.1。** 均为未签名预发布版，不是稳定版。程序和扩展显示 **0.0.2**，必须使用同平台、同次构建的配套文件。**Windows 11 真机复测仍待完成。**
 
 | 平台 | 下载 | 已验证边界 |
 | --- | --- | --- |
 | macOS 14+ · Apple Silicon | [图形安装器](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-Setup-v0.0.2-beta.1-macos-arm64-unsigned.zip) + [Chrome 扩展](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-extension-v0.0.2.zip) | 维护者 Mac 的核心 Chrome 流程已验证，不代表干净机器验收 |
-| Windows · x64 | [测试安装包](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-v0.0.2-beta.1-windows-x64-unsigned.zip) | Windows Server CI 已验证，Windows 11 用户真机测试待完成 |
+| Windows · x64 | [测试安装包](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.2/Vigour-UI-Review-v0.0.2-beta.2-windows-x64-unsigned.zip) | Windows Server CI 已验证，Windows 11 用户真机测试待完成 |
 
-1. 从 [Beta 发布页](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1)下载同一版本的配套文件，验证校验和后解压。
+1. 从上表对应平台的链接下载同次构建的配套文件，验证校验和后解压。
 2. 在 Chrome 中加载未打包的扩展目录，记录实际扩展 ID，并停用旧扩展，避免混用。
 3. 按对应平台的安装与配对步骤打开工作台，导入设计图和开发实现图，开始走查。
 

@@ -28,6 +28,11 @@ await mkdir(output, { recursive: true });
 await cp(setup, resolve(output, setupName));
 await cp(extension, resolve(output, 'chrome-extension'), { recursive: true, dereference: false });
 await cp(resolve(root, 'docs/WINDOWS-TESTER-GUIDE.md'), resolve(output, 'START-HERE.md'));
+const retest = (await readFile(resolve(root, 'docs/WINDOWS-FIX-VERIFICATION.md'), 'utf8'))
+  .replaceAll('](../scripts/README.md)', '](https://github.com/lukidesign/Vigour-UI-Review/blob/v0.0.2-beta.2/scripts/README.md)')
+  .replaceAll('](WINDOWS-BETA-STATUS.md)', '](https://github.com/lukidesign/Vigour-UI-Review/blob/v0.0.2-beta.2/docs/WINDOWS-BETA-STATUS.md)')
+  .replaceAll('](RELEASING.md)', '](https://github.com/lukidesign/Vigour-UI-Review/blob/v0.0.2-beta.2/docs/RELEASING.md)');
+await writeFile(resolve(output, 'RETEST-CHECKLIST.md'), retest, { flag: 'wx' });
 await cp(resolve(root, 'LICENSE'), resolve(output, 'LICENSE'));
 await cp(resolve(root, 'THIRD_PARTY_NOTICES.md'), resolve(output, 'THIRD_PARTY_NOTICES.md'));
 const hash = createHash('sha256');
@@ -36,13 +41,14 @@ const sha256 = hash.digest('hex');
 await writeFile(resolve(output, 'CANDIDATE.json'), `${JSON.stringify({
   product: 'Vigour UI Review', publisher: 'LukiDesign', version, platform: 'Windows 11 x64',
   unsigned: true, release: false, channel: 'prerelease', windows11Acceptance: 'pending', chromeExtensionVersion: extensionManifest.version,
+  candidateTag: 'v0.0.2-beta.2',
   chromeExtensionId: 'Choose the actual ID shown in chrome://extensions after loading unpacked',
   setupFile: setupName, setupSha256: sha256,
   sourceCommit: process.env.VIGOUR_SOURCE_COMMIT ?? null, buildRun: process.env.GITHUB_RUN_ID ?? null,
   limitations: ['Not signed', 'Not tested on a Windows 11 user PC', 'Offline OCR model availability not verified'],
 }, null, 2)}\n`, { flag: 'wx' });
 const names = (await readdir(output)).sort();
-if (JSON.stringify(names) !== JSON.stringify(['CANDIDATE.json', 'LICENSE', 'START-HERE.md', 'THIRD_PARTY_NOTICES.md', 'chrome-extension', setupName].sort())) throw new Error('Unexpected candidate content');
+if (JSON.stringify(names) !== JSON.stringify(['CANDIDATE.json', 'LICENSE', 'START-HERE.md', 'RETEST-CHECKLIST.md', 'THIRD_PARTY_NOTICES.md', 'chrome-extension', setupName].sort())) throw new Error('Unexpected candidate content');
 const checksums = [];
 async function inventory(directory) {
   for (const name of (await readdir(directory)).sort()) {

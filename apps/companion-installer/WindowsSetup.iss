@@ -84,6 +84,7 @@ var
   Messages: TArrayOfString;
 begin
   if CurStep <> ssPostInstall then Exit;
+  Log('Vigour helper: begin ' + SelectedAction);
   if (not Exec(ExpandConstant('{app}\installer\node.exe'),
     '"' + ExpandConstant('{app}\installer\windows-cli.mjs') + '" ' + SelectedAction + ' ' + IdPage.Values[0],
     ExpandConstant('{app}\installer'), SW_HIDE, ewWaitUntilTerminated, Code)) or (Code <> 0) then
@@ -99,13 +100,17 @@ var
   Code: Integer;
   Messages: TArrayOfString;
 begin
+  Log('Vigour helper: begin uninstall');
   Result := Exec(ExpandConstant('{app}\installer\node.exe'),
     '"' + ExpandConstant('{app}\installer\windows-cli.mjs') + '" uninstall',
     ExpandConstant('{app}\installer'), SW_HIDE, ewWaitUntilTerminated, Code) and (Code = 0);
+  Log('Vigour helper: uninstall returned, code=' + IntToStr(Code));
   if not Result then
   begin
+    { Silent failure must not wait forever behind a hidden custom message box. }
+    if UninstallSilent then Exit;
     if LoadStringsFromFile(ExpandConstant('{app}\installer\result.txt'), Messages) and (GetArrayLength(Messages) > 0) then
-      MsgBox(Messages[0], mbError, MB_OK)
-    else MsgBox('卸载未完成，项目数据保持不变。', mbError, MB_OK);
+      SuppressibleMsgBox(Messages[0], mbError, MB_OK, IDOK)
+    else SuppressibleMsgBox('卸载未完成，项目数据保持不变。', mbError, MB_OK, IDOK);
   end;
 end;

@@ -6,6 +6,17 @@ All notable changes to Vigour UI Review are documented here. The project follows
 
 No additional changes recorded.
 
+## [0.0.2-beta.2] - 2026-10-22
+
+Windows-only unsigned test refresh; app and extension still display 0.0.2. Use only matching assets from this build. **Windows 11 real-machine retesting remains pending.** macOS beta.1 and all previous release assets remain unchanged.
+
+- Preserve actual raster pixels when stitching fractional-DPR captures; retain dimension, coverage and image-limit validation.
+- Persist capture processing status and safe error codes; do not report a saved but unusable capture as successful.
+- Repair Windows pairing to the supplied extension ID using a reversible configuration switch.
+- Harden Windows uninstall completion, interrupted cleanup and stale-lock recovery; add phase diagnostics. The reported nine-minute hang still requires Windows 11 retesting, not a confirmed root-cause closure.
+- Export Markdown with issue coordinates, qualified local suggestions and portable PNG evidence references.
+- Add adversarial regression tests and isolated capture-recovery UI checks. See [fix verification and retest checklist](docs/WINDOWS-FIX-VERIFICATION.md).
+
 ## [0.0.2-beta.1] - 2026-10-19
 
 Unsigned public prerelease for macOS Apple Silicon and Windows x64; application and extension versions are 0.0.2. **Windows 11 real-machine testing remains pending.** Existing v0.0.1 assets are unchanged. See [beta notes](docs/releases/v0.0.2-beta.1.md) and [delivery status](docs/DELIVERY-STATUS.md). This release does not imply signing, notarization, stable-platform acceptance or store approval.

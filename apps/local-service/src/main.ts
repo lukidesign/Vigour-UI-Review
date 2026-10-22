@@ -44,6 +44,8 @@ process.once('SIGTERM', () => void close());
 
 try {
   await app.listen({ host: '127.0.0.1', port: 4179 });
+  // Only the service owning the port can mark a previous process's work interrupted.
+  db.prepare("UPDATE captures SET processing_state = 'failed', processing_error = 'CAPTURE_INTERRUPTED' WHERE processing_state = 'processing'").run();
   // Only the process that actually acquired the port may rotate disk credentials.
   persistSessionToken(resolve(dataDir, 'session-token'), sessionToken);
   const temporary = `${statePath}.${session.instanceId}.tmp`;
