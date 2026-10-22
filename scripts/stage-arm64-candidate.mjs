@@ -5,6 +5,7 @@ import { cp, mkdir, readFile, stat, writeFile } from 'node:fs/promises';
 import { execFileSync } from 'node:child_process';
 import { join, resolve, dirname } from 'node:path';
 import { verify } from '../apps/companion-installer/payload.mjs';
+import { macPlatform } from '../apps/companion-installer/platform.mjs';
 
 assert(process.platform === 'darwin' && process.arch === 'arm64', 'Native arm64 build required');
 const root = resolve(import.meta.dirname, '..');
@@ -16,6 +17,7 @@ const payload = join(app, 'Contents/Resources/companion');
 const sealed = await verify(payload, { expectedPlatform: 'darwin-arm64' });
 const profile = JSON.parse(await readFile(join(payload, 'PLATFORM.json'), 'utf8'));
 assert.equal(profile.localOcr, true, 'Apple Silicon must retain OCR dependencies');
+assert.equal(profile.minimumMacOS, macPlatform().minimumMacOS);
 const extension = JSON.parse(await readFile(join(payload, 'chrome-extension/manifest.json'), 'utf8'));
 assert.equal(sealed.version, '0.0.2');
 assert.equal(extension.version, sealed.version);
@@ -29,14 +31,14 @@ await cp(join(payload, 'chrome-extension'), join(stage, 'chrome-extension'), { r
 await cp(join(root, 'docs/APPLE-SILICON-TESTER-GUIDE.md'), join(stage, 'START-HERE.md'));
 await cp(join(root, 'LICENSE'), join(stage, 'LICENSE'));
 const provenance = { product: 'Vigour UI Review', tag, applicationVersion: sealed.version,
-  platform: 'darwin-arm64', minimumMacOS: '14.0', ocrDependenciesBundled: true, offlineOcrAcceptance: 'pending', unsigned: true,
+  platform: 'darwin-arm64', minimumMacOS: profile.minimumMacOS, ocrDependenciesBundled: true, offlineOcrAcceptance: 'pending', unsigned: true,
   appleSiliconRealMachineRetest: 'pending', cleanMachineAcceptance: 'pending', minimumOSAcceptance: 'pending',
   windows11Acceptance: 'pending', intelRealMachineAcceptance: 'pending', sourceCommit,
   buildRun: process.env.GITHUB_RUN_ID, buildPlatform: 'GitHub Actions macos-15 arm64',
   sourceBuild: `https://github.com/lukidesign/Vigour-UI-Review/actions/runs/${process.env.GITHUB_RUN_ID}`,
   extensionVersion: extension.version, builtAt: new Date().toISOString(),
   limitations: ['Unsigned and not notarized', 'OCR dependencies included; model availability and offline recognition not accepted',
-    'Real Chrome, clean-machine, macOS 14 and idle/sleep retesting pending', 'Chrome Web Store approval not claimed'] };
+    'Real Chrome, clean-machine, macOS 14.5 and idle/sleep retesting pending', 'Chrome Web Store approval not claimed'] };
 await writeFile(join(stage, 'CANDIDATE.json'), JSON.stringify(provenance, null, 2) + '\n', { flag: 'wx' });
 const output = join(root, 'release-artifacts/arm64-candidate');
 await mkdir(dirname(output), { recursive: true });

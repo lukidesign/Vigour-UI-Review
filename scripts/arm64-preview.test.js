@@ -9,6 +9,8 @@ it('requires native arm64, locked OCR dependencies and real upgrade checks befor
   expect(workflow).toContain("process.arch!=='arm64'");
   expect(workflow).toContain('--extra dev --extra ocr --frozen');
   expect(workflow).toContain('contents: read');
+  expect(workflow).toContain("MACOSX_DEPLOYMENT_TARGET: '14.5'");
+  expect(read('scripts/stage-arm64-candidate.mjs')).toContain('minimumMacOS: profile.minimumMacOS');
   expect(workflow.indexOf('pnpm test:installer')).toBeLessThan(workflow.indexOf('node scripts/stage-arm64-candidate.mjs'));
   expect(workflow).toContain('VIGOUR_LEGACY_INSTALLER_PAYLOAD');
   expect(read('scripts/smoke-package.mjs')).toContain("process.arch === 'arm64' && capabilities.data.localOcr !== true");

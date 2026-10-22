@@ -19,7 +19,7 @@ jobs:
     runs-on: macos-15
     timeout-minutes: 60
     env:
-      MACOSX_DEPLOYMENT_TARGET: '14.0'
+      MACOSX_DEPLOYMENT_TARGET: '14.5'
       PYTHONDONTWRITEBYTECODE: '1'
       VIGOUR_UI_REVIEW_PACKAGE_DIR: ${{ github.workspace }}/release/arm64-payload
       VIGOUR_INSTALLER_OUTPUT: ${{ github.workspace }}/release/arm64-stage/Vigour UI Review Setup.app

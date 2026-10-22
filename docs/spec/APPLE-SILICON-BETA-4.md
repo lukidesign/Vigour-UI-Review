@@ -6,7 +6,9 @@ The published October 19 Apple Silicon beta.1 predates shared capture-stitching,
 
 ## Proposed Solution
 
-User-approved scope (2026-10-23): rebuild macOS 14+ arm64 from main and publish a distinct unsigned `v0.0.2-beta.4` prerelease, preserving beta.1, Windows beta.2 and Intel beta.3 assets. Keep application/extension version 0.0.2 and record immutable source/run/checksums. Retain the existing PaddleOCR dependency profile; this is not the Intel core-only package.
+User-approved scope (2026-10-23): rebuild macOS 14.5+ arm64 from main and publish a distinct unsigned `v0.0.2-beta.4` prerelease, preserving beta.1, Windows beta.2 and Intel beta.3 assets. Keep application/extension version 0.0.2 and record immutable source/run/checksums. Retain the existing PaddleOCR dependency profile; this is not the Intel core-only package.
+
+Compatibility decision confirmed by the user: the locked PaddlePaddle 3.3.1 arm64 libraries declare macOS 14.5 in their Mach-O load commands. The new OCR-enabled Apple Silicon package therefore requires 14.5+, rather than the originally proposed 14.0+. Intel remains core-only with minimum 14.0. Do not patch vendor binaries or waive deployment-target checks. This does not retroactively validate beta.1 on macOS 14.0.
 
 ## Technical Constraints
 
