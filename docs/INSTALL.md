@@ -1,6 +1,6 @@
 # Vigour UI Review：安装与启动
 
-> 当前公开测试包：**Intel Mac beta.3（核心版、不含本地 OCR）、Windows beta.2、Apple Silicon beta.1**；程序/扩展均显示 0.0.2。均未签名，Mac 未公证；Windows 11 真机复测、Intel 用户真机及最低系统验收待完成。只使用同平台、同次构建的安装器和扩展；旧版流程保留在下方。
+> 当前公开测试包：**Intel Mac beta.3（核心版、不含本地 OCR）、Windows beta.2、Apple Silicon beta.4（macOS 14.5+、保留 OCR 依赖）**；程序/扩展均显示 0.0.2。均未签名，Mac 未公证；Windows 11 真机复测、Intel 用户真机及最低系统验收、Apple Silicon beta.4 真机复测待完成。只使用同平台、同次构建的安装器和扩展；旧版流程保留在下方。
 
 ## 安装当前 0.0.2 测试包
 
@@ -8,14 +8,14 @@
 
 macOS 14+ Intel x64 从 [beta.3 发布页](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.3) 下载完整 ZIP（已含安装器和匹配扩展）、校验和与来源记录。**不含本地 OCR、未签名、真机及最低系统验收待完成**。请按 [Intel 安装与复测指南](INTEL-MAC-TESTER-GUIDE.md) 操作。以下 Apple Silicon / 历史版本步骤不能替代 Intel 指南。
 
-### macOS Apple Silicon · beta.1
+### macOS Apple Silicon · beta.4
 
-1. 在 [beta.1 发布页](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1) 下载 macOS Setup ZIP、extension ZIP 和 `SHA256SUMS.txt`。最低目标 macOS 14；最低系统及干净机器验收尚未完成。
-2. 完整解压两个 ZIP，将扩展目录放在固定位置。Chrome 打开 `chrome://extensions`，停用旧版扩展，开启开发者模式，加载解压后的 `chrome-extension` 文件夹（其内直接包含 `manifest.json`），复制实际 32 位 ID。
+1. 确认系统为 **macOS 14.5 或更高版本**，在 [beta.4 发布页](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.4) 下载完整 Setup ZIP、`SHA256SUMS.txt` 和 `BUILD-PROVENANCE.json`，校验后解压。Paddle 二进制要求 14.5；最低系统真机验收仍待完成。
+2. 保留完整 `arm64-stage` 目录，安装器与匹配扩展已包含在内。Chrome 打开 `chrome://extensions`，停用旧版扩展，开启开发者模式，加载包内 `chrome-extension` 文件夹（其内直接包含 `manifest.json`），复制实际 32 位 ID。
 3. 打开解压后的 Setup 应用，安装或更新配套程序，填写上述实际扩展 ID。安装限定当前用户，并保留已有项目数据。不要填写商店草稿 ID。
 4. 从 Chrome 工具栏打开 Vigour UI Review，再打开工作台。自动配对无需复制令牌。
 
-程序没有 Developer ID 签名或公证。不要关闭 Gatekeeper 或移除系统安全保护；若系统或组织策略阻止运行，请停止并记录提示。已有本机验收不保证其他电脑的信任提示或安装结果。
+程序没有 Developer ID 签名或公证。不要关闭 Gatekeeper 或移除系统安全保护；若系统或组织策略阻止运行，请停止并记录提示。升级前关闭程序并备份项目数据；不保证迁移后可直接降级 beta.1。旧 beta.1 附件保留，但其本机记录不代表 beta.4 验收通过。完整步骤与 OCR 边界见 [Apple Silicon 指南](APPLE-SILICON-TESTER-GUIDE.md)。
 
 ### Windows x64 · beta.2
 
@@ -23,7 +23,7 @@ macOS 14+ Intel x64 从 [beta.3 发布页](https://github.com/lukidesign/Vigour-
 
 ## 旧版 v0.0.1：直接使用开发者安装包
 
-交付包支持 macOS 14+、Apple Silicon，不需要另装 Node.js、Python、PaddleOCR 或项目依赖。
+旧包原声明目标为 macOS 14+、Apple Silicon；最低系统兼容性未完成验收，不作为当前安装推荐。不需要另装 Node.js、Python、PaddleOCR 或项目依赖。
 
 1. 从 GitHub Release 下载并校验 `Vigour-UI-Review-v0.0.1-macos-arm64.zip`，然后打开解压后的同名目录。
 2. 双击 `start.command`；如果 macOS 首次阻止未签名脚本，请右键选择“打开”。
@@ -48,7 +48,7 @@ macOS 14+ Intel x64 从 [beta.3 发布页](https://github.com/lukidesign/Vigour-
 
 ## 从源码开发
 
-要求：macOS 14+、Apple Silicon、Node.js 24+、pnpm 11+、`uv`。
+要求：macOS 14.5+、Apple Silicon、Node.js 24+、pnpm 11+、`uv`。
 
 ```bash
 pnpm install --frozen-lockfile

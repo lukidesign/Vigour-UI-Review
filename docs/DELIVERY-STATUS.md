@@ -10,9 +10,18 @@
 | --- | --- | --- |
 | macOS 14+ Intel x64 | [v0.0.2-beta.3](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.3)，2026-10-22 发布；完整 ZIP 含匹配扩展 | 核心版，不含本地 OCR；原生 Intel CI 通过；用户真机、干净机及最低系统验收待完成 |
 | Windows 11 x64 | [v0.0.2-beta.2](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.2)，2026-10-22 发布；完整 ZIP 含匹配扩展 | Windows Server CI 通过；Windows 11 真机复测、离线 OCR 待完成；原卸载卡住问题未作真机关闭结论 |
-| macOS 14+ Apple Silicon | [v0.0.2-beta.1](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1)，2026-10-19 发布；安装器与扩展分别下载 | 维护者本机 Chrome 核心流程有记录；干净机、最低系统及空闲/睡眠验收待完成 |
+| macOS 14.5+ Apple Silicon | [v0.0.2-beta.4](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.4)，2026-10-23 发布；完整 ZIP 含安装器与匹配扩展 | 保留 OCR 依赖；原生 arm64 CI、隔离 beta.1 数据升级通过；本次真实 Chrome、干净机、最低系统、空闲/睡眠和离线 OCR 验收待完成 |
 
-全部为未签名预发布，Mac 未公证；不代表稳定版或 Chrome 商店批准。旧 v0.0.1 和既有附件保留，GitHub 的 Latest 仍指向 v0.0.1。各平台必须使用对应发布页的匹配文件，不能把 beta.3 当作 Windows 或 Apple Silicon 更新。
+全部为未签名预发布，Mac 未公证；不代表稳定版或 Chrome 商店批准。旧 v0.0.1 和既有附件保留，GitHub 的 Latest 仍指向 v0.0.1。各平台必须使用对应发布页的匹配文件，beta.4 仅更新 Apple Silicon，不替换 Windows beta.2 或 Intel beta.3。
+
+### 2026-10-23 Apple Silicon beta.4 来源与验证
+
+- [PR #23](https://github.com/lukidesign/Vigour-UI-Review/pull/23) 合并后的源码 `06e5f1df8c5b09a9782f5862e4fa4cd6f07c9495` 为本包来源；[原生 arm64 main CI #39828034008](https://github.com/lukidesign/Vigour-UI-Review/actions/runs/39828034008) 提供构建与验证记录，不使用 PR 合并预览包发布。
+- CI 校验发现锁定的 PaddlePaddle 3.3.1 中 5 个 arm64 库声明最低 macOS 14.5。经用户确认，新包保留 OCR、最低系统升为 14.5；Intel 核心版仍为 14.0。不修改第三方二进制声明、不放宽校验来绕过要求。历史 beta.1 的 14.0 声明不是已通过最低系统验收的证据。
+- 测试前进行执行者对抗式自审，明确同结构回退不等于可降级 beta.1、依赖加载不等于离线 OCR。源码检查包含 179 项 JS/TS、27 项 Python、类型/生产构建及 50 对/500 处合成基准；生产依赖审计未发现已知漏洞。
+- 原生构建覆盖完整性、私有路径、Mach-O 架构/最低部署目标、核心图片分析、OCR 依赖能力及隔离 Native/安装生命周期。通过校验和锁定的公开 beta.1 升级，核对合成项目、采集、分析结果、问题和 PNG 证据保留，以及 Markdown/JSON 导出；同结构回退、修复、卸载并保留数据另测。不操作维护者真实 Chrome 配置，不将 CI 当作用户真机验收。
+- 发布 ZIP 包含 Setup 应用、匹配扩展、`START-HERE.md` 和 `CANDIDATE.json`；外部提供 `SHA256SUMS.txt` 与 `BUILD-PROVENANCE.json`。发布前回读草稿附件验证 SHA-256、来源和完整性。准确包来源以这些记录为准，不使用后续文档提交号替代。
+- Windows 11 复测、Intel 用户真机/最低系统、Apple Silicon 本次真实 Chrome/干净机/macOS 14.5/空闲睡眠/离线 OCR 均待完成；10 月 19 日 beta.1 本机记录不转记为 beta.4 通过。安装与复测见 [Apple Silicon 指南](APPLE-SILICON-TESTER-GUIDE.md)。
 
 ### 2026-10-22 发布来源与验证
 
@@ -20,7 +29,7 @@
 - Intel 核心版通过 [PR #21](https://github.com/lukidesign/Vigour-UI-Review/pull/21) 合并。附件源码为 `cdc0909c0bec5602d24e5c8f289fd6c59f1b70bd`，[原生 Intel main CI #39756142234](https://github.com/lukidesign/Vigour-UI-Review/actions/runs/39756142234) 成功，覆盖 x64 打包、Mach-O 架构/部署目标、完整性、核心分析及隔离安装生命周期。原生构建机不是普通用户真机验收。
 - 两个新发布均提供 `SHA256SUMS.txt`、`BUILD-PROVENANCE.json`，发布时完成附件下载回读与校验；不重写 Apple Silicon beta.1 或历史发布附件。准确包来源以对应来源记录为准，不使用后续文档提交号代替。
 
-2026-10-23 本轮仅同步中英文首页、安装/测试说明与交付导航，不重建安装器、不改运行时代码或版本、不提交商店。安装步骤和反馈模板见 [Windows / Mac 测试说明](BETA-TESTING.md)；商店独立门槛仍见[提审准备度](store/READINESS.md)。
+2026-10-23 较早的文档同步仅更新 Intel/Windows 下载说明；随后 Apple Silicon 重建交付见上节。安装步骤和反馈模板见 [Windows / Mac 测试说明](BETA-TESTING.md)；商店独立门槛仍见[提审准备度](store/READINESS.md)，本次未提交商店。
 
 ## 历史交付记录
 

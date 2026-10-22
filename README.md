@@ -10,19 +10,19 @@ A local-first visual acceptance workbench: compare a Web implementation with its
 
 ## Download and start
 
-> **Published previews — Windows: beta.2; Apple Silicon: beta.1; Intel Mac core-only: beta.3.** Unsigned prereleases, not stable releases. App and extension display **0.0.2**; use matching files from the same platform/build. **Windows 11 retesting and Intel Mac real-machine acceptance are pending.** These are platform-specific releases, not one update for every platform.
+> **Published previews — Windows: beta.2; Apple Silicon: beta.4; Intel Mac core-only: beta.3.** Unsigned prereleases, not stable releases. App and extension display **0.0.2**; use matching files from the same platform/build. **Windows 11 retesting, Intel Mac acceptance and Apple Silicon beta.4 real-machine retesting are pending.** These are platform-specific releases, not one update for every platform.
 
 | Platform | Download | Verification boundary |
 | --- | --- | --- |
 | macOS 14+ · Intel x64 | [Installer + extension ZIP](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.3/Vigour-UI-Review-Setup-v0.0.2-beta.3-macos-x64-core-unsigned.zip) · [Guide](docs/INTEL-MAC-TESTER-GUIDE.md) | No local OCR; native Intel CI passed; user-machine/minimum-OS acceptance pending |
-| macOS 14+ · Apple Silicon | [Graphical installer](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-Setup-v0.0.2-beta.1-macos-arm64-unsigned.zip) + [Chrome extension](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-extension-v0.0.2.zip) | Core Chrome workflow checked on the maintainer’s Mac; not clean-machine acceptance |
+| macOS 14.5+ · Apple Silicon | [Installer + extension ZIP](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.4/Vigour-UI-Review-Setup-v0.0.2-beta.4-macos-arm64-unsigned.zip) · [Guide](docs/APPLE-SILICON-TESTER-GUIDE.md) | OCR dependencies retained; native CI and isolated beta.1 upgrade passed; real-machine/minimum-OS/offline OCR retesting pending |
 | Windows · x64 | [Tester package](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.2/Vigour-UI-Review-v0.0.2-beta.2-windows-x64-unsigned.zip) | Windows Server CI checked; Windows 11 user-PC testing pending |
 
 1. Download matching assets using the platform links above, verify their checksums, and extract them.
 2. In Chrome, load the unpacked extension folder and note its actual extension ID. Disable the old extension to avoid mixing versions.
 3. Follow the platform installer/pairing steps, open the workbench, and import a design and implementation image to start a review.
 
-Release notes, checksums and build provenance: [Intel beta.3](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.3) · [Windows beta.2](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.2) · [Apple Silicon beta.1](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1).
+Release notes, checksums and build provenance: [Apple Silicon beta.4](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.4) · [Intel beta.3](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.3) · [Windows beta.2](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.2). Previous beta.1 assets are preserved. The OCR-enabled Apple Silicon package requires macOS 14.5 because of its bundled Paddle binaries; Intel remains 14.0 core-only. Dependency availability is not offline OCR recognition acceptance.
 
 Read the [installation guide](docs/INSTALL.md) and [testing checklist](docs/BETA-TESTING.md). Do not disable operating-system security protections. The extension is not published in the Chrome Web Store. The previous [v0.0.1 preview](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.1) is preserved and still carries GitHub’s Latest label because the newer releases are prereleases; use the platform links above. Do not mix its companion with the new extension.
 
@@ -36,7 +36,7 @@ Read the [installation guide](docs/INSTALL.md) and [testing checklist](docs/BETA
 
 ## Develop
 
-For macOS Apple Silicon: macOS 14+, Node.js 24+, pnpm 11+ and [uv](https://docs.astral.sh/uv/). Intel builders must use the [core-only guide](docs/INTEL-MAC-TESTER-GUIDE.md) without the OCR extra. Windows builders should use the [Windows build guide](docs/WINDOWS-BETA-STATUS.md).
+For macOS Apple Silicon: macOS 14.5+, Node.js 24+, pnpm 11+ and [uv](https://docs.astral.sh/uv/). Intel builders must use the [core-only guide](docs/INTEL-MAC-TESTER-GUIDE.md) without the OCR extra. Windows builders should use the [Windows build guide](docs/WINDOWS-BETA-STATUS.md).
 
 ```bash
 pnpm install --frozen-lockfile

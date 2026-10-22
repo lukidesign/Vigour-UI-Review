@@ -33,10 +33,8 @@ describe('store documentation consistency (not store approval)', () => {
 
   it('directs beta testers to versioned Release assets, not expiring Actions downloads', () => {
     const guide = read('docs/BETA-TESTING.md');
-    for (const name of [
-      'Vigour-UI-Review-Setup-v0.0.2-beta.1-macos-arm64-unsigned.zip',
-      'Vigour-UI-Review-extension-v0.0.2.zip',
-    ]) expect(guide).toContain(`/releases/download/v0.0.2-beta.1/${name}`);
+    expect(guide).toContain('/releases/download/v0.0.2-beta.4/Vigour-UI-Review-Setup-v0.0.2-beta.4-macos-arm64-unsigned.zip');
+    expect(guide).not.toContain('/releases/download/v0.0.2-beta.1/');
     expect(guide).toContain('/releases/download/v0.0.2-beta.2/Vigour-UI-Review-v0.0.2-beta.2-windows-x64-unsigned.zip');
     expect(guide).toContain('/releases/download/v0.0.2-beta.3/Vigour-UI-Review-Setup-v0.0.2-beta.3-macos-x64-core-unsigned.zip');
     expect(guide).not.toContain('/releases/download/v0.0.2-beta.1/Vigour-UI-Review-v0.0.2-beta.1-windows-x64-unsigned.zip');
@@ -50,11 +48,13 @@ describe('store documentation consistency (not store approval)', () => {
       const text = read(path);
       expect(text, path).toContain(intelAsset);
       expect(text, path).toContain('/releases/download/v0.0.2-beta.2/Vigour-UI-Review-v0.0.2-beta.2-windows-x64-unsigned.zip');
-      expect(text, path).toContain('/releases/download/v0.0.2-beta.1/Vigour-UI-Review-Setup-v0.0.2-beta.1-macos-arm64-unsigned.zip');
+      expect(text, path).toContain('/releases/download/v0.0.2-beta.4/Vigour-UI-Review-Setup-v0.0.2-beta.4-macos-arm64-unsigned.zip');
+      expect(text, path).toContain('macOS 14.5+');
+      expect(text, path).not.toContain('/releases/download/v0.0.2-beta.1/');
       expect(text, path).not.toMatch(/native Intel CI required before publication|原生 Intel CI 通过后才发布/);
     }
     const install = read('docs/INSTALL.md');
-    for (const tag of ['v0.0.2-beta.1', 'v0.0.2-beta.2', 'v0.0.2-beta.3']) {
+    for (const tag of ['v0.0.2-beta.4', 'v0.0.2-beta.2', 'v0.0.2-beta.3']) {
       expect(install).toContain(`/releases/tag/${tag}`);
     }
     const guide = read('docs/BETA-TESTING.md');

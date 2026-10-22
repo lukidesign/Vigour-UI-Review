@@ -4,7 +4,13 @@ All notable changes to Vigour UI Review are documented here. The project follows
 
 ## [Unreleased]
 
-Apple Silicon beta.4 release preparation: native arm64 CI with retained OCR dependencies, immutable candidate staging, and checksum-pinned beta.1-to-current isolated data migration checks. This does not replace a published asset or establish real-machine acceptance. See [beta.4 notes](docs/releases/v0.0.2-beta.4.md).
+No additional unreleased changes recorded.
+
+## [0.0.2-beta.4] - 2026-10-23
+
+Apple Silicon-only unsigned preview refresh, **macOS 14.5+**, with app/extension version 0.0.2. Retains PaddleOCR dependencies and includes shared fractional-DPR stitching, capture-processing status, Markdown-export and OCR-capability fixes. The locked Paddle binaries require 14.5; Intel core-only remains 14.0.
+
+Native arm64 CI covers sealed-package checks, architecture/deployment targets, core analysis, OCR dependency availability and checksum-pinned beta.1-to-current isolated data migration. Same-schema rollback, repair and data-preserving uninstall are checked separately; direct downgrade of migrated data to beta.1 is not guaranteed. Real Chrome, clean-machine, minimum-OS, idle/sleep and offline OCR acceptance remain pending. Windows beta.2, Intel beta.3 and all old assets are preserved; Windows 11 retesting remains pending. See [beta.4 notes](docs/releases/v0.0.2-beta.4.md) and [delivery evidence](docs/DELIVERY-STATUS.md).
 
 Documentation follow-up (2026-10-23): synchronize published platform downloads, installation/testing instructions and delivery evidence for Intel beta.3, Windows beta.2 and Apple Silicon beta.1. No runtime, version, tag or existing release-asset changes; real-machine acceptance remains pending as documented.
 
