@@ -31,6 +31,8 @@
 
 [register-native.mjs](register-native.mjs) 注册本机主机，[app-paths.mjs](app-paths.mjs) 统一数据路径，[smoke-native-ui.mjs](smoke-native-ui.mjs) 支撑隔离 UI 验证。Native/安装器/打包冒烟检查可能需要独占 4179；不要为测试直接终止未知的用户服务。安装与注册会影响对应测试环境，先阅读脚本及[发布指南](../docs/RELEASING.md)。
 
+Apple Silicon beta.4 使用 [独立 CI](../.github/workflows/apple-silicon.yml)：[旧包夹具下载](fetch-arm64-upgrade-fixture.mjs) 先验证公开 beta.1 的固定 SHA-256，再供隔离升级测试使用；设置 `VIGOUR_LEGACY_INSTALLER_PAYLOAD` 后，安装器烟测检查旧项目、采集、分析、图片和导出保留。[候选归档](stage-arm64-candidate.mjs) 生成完整安装器＋扩展 ZIP、来源记录和校验和，不直接发布 Release。Intel 仍使用 [Intel 候选入口](stage-intel-candidate.mjs)。
+
 ## Windows 测试候选包
 
 | 命令 | 入口 |

@@ -15,7 +15,7 @@ describe('prerelease publication boundaries', () => {
   });
   it('uses one macOS minimum for both bundle metadata and executable target', () => {
     const script = read('scripts/build-installer.mjs');
-    expect(read('apps/companion-installer/platform.mjs')).toContain("minimumMacOS: '14.0'");
+    expect(read('apps/companion-installer/platform.mjs')).toContain("minimumMacOS: arch === 'arm64' ? '14.5' : '14.0'");
     expect(script).toContain('const minimumMacOS = platform.minimumMacOS');
     expect(script).toContain('<key>LSMinimumSystemVersion</key><string>${minimumMacOS}</string>');
     expect(script).toContain('`${platform.binaryArch}-apple-macos${minimumMacOS}`');

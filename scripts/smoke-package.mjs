@@ -81,6 +81,7 @@ try {
   const capabilities = await request('/api/v1/capabilities', { headers: { authorization: `Bearer ${token}` } });
   if (!capabilities.response.ok || capabilities.data.localVision !== true) throw new Error('Bundled local vision engine is unavailable');
   if (process.arch === 'x64' && capabilities.data.localOcr !== false) throw new Error('Intel core-only package must report localOcr=false');
+  if (process.arch === 'arm64' && capabilities.data.localOcr !== true) throw new Error('Apple Silicon package must retain working OCR dependencies (not a model/recognition acceptance test)');
 
   async function upload(kind, filename) {
     const bytes = await readFile(resolve(root, 'examples/demo', filename));
@@ -103,7 +104,7 @@ try {
   const workbench = await request('/');
   if (!workbench.response.ok || typeof workbench.data !== 'string' || !workbench.data.includes('Vigour UI Review')) throw new Error('Packaged workbench did not load');
   console.log(JSON.stringify({
-    status: 'ok', version: health.version, localVision: true,
+    status: 'ok', version: health.version, localVision: true, localOcr: capabilities.data.localOcr, offlineOcrAcceptance: 'pending',
     issueCount: analysis.data.issues.length, evidenceAssetId: analysis.data.evidenceAssetId,
   }, null, 2));
 } finally {

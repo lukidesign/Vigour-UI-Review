@@ -2,13 +2,14 @@ import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
 import { open, readdir, readFile } from 'node:fs/promises';
 import { resolve, join } from 'node:path';
-import { macPlatform } from '../apps/companion-installer/platform.mjs';
+import { macPlatform, macOSVersionAtMost } from '../apps/companion-installer/platform.mjs';
 
 const platform = macPlatform();
 const root = resolve(process.env.VIGOUR_UI_REVIEW_PACKAGE_DIR ?? `release/Vigour-UI-Review-v0.0.2-macos-${platform.arch}`);
 const profile = JSON.parse(await readFile(join(root, 'PLATFORM.json'), 'utf8'));
 assert.equal(profile.platform, platform.platform);
 assert.equal(profile.localOcr, platform.localOcr);
+assert.equal(profile.minimumMacOS, platform.minimumMacOS);
 let binaries = 0;
 async function check(path) {
   const handle = await open(path, 'r');
@@ -18,8 +19,10 @@ async function check(path) {
   const archs = execFileSync('/usr/bin/lipo', ['-archs', path], { encoding: 'utf8' }).trim().split(/\s+/);
   assert(archs.includes(platform.binaryArch), `Wrong binary architecture: ${path}: ${archs}`);
   const commands = execFileSync('/usr/bin/otool', ['-arch', platform.binaryArch, '-l', path], { encoding: 'utf8' });
-  for (const match of commands.matchAll(/(?:\bminos\s+|LC_VERSION_MIN_MACOSX\s+cmdsize\s+\d+\s+version\s+)(\d+)\.(\d+)/g)) {
-    assert(Number(match[1]) < 14 || (Number(match[1]) === 14 && Number(match[2]) === 0), `Requires macOS newer than 14.0: ${path}`);
+  const targets = [...commands.matchAll(/(?:\bminos\s+|LC_VERSION_MIN_MACOSX\s+cmdsize\s+\d+\s+version\s+)(\d+\.\d+(?:\.\d+)?)/g)];
+  assert(targets.length > 0, `Missing macOS deployment target: ${path}`);
+  for (const match of targets) {
+    assert(macOSVersionAtMost(match[1], platform.minimumMacOS), `Requires macOS ${match[1]}, newer than ${platform.minimumMacOS}: ${path}`);
   }
   binaries++;
 }

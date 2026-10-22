@@ -2,6 +2,16 @@
 
 Vigour UI Review uses tag-triggered GitHub Releases.
 
+## Apple Silicon prerelease refresh (beta.4)
+
+This arm64-only refresh keeps app/extension version 0.0.2 and retains the OCR dependency profile. See [scope](spec/APPLE-SILICON-BETA-4.md) and [tester guide](APPLE-SILICON-TESTER-GUIDE.md).
+
+1. Run adversarial review and source tests, then the read-only `Apple Silicon preview` workflow on a native arm64 runner. Require package integrity, OCR dependency capability, architecture/deployment checks and isolated lifecycle tests, including the hash-pinned public beta.1 upgrade fixture.
+2. Merge only after all PR checks pass. Use the successful **main** build, not the synthetic PR merge build, for publication; require `CANDIDATE.json.sourceCommit` and `BUILD-PROVENANCE.json.sourceCommit` to match the intended tag commit.
+3. Download the candidate artifact; verify checksums, ZIP safety, payload seal, arm64 executables and byte-identical packaged extension. The complete ZIP includes both installer and extension; do not pair it with beta.1's extension.
+4. Create a draft `v0.0.2-beta.4` prerelease at that source commit, upload its ZIP/checksums/provenance, download again and verify before publishing with Latest disabled. Never overwrite existing tags or assets.
+5. After publication, update platform download documentation. Real Chrome, minimum macOS, clean-machine, sleep/idle and offline OCR recognition remain pending unless separately evidenced. Dependency import is not OCR recognition. Windows beta.2 / Intel beta.3 assets and their acceptance flags remain unchanged.
+
 ## Windows prerelease refresh (beta.2)
 
 For this unsigned Windows-only refresh, keep the internal application/extension version 0.0.2 and use a new immutable prerelease tag `v0.0.2-beta.2`. The stable macOS tag workflow intentionally skips prerelease tags.
