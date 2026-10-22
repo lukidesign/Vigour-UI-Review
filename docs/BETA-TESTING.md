@@ -2,20 +2,19 @@
 
 更新：**2026-10-23**。发布商：LukiDesign。
 
-请协助测试 **Windows v0.0.2-beta.2 / Apple Silicon v0.0.2-beta.1 / Intel Mac v0.0.2-beta.3 未签名预发布版**；程序与 Chrome 扩展显示 **0.0.2**。Windows 新包重点复测拼接、错误提示、修复配对、卸载退出和 Markdown 导出；Intel 包只提供核心功能，不含本地 OCR。必须使用同平台、同次构建的扩展与安装器。
+请协助测试 **Windows v0.0.2-beta.2 / Apple Silicon v0.0.2-beta.4 / Intel Mac v0.0.2-beta.3 未签名预发布版**；程序与 Chrome 扩展显示 **0.0.2**。Windows 新包重点复测拼接、错误提示、修复配对、卸载退出和 Markdown 导出；Apple Silicon beta.4 同步共享修复并验证旧版数据升级，保留 OCR 依赖；Intel 包只提供核心功能，不含本地 OCR。必须使用同平台、同次构建的扩展与安装器。
 
-**Windows 11 真机验收仍待完成。Intel Mac 真机及 macOS 14 最低系统验收待完成。** Apple Silicon 已有维护者本机流程记录，但不代表所有机器通过。所有包都不是已签名稳定版，Mac 未公证；本说明也不代表 Chrome Web Store 已批准或上架。
+**Windows 11 真机验收仍待完成。Intel Mac 真机及 macOS 14 最低系统验收待完成。Apple Silicon beta.4 真机、macOS 14.5 最低系统、干净机、空闲/睡眠及离线 OCR 验收待完成。** Apple Silicon beta.1 的维护者本机记录不替代本次复测。所有包都不是已签名稳定版，Mac 未公证；本说明也不代表 Chrome Web Store 已批准或上架。
 
 ## 一、下载正确的测试包
 
-从下表对应的 GitHub Release 的 **Assets** 下载，不使用过期 Actions 附件。三个渠道分别构建，beta.3 不替换 Windows beta.2 或 Apple Silicon beta.1。
+从下表对应的 GitHub Release 的 **Assets** 下载，不使用过期 Actions 附件。三个渠道分别构建，Apple Silicon beta.4 不替换 Windows beta.2 或 Intel beta.3，旧 beta.1 附件继续保留。
 
 | 平台 | 下载与文件名 |
 | --- | --- |
 | Windows 11，Intel/AMD 64 位 | [完整 Windows ZIP，新修复测试包](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.2/Vigour-UI-Review-v0.0.2-beta.2-windows-x64-unsigned.zip)：`Vigour-UI-Review-v0.0.2-beta.2-windows-x64-unsigned.zip` |
 | macOS 14+，Intel x64 | [Intel 核心版完整 ZIP，约 113 MB](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.3/Vigour-UI-Review-Setup-v0.0.2-beta.3-macos-x64-core-unsigned.zip)：`Vigour-UI-Review-Setup-v0.0.2-beta.3-macos-x64-core-unsigned.zip`；含安装器和匹配扩展，不含本地 OCR |
-| macOS 14+，Apple Silicon | [Mac 图形安装器 ZIP，约 317 MB](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-Setup-v0.0.2-beta.1-macos-arm64-unsigned.zip)：`Vigour-UI-Review-Setup-v0.0.2-beta.1-macos-arm64-unsigned.zip` |
-| Mac beta.1 配套 Chrome 扩展 | [0.0.2 扩展 ZIP](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-extension-v0.0.2.zip)：`Vigour-UI-Review-extension-v0.0.2.zip`；Windows beta.2 请只用其完整包内的 `chrome-extension` |
+| macOS 14.5+，Apple Silicon | [M 系列安装器＋扩展完整 ZIP](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.4/Vigour-UI-Review-Setup-v0.0.2-beta.4-macos-arm64-unsigned.zip)：`Vigour-UI-Review-Setup-v0.0.2-beta.4-macos-arm64-unsigned.zip`；保留 OCR 依赖，不等于离线识别已验收 |
 
 发布页同时提供 `SHA256SUMS.txt` 和 `BUILD-PROVENANCE.json`。前者用于核验下载，后者记录各平台真实构建来源；不能把最新 README 提交号当作包的源码号。需要帮助校验时联系发布者，不要求普通测试者使用终端。
 
@@ -36,15 +35,17 @@ Release 附件不受旧 Actions 七天留存限制，但仍以发布页实际附
 
 ## 三、Mac 安装与启动
 
-### Apple Silicon · beta.1
+### Apple Silicon · beta.4
 
-1. 确认是 Apple Silicon 芯片、macOS 14 或更高版本；Intel Mac 不适用。
-2. 下载并解压 Mac Setup ZIP 和配套 0.0.2 扩展 ZIP，保留扩展目录。
+1. 确认是 Apple Silicon 芯片、**macOS 14.5 或更高版本**；Intel Mac 不适用。锁定的 Paddle 二进制要求 14.5，不支持 14.0–14.4。
+2. 下载并解压完整 ZIP，保留 `arm64-stage` 目录；其内同时包含 Setup 应用和匹配扩展。升级前关闭程序并备份自己的项目数据，不向公开反馈上传备份。
 3. 在 Chrome 扩展管理页开启开发者模式，加载解压后**直接包含 `manifest.json`**的扩展目录，复制实际 32 位 ID。
 4. 打开解压后的 Setup 应用，选择安装或更新，填写该 ID。
 5. 确认新扩展 0.0.2 启用、旧版停用，从工具栏点击“打开工作台”。
 
 本轮测试图形安装与 Native 自动连接，不使用旧 0.0.1 的 `start.command` 或手动令牌流程。若 Gatekeeper、未知开发者或组织策略阻止启动，请记录并反馈；**不要关闭 Gatekeeper、删除隔离标记或降低安全设置来绕过测试。**
+
+详细步骤见 [Apple Silicon 指南](APPLE-SILICON-TESTER-GUIDE.md)。升级会新增采集状态字段，不保证直接降级 beta.1；隔离自动测试只验证同数据库结构回退。OCR 依赖可加载不代表模型已缓存或离线识别可用。
 
 ### Intel x64 · beta.3
 
@@ -87,11 +88,11 @@ Release 附件不受旧 Actions 七天留存限制，但仍以发布页实际附
 
 ```text
 测试人（可用匿名编号）/ 日期：
-渠道：Windows v0.0.2-beta.2 / Apple Silicon v0.0.2-beta.1 / Intel Mac v0.0.2-beta.3（按实际填写）
+渠道：Windows v0.0.2-beta.2 / Apple Silicon v0.0.2-beta.4 / Intel Mac v0.0.2-beta.3（按实际填写）
 程序版本 / 扩展版本：0.0.2 / ______
 扩展来源：本地解压 / 商店（填写真实来源）
 测试包完整文件名：
-源码来源：Windows / Intel 从 CANDIDATE.json；各平台均可从 Release BUILD-PROVENANCE.json 核对
+源码来源：各平台从包内 CANDIDATE.json 或 Release BUILD-PROVENANCE.json 核对
 系统完整版本：
 CPU / 架构 / 内存：
 Chrome 版本：
