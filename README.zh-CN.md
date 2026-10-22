@@ -10,11 +10,11 @@
 
 ## 下载与开始使用
 
-> **Windows 为 beta.2；Apple Silicon 为 beta.1；Intel Mac 核心版为 beta.3 候选。** 均为未签名预发布版，不是稳定版。程序和扩展显示 **0.0.2**，必须使用同平台、同次构建的配套文件。**Windows 11 复测、Intel Mac 真机验收待完成。** 仅下载各发布页实际列出的附件。
+> **已发布测试包：Windows 为 beta.2；Apple Silicon 为 beta.1；Intel Mac 核心版为 beta.3。** 均为未签名预发布版，不是稳定版。程序和扩展显示 **0.0.2**，必须使用同平台、同次构建的配套文件。**Windows 11 复测、Intel Mac 真机验收待完成。** 各 Beta 对应不同平台，并非所有平台统一升级到 beta.3。
 
 | 平台 | 下载 | 已验证边界 |
 | --- | --- | --- |
-| macOS 14+ · Intel x64 | [核心版候选](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.3) · [指南](docs/INTEL-MAC-TESTER-GUIDE.md) | 不含本地 OCR；原生 Intel CI 通过后才发布；用户真机及最低系统验收待完成 |
+| macOS 14+ · Intel x64 | [安装器＋扩展完整 ZIP](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.3/Vigour-UI-Review-Setup-v0.0.2-beta.3-macos-x64-core-unsigned.zip) · [指南](docs/INTEL-MAC-TESTER-GUIDE.md) | 不含本地 OCR；原生 Intel CI 已通过；用户真机及最低系统验收待完成 |
 | macOS 14+ · Apple Silicon | [图形安装器](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-Setup-v0.0.2-beta.1-macos-arm64-unsigned.zip) + [Chrome 扩展](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-extension-v0.0.2.zip) | 维护者 Mac 的核心 Chrome 流程已验证，不代表干净机器验收 |
 | Windows · x64 | [测试安装包](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.2/Vigour-UI-Review-v0.0.2-beta.2-windows-x64-unsigned.zip) | Windows Server CI 已验证，Windows 11 用户真机测试待完成 |
 
@@ -22,7 +22,9 @@
 2. 在 Chrome 中加载未打包的扩展目录，记录实际扩展 ID，并停用旧扩展，避免混用。
 3. 按对应平台的安装与配对步骤打开工作台，导入设计图和开发实现图，开始走查。
 
-请先阅读[安装指南](docs/INSTALL.md)、[Windows 测试指南](docs/WINDOWS-TESTER-GUIDE.md)和[版本限制](docs/releases/v0.0.2-beta.1.md)。不要关闭操作系统安全保护。扩展尚未在 Chrome 应用商店上架。[旧版 v0.0.1](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.1)继续保留，不要将其伴随程序与新版扩展混用。
+发布说明、校验和及构建来源：[Intel beta.3](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.3) · [Windows beta.2](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.2) · [Apple Silicon beta.1](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1)。
+
+请先阅读[安装指南](docs/INSTALL.md)和[测试清单](docs/BETA-TESTING.md)。不要关闭操作系统安全保护。扩展尚未在 Chrome 应用商店上架。[旧版 v0.0.1](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.1)继续保留；由于新版均为预发布，GitHub 的 Latest 标签仍指向旧版，请使用上表的平台下载链接。不要将旧伴随程序与新版扩展混用。
 
 ## 功能
 

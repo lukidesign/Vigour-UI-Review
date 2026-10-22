@@ -1,25 +1,25 @@
 # Vigour UI Review：安装与启动
 
-> 当前公开测试渠道为 [v0.0.2-beta.1](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1)，程序/扩展版本为 0.0.2。两个平台均未签名，Windows 11 真机验收待完成。旧版 v0.0.1 终端启动流程保留在下方；不要混用新扩展和旧配套程序。
+> 当前公开测试包：**Intel Mac beta.3（核心版、不含本地 OCR）、Windows beta.2、Apple Silicon beta.1**；程序/扩展均显示 0.0.2。均未签名，Mac 未公证；Windows 11 真机复测、Intel 用户真机及最低系统验收待完成。只使用同平台、同次构建的安装器和扩展；旧版流程保留在下方。
 
-## 安装 v0.0.2-beta.1
+## 安装当前 0.0.2 测试包
 
-### Intel Mac 新增核心版候选
+### Intel Mac · beta.3 核心版
 
-macOS 14+ Intel x64 使用独立 beta.3 安装器与包内扩展，**不含本地 OCR、未签名、真机及最低系统验收待完成**。请按 [Intel 安装与复测指南](INTEL-MAC-TESTER-GUIDE.md) 操作。以下 Apple Silicon / 历史版本步骤不能替代 Intel 指南。
+macOS 14+ Intel x64 从 [beta.3 发布页](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.3) 下载完整 ZIP（已含安装器和匹配扩展）、校验和与来源记录。**不含本地 OCR、未签名、真机及最低系统验收待完成**。请按 [Intel 安装与复测指南](INTEL-MAC-TESTER-GUIDE.md) 操作。以下 Apple Silicon / 历史版本步骤不能替代 Intel 指南。
 
-### macOS Apple Silicon
+### macOS Apple Silicon · beta.1
 
-1. 在上述 Beta 发布页下载 macOS Setup ZIP、extension ZIP 和 `SHA256SUMS.txt`。最低目标 macOS 14；最低系统及干净机器验收尚未完成。
+1. 在 [beta.1 发布页](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.1) 下载 macOS Setup ZIP、extension ZIP 和 `SHA256SUMS.txt`。最低目标 macOS 14；最低系统及干净机器验收尚未完成。
 2. 完整解压两个 ZIP，将扩展目录放在固定位置。Chrome 打开 `chrome://extensions`，停用旧版扩展，开启开发者模式，加载解压后的 `chrome-extension` 文件夹（其内直接包含 `manifest.json`），复制实际 32 位 ID。
 3. 打开解压后的 Setup 应用，安装或更新配套程序，填写上述实际扩展 ID。安装限定当前用户，并保留已有项目数据。不要填写商店草稿 ID。
 4. 从 Chrome 工具栏打开 Vigour UI Review，再打开工作台。自动配对无需复制令牌。
 
 程序没有 Developer ID 签名或公证。不要关闭 Gatekeeper 或移除系统安全保护；若系统或组织策略阻止运行，请停止并记录提示。已有本机验收不保证其他电脑的信任提示或安装结果。
 
-### Windows x64
+### Windows x64 · beta.2
 
-下载同一发布页的 Windows ZIP，按 [Windows 测试指南](WINDOWS-TESTER-GUIDE.md) 安装。ZIP 已包含安装器与匹配扩展；无需另装 Node、Python 或开发工具。**Windows 11 真机、真实 Chrome 全流程及离线 OCR 仍待验收**，详见 [Windows 状态](WINDOWS-BETA-STATUS.md)。
+从 [beta.2 发布页](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.2) 下载 Windows ZIP，按 [Windows 测试指南](WINDOWS-TESTER-GUIDE.md) 安装。ZIP 已包含安装器与匹配扩展；无需另装 Node、Python 或开发工具。**Windows 11 真机、真实 Chrome 全流程及离线 OCR 仍待验收**，详见 [Windows 状态](WINDOWS-BETA-STATUS.md)。
 
 ## 旧版 v0.0.1：直接使用开发者安装包
 
