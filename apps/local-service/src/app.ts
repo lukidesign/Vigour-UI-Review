@@ -25,7 +25,7 @@ import { markdownReport } from './markdown-report.js';
 
 const createTaskBody = z.object({ kind: taskKindSchema });
 
-interface ExternalIntegrations { secrets?: SecretStore; figma?: Pick<FigmaClient, 'importFrame'>; aiProviders?: Record<AIProvider, AIAdapter>; staticRoot?: string; session?: LocalSession; stopNative?: () => Promise<void> }
+interface ExternalIntegrations { localOcr?: boolean; secrets?: SecretStore; figma?: Pick<FigmaClient, 'importFrame'>; aiProviders?: Record<AIProvider, AIAdapter>; staticRoot?: string; session?: LocalSession; stopNative?: () => Promise<void> }
 export function buildApp(db: DatabaseSync, security: SecurityConfig, assetRoot = '.data/assets', vision?: Pick<VisionClient, 'request'>, integrations: ExternalIntegrations = {}) {
   const app = Fastify({ logger: false, bodyLimit: 40 * 1024 * 1024 });
   const tasks = new TaskStore(db);
@@ -52,7 +52,7 @@ export function buildApp(db: DatabaseSync, security: SecurityConfig, assetRoot =
   app.get('/api/v1/capabilities', async () => ({
     capture: true,
     localVision: Boolean(vision),
-    localOcr: Boolean(vision),
+    localOcr: Boolean(vision) && integrations.localOcr === true,
     figmaPat: false,
     aiProviders: [],
   }));
@@ -212,6 +212,7 @@ export function buildApp(db: DatabaseSync, security: SecurityConfig, assetRoot =
     });
     const parsed = schema.safeParse(request.body);
     if (!parsed.success) return reply.code(400).send({ code: 'INVALID_ANALYSIS_REQUEST' });
+    if (parsed.data.useOcr && integrations.localOcr !== true) return reply.code(409).send({ code: 'LOCAL_OCR_UNAVAILABLE', message: '此安装包未提供本地 OCR，请使用像素 + 结构分析。' });
     let evidencePath: string | undefined;
     try {
       const reference = images.get(parsed.data.referenceAssetId);
@@ -244,6 +245,7 @@ export function buildApp(db: DatabaseSync, security: SecurityConfig, assetRoot =
       candidateAssetId: z.string().min(1).max(128), useOcr: z.boolean().default(false),
     }).safeParse(request.body);
     if (!parsed.success) return reply.code(400).send({ code: 'INVALID_ANALYSIS_REQUEST' });
+    if (parsed.data.useOcr && integrations.localOcr !== true) return reply.code(409).send({ code: 'LOCAL_OCR_UNAVAILABLE', message: '此安装包未提供本地 OCR，请使用像素 + 结构分析。' });
     let runId: string | undefined;
     let evidencePath: string | undefined;
     try {

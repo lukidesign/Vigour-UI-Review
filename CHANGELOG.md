@@ -6,6 +6,10 @@ All notable changes to Vigour UI Review are documented here. The project follows
 
 No additional changes recorded.
 
+## [0.0.2-beta.3] - 2026-10-22
+
+Intel Mac core-only preview candidate, macOS 14+ x64. Independent native CI build and matched extension; no local OCR. Binary architecture/deployment checks, isolated lifecycle testing, explicit payload platform validation, and actual OCR capability reporting. Intel user-machine/minimum-OS acceptance remains pending; unsigned/unnotarized. Windows beta.2 and Apple Silicon beta.1 assets are unchanged; Windows 11 retesting remains pending.
+
 ## [0.0.2-beta.2] - 2026-10-22
 
 Windows-only unsigned test refresh; app and extension still display 0.0.2. Use only matching assets from this build. **Windows 11 real-machine retesting remains pending.** macOS beta.1 and all previous release assets remain unchanged.

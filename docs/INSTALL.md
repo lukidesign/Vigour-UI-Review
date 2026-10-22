@@ -4,6 +4,10 @@
 
 ## 安装 v0.0.2-beta.1
 
+### Intel Mac 新增核心版候选
+
+macOS 14+ Intel x64 使用独立 beta.3 安装器与包内扩展，**不含本地 OCR、未签名、真机及最低系统验收待完成**。请按 [Intel 安装与复测指南](INTEL-MAC-TESTER-GUIDE.md) 操作。以下 Apple Silicon / 历史版本步骤不能替代 Intel 指南。
+
 ### macOS Apple Silicon
 
 1. 在上述 Beta 发布页下载 macOS Setup ZIP、extension ZIP 和 `SHA256SUMS.txt`。最低目标 macOS 14；最低系统及干净机器验收尚未完成。

@@ -15,9 +15,10 @@ describe('prerelease publication boundaries', () => {
   });
   it('uses one macOS minimum for both bundle metadata and executable target', () => {
     const script = read('scripts/build-installer.mjs');
-    expect(script).toContain("const minimumMacOS = '14.0'");
+    expect(read('apps/companion-installer/platform.mjs')).toContain("minimumMacOS: '14.0'");
+    expect(script).toContain('const minimumMacOS = platform.minimumMacOS');
     expect(script).toContain('<key>LSMinimumSystemVersion</key><string>${minimumMacOS}</string>');
-    expect(script).toContain('`arm64-apple-macos${minimumMacOS}`');
+    expect(script).toContain('`${platform.binaryArch}-apple-macos${minimumMacOS}`');
   });
   it('retains the pending Windows 11 acceptance flag in distributed metadata', () => {
     const script = read('scripts/stage-windows-candidate.mjs');

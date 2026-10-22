@@ -10,10 +10,11 @@ A local-first visual acceptance workbench: compare a Web implementation with its
 
 ## Download and start
 
-> **Windows: v0.0.2-beta.2; macOS: v0.0.2-beta.1.** Both are unsigned prereleases, not stable releases. App and extension display **0.0.2**; use matching files from the same platform/build. **Windows 11 real-machine retesting is pending.**
+> **Windows: beta.2; Apple Silicon: beta.1; Intel Mac core-only: beta.3 candidate.** Unsigned prereleases, not stable releases. App and extension display **0.0.2**; use matching files from the same platform/build. **Windows 11 retesting and Intel Mac real-machine acceptance are pending.** Download only assets actually listed on each release page.
 
 | Platform | Download | Verification boundary |
 | --- | --- | --- |
+| macOS 14+ · Intel x64 | [Core-only candidate](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.3) · [Guide](docs/INTEL-MAC-TESTER-GUIDE.md) | No local OCR; native Intel CI required before publication; user-machine/minimum-OS acceptance pending |
 | macOS 14+ · Apple Silicon | [Graphical installer](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-Setup-v0.0.2-beta.1-macos-arm64-unsigned.zip) + [Chrome extension](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-extension-v0.0.2.zip) | Core Chrome workflow checked on the maintainer’s Mac; not clean-machine acceptance |
 | Windows · x64 | [Tester package](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.2/Vigour-UI-Review-v0.0.2-beta.2-windows-x64-unsigned.zip) | Windows Server CI checked; Windows 11 user-PC testing pending |
 
@@ -33,7 +34,7 @@ Read the [installation guide](docs/INSTALL.md), [Windows tester guide](docs/WIND
 
 ## Develop
 
-For macOS: Apple Silicon, macOS 14+, Node.js 24+, pnpm 11+ and [uv](https://docs.astral.sh/uv/). Windows builders should use the [Windows build guide](docs/WINDOWS-BETA-STATUS.md).
+For macOS Apple Silicon: macOS 14+, Node.js 24+, pnpm 11+ and [uv](https://docs.astral.sh/uv/). Intel builders must use the [core-only guide](docs/INTEL-MAC-TESTER-GUIDE.md) without the OCR extra. Windows builders should use the [Windows build guide](docs/WINDOWS-BETA-STATUS.md).
 
 ```bash
 pnpm install --frozen-lockfile
@@ -58,7 +59,7 @@ licenses/   Third-party license texts
 
 Core comparison is local and has no telemetry. Optional Figma/AI integrations require your credentials; AI requests require explicit consent. Credentials use macOS Keychain or Windows Credential Manager, and the local API binds to loopback. See [Privacy](docs/PRIVACY.md) and [Security](docs/SECURITY.md).
 
-Synthetic benchmarks are not real-website accuracy claims. Windows 11 real-machine testing remains pending; macOS Intel is unsupported. The UI is primarily Chinese, and narrow-screen layouts remain limited. Detailed evidence and remaining gates live in the [delivery record](docs/DELIVERY-STATUS.md) and [benchmark notes](docs/BENCHMARK.md).
+Synthetic benchmarks are not real-website accuracy claims. Windows 11 real-machine retesting is pending. Intel Mac core-only preview excludes local OCR; user-machine/minimum-OS acceptance is pending. The UI is primarily Chinese, and narrow-screen layouts remain limited. Detailed evidence and remaining gates live in the [delivery record](docs/DELIVERY-STATUS.md) and [benchmark notes](docs/BENCHMARK.md).
 
 ## Contribute and license
 

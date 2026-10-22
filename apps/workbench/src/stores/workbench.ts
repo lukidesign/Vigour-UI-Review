@@ -14,12 +14,16 @@ export const useWorkbenchStore = defineStore('workbench', () => {
   const designAsset = ref<ImageAsset>();
   const implementationAsset = ref<ImageAsset>();
   const busy = ref(false);
+  const localOcr = ref(false);
   const error = ref('');
   const captures = ref<Array<{ id: string; title: string; pageUrl: string; mode: string; imageAssetId?: string; createdAt: string;
     processingState?: 'processing' | 'ready' | 'failed'; processingError?: string }>>([]);
   const activeProject = computed(() => projects.value.find((project) => project.id === activeProjectId.value));
 
   async function loadProjects() {
+    localOcr.value = false;
+    const capabilities = await api<{ localOcr: boolean }>('/api/v1/capabilities');
+    localOcr.value = capabilities.localOcr === true;
     [projects.value, captures.value] = await Promise.all([api<Project[]>('/api/v1/projects'), api<typeof captures.value>('/api/v1/captures')]);
     if (!activeProjectId.value && projects.value[0]) await selectProject(projects.value[0].id);
   }
@@ -55,6 +59,7 @@ export const useWorkbenchStore = defineStore('workbench', () => {
     normalization.value = undefined;
   }
   async function analyze(useOcr = false) {
+    if (useOcr && !localOcr.value) throw new Error('此安装包未提供本地 OCR，请使用像素 + 结构分析。');
     if (!activeProjectId.value || !designAsset.value || !implementationAsset.value) throw new Error('请先选择项目并上传两张图片');
     busy.value = true; error.value = ''; normalization.value = undefined;
     try {
@@ -88,5 +93,5 @@ export const useWorkbenchStore = defineStore('workbench', () => {
     });
   }
 
-  return { projects, activeProjectId, activeProject, runs, activeRun, issues, evidenceAssetId, normalization, designAsset, implementationAsset, captures, busy, error, loadProjects, refreshCaptures, useCapture, createProject, selectProject, selectRun, uploadImage, analyze, updateIssue, figmaStatus, saveFigmaPat, importFigma, aiKeyStatus, saveAIKey, analyzeWithAI };
+  return { localOcr, projects, activeProjectId, activeProject, runs, activeRun, issues, evidenceAssetId, normalization, designAsset, implementationAsset, captures, busy, error, loadProjects, refreshCaptures, useCapture, createProject, selectProject, selectRun, uploadImage, analyze, updateIssue, figmaStatus, saveFigmaPat, importFigma, aiKeyStatus, saveAIKey, analyzeWithAI };
 });

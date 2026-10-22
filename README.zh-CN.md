@@ -10,10 +10,11 @@
 
 ## 下载与开始使用
 
-> **Windows 更新为 v0.0.2-beta.2；macOS 保持 v0.0.2-beta.1。** 均为未签名预发布版，不是稳定版。程序和扩展显示 **0.0.2**，必须使用同平台、同次构建的配套文件。**Windows 11 真机复测仍待完成。**
+> **Windows 为 beta.2；Apple Silicon 为 beta.1；Intel Mac 核心版为 beta.3 候选。** 均为未签名预发布版，不是稳定版。程序和扩展显示 **0.0.2**，必须使用同平台、同次构建的配套文件。**Windows 11 复测、Intel Mac 真机验收待完成。** 仅下载各发布页实际列出的附件。
 
 | 平台 | 下载 | 已验证边界 |
 | --- | --- | --- |
+| macOS 14+ · Intel x64 | [核心版候选](https://github.com/lukidesign/Vigour-UI-Review/releases/tag/v0.0.2-beta.3) · [指南](docs/INTEL-MAC-TESTER-GUIDE.md) | 不含本地 OCR；原生 Intel CI 通过后才发布；用户真机及最低系统验收待完成 |
 | macOS 14+ · Apple Silicon | [图形安装器](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-Setup-v0.0.2-beta.1-macos-arm64-unsigned.zip) + [Chrome 扩展](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.1/Vigour-UI-Review-extension-v0.0.2.zip) | 维护者 Mac 的核心 Chrome 流程已验证，不代表干净机器验收 |
 | Windows · x64 | [测试安装包](https://github.com/lukidesign/Vigour-UI-Review/releases/download/v0.0.2-beta.2/Vigour-UI-Review-v0.0.2-beta.2-windows-x64-unsigned.zip) | Windows Server CI 已验证，Windows 11 用户真机测试待完成 |
 
@@ -33,7 +34,7 @@
 
 ## 本地开发
 
-macOS 环境需要 Apple Silicon、macOS 14+、Node.js 24+、pnpm 11+ 和 [uv](https://docs.astral.sh/uv/)。Windows 请使用 [Windows 构建指南](docs/WINDOWS-BETA-STATUS.md)。
+以下 macOS 命令面向 Apple Silicon，需要 macOS 14+、Node.js 24+、pnpm 11+ 和 [uv](https://docs.astral.sh/uv/)。Intel 请使用不含 OCR extra 的[核心版构建指南](docs/INTEL-MAC-TESTER-GUIDE.md)；Windows 请使用 [Windows 构建指南](docs/WINDOWS-BETA-STATUS.md)。
 
 ```bash
 pnpm install --frozen-lockfile
@@ -58,7 +59,7 @@ licenses/   第三方许可证原文
 
 核心对比在本地完成，无遥测。Figma/AI 为可选集成，需要用户提供凭据；AI 请求必须明确授权。凭据使用 macOS 钥匙串或 Windows 凭据管理器，本地 API 只监听回环地址。详见[隐私说明](docs/PRIVACY.md)和[安全策略](docs/SECURITY.md)。
 
-合成基准不代表真实网站准确率。Windows 11 真机验收仍待完成；不支持 macOS Intel。界面以中文为主，窄屏布局仍有限制。详细验证证据与剩余门槛见[交付记录](docs/DELIVERY-STATUS.md)和[基准说明](docs/BENCHMARK.md)。
+合成基准不代表真实网站准确率。Windows 11 真机验收仍待完成；Intel Mac 核心版不含本地 OCR，用户真机与最低系统验收待完成。界面以中文为主，窄屏布局仍有限制。详细验证证据与剩余门槛见[交付记录](docs/DELIVERY-STATUS.md)和[基准说明](docs/BENCHMARK.md)。
 
 ## 参与贡献与许可
 

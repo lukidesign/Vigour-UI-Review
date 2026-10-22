@@ -2,6 +2,7 @@ import { cp, lstat, mkdir, open, readFile, realpath, rename, rm, unlink, writeFi
 import { resolve, dirname, join } from 'node:path';
 import { randomUUID } from 'node:crypto';
 import { PRODUCT, verify, within } from './payload.mjs';
+import { macPlatform } from './platform.mjs';
 
 const HOST = 'com.vigour_ui_review.local';
 const BASE = 'http://127.0.0.1:4179';
@@ -13,7 +14,8 @@ async function atomic(path, value) {
 }
 const json = (value) => `${JSON.stringify(value, null, 2)}\n`;
 
-export async function createInstaller(home, { request = fetch } = {}) {
+export async function createInstaller(home, { request = fetch, arch = process.arch } = {}) {
+  const expectedPlatform = macPlatform(arch, 'darwin').platform;
   home = await realpath(home);
   const support = join(home, 'Library/Application Support');
   const root = join(support, 'Vigour UI Review Companion');
@@ -88,7 +90,7 @@ export async function createInstaller(home, { request = fetch } = {}) {
   }
   async function activate(next, before) {
     const active = slot(next.active); await safePath(active);
-    await verify(active, { installed: true, expectedPlatform: 'darwin-arm64' });
+    await verify(active, { installed: true, expectedPlatform });
     await safePath(join(active, 'native/host-config.json'));
     await atomic(join(active, 'native/host-config.json'), json({ extensionId: next.active.extensionId, dataRoot: data }));
     // The program tree stays immutable after installation except its private pairing config.
@@ -112,7 +114,7 @@ export async function createInstaller(home, { request = fetch } = {}) {
   async function perform(action, { source, extensionId } = {}) {
     if (!['install', 'repair', 'rollback', 'uninstall'].includes(action)) throw new Error('INVALID_ACTION');
     if (action === 'install' && !/^[a-p]{32}$/.test(extensionId ?? '')) throw new Error('INVALID_EXTENSION_ID');
-    const packageManifest = action === 'install' ? await verify(source, { expectedPlatform: 'darwin-arm64' }) : undefined;
+    const packageManifest = action === 'install' ? await verify(source, { expectedPlatform }) : undefined;
     if (action === 'install') await initialize(); else await owned();
     await directory(data);
     const releaseInstall = await lock(join(root, 'install.lock'));
@@ -127,7 +129,7 @@ export async function createInstaller(home, { request = fetch } = {}) {
         const target = slot(active); const staging = `${target}.staging`;
         try {
           await cp(source, staging, { recursive: true, dereference: false, verbatimSymlinks: true, errorOnExist: true, force: false });
-          await verify(staging, { expectedPlatform: 'darwin-arm64' });
+          await verify(staging, { expectedPlatform });
           await atomic(join(staging, 'native/host-config.json'), json({ extensionId, dataRoot: data }));
           await rename(staging, target);
           await activate({ product: PRODUCT, schema: 1, active, ...(before ? { previous: before.active } : {}) }, before);

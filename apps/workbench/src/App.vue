@@ -362,7 +362,7 @@ onBeforeUnmount(() => { stopLease?.(); revoke(designUrl.value); revoke(implement
             <div class="source-card"><label class="source-upload"><span class="step">2</span><span><small>开发实现图</small><strong>{{ store.implementationAsset?.filename || '选择 PNG / JPG' }}</strong></span><CloudUploadOutlined /><input type="file" accept="image/png,image/jpeg" @change="chooseFile('implementation', $event)"></label><button class="figma-action" @click="openCaptures">最近采集</button></div>
             <a-dropdown :disabled="analysisDisabled || store.busy">
               <a-button class="analysis-button" type="primary" size="large" :loading="store.busy" :disabled="analysisDisabled"><ReloadOutlined v-if="!store.busy && isCurrentPairAnalyzed" /><PlayCircleOutlined v-else-if="!store.busy" />{{ analysisActionLabel }}</a-button>
-              <template #overlay><a-menu><a-menu-item @click="runAnalysis(false)">像素 + 结构分析</a-menu-item><a-menu-item @click="runAnalysis(true)">同时启用本地 OCR</a-menu-item></a-menu></template>
+              <template #overlay><a-menu><a-menu-item @click="runAnalysis(false)">像素 + 结构分析</a-menu-item><a-menu-item :disabled="!store.localOcr" @click="runAnalysis(true)">{{ store.localOcr ? '同时启用本地 OCR' : '本地 OCR 不可用（当前安装包）' }}</a-menu-item></a-menu></template>
             </a-dropdown>
           </div>
           <div class="canvas-toolbar">

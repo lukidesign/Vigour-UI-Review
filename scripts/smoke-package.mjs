@@ -5,7 +5,7 @@ import { resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '..');
 const manifest = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8'));
-const packageName = `Vigour-UI-Review-v${manifest.version}-macos-arm64`;
+const packageName = `Vigour-UI-Review-v${manifest.version}-macos-${process.arch}`;
 const packageRoot = process.env.VIGOUR_UI_REVIEW_PACKAGE_DIR
   ? resolve(process.env.VIGOUR_UI_REVIEW_PACKAGE_DIR)
   : resolve(root, 'release', packageName);
@@ -80,6 +80,7 @@ try {
   const authHeaders = { authorization: `Bearer ${token}`, 'x-csrf-token': token, 'content-type': 'application/json' };
   const capabilities = await request('/api/v1/capabilities', { headers: { authorization: `Bearer ${token}` } });
   if (!capabilities.response.ok || capabilities.data.localVision !== true) throw new Error('Bundled local vision engine is unavailable');
+  if (process.arch === 'x64' && capabilities.data.localOcr !== false) throw new Error('Intel core-only package must report localOcr=false');
 
   async function upload(kind, filename) {
     const bytes = await readFile(resolve(root, 'examples/demo', filename));

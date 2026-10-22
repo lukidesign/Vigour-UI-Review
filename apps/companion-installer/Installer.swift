@@ -26,7 +26,12 @@ final class InstallerDelegate: NSObject, NSApplicationDelegate, NSWindowDelegate
         NSLayoutConstraint.activate([stack.leadingAnchor.constraint(equalTo: window.contentView!.leadingAnchor, constant: 28), stack.trailingAnchor.constraint(equalTo: window.contentView!.trailingAnchor, constant: -28), stack.topAnchor.constraint(equalTo: window.contentView!.topAnchor, constant: 28)])
         stack.addArrangedSubview(label("VR   Vigour UI Review", size: 25, bold: true))
         stack.addArrangedSubview(label("安装一次，之后从 Chrome 扩展按需打开工作台。", size: 15))
-        stack.addArrangedSubview(label("Apple Silicon 内测 · 未经 Developer ID 签名/公证。\n仅安装到当前用户目录，不需要管理员密码；升级和卸载保留项目、截图与钥匙串。"))
+        #if arch(x86_64)
+        let platformNotice = "Intel Mac 核心版 · 不含本地 OCR · 真机验收待完成。"
+        #else
+        let platformNotice = "Apple Silicon 内测。"
+        #endif
+        stack.addArrangedSubview(label("\(platformNotice) 未经 Developer ID 签名/公证。\n仅安装到当前用户目录，不需要管理员密码；升级和卸载保留项目、截图与钥匙串。"))
         stack.addArrangedSubview(label("Chrome 扩展 ID", bold: true))
         idField.placeholderString = "在 chrome://extensions 复制 32 位 ID"
         idField.stringValue = Bundle.main.object(forInfoDictionaryKey: "VigourExtensionId") as? String ?? ""
