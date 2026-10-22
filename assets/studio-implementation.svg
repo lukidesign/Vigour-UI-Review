@@ -1,0 +1,151 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="800" viewBox="0 0 1200 800" fill="none">
+<defs><linearGradient id="area" x1="0" y1="360" x2="0" y2="550" gradientUnits="userSpaceOnUse"><stop stop-color="#5184ff" stop-opacity=".22"/><stop offset="1" stop-color="#5184ff" stop-opacity="0"/></linearGradient></defs>
+<g font-family="-apple-system, BlinkMacSystemFont, PingFang SC, Microsoft YaHei, sans-serif">
+<rect x="0" y="0" width="1200" height="800" rx="0" fill="#f5f7fb"/>
+<rect x="0" y="0" width="192" height="800" rx="0" fill="#101b2e"/>
+<rect x="24" y="27" width="32" height="32" rx="9" fill="#a7c7ff"/>
+<path d="M33 45h14m-10-8v16m6-16v16" stroke="#20395f" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="68" y="49" fill="#f1f5ff" font-size="23" font-weight="650">Studio</text>
+<text x="27" y="102" fill="#8494af" font-size="11" font-weight="500">工作空间</text>
+<rect x="16" y="124" width="160" height="42" rx="8" fill="#263a59"/>
+<rect x="29" y="138" width="4" height="4" rx="1" fill="#c5dcff"/>
+<rect x="36" y="138" width="4" height="4" rx="1" fill="#c5dcff"/>
+<rect x="29" y="145" width="4" height="4" rx="1" fill="#c5dcff"/>
+<rect x="36" y="145" width="4" height="4" rx="1" fill="#c5dcff"/>
+<text x="54" y="151" fill="#c5dcff" font-size="14" font-weight="550">项目概览</text>
+<path d="M29 191h12v12H29zM33 195h4M33 199h4" stroke="#8e9eb8" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="203" fill="#8e9eb8" font-size="14" font-weight="400">全部项目</text>
+<path d="M29 243h12v12H29zM33 247h4M33 251h4" stroke="#8e9eb8" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="255" fill="#8e9eb8" font-size="14" font-weight="400">设计资源</text>
+<path d="M29 295h12v12H29zM33 299h4M33 303h4" stroke="#8e9eb8" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="307" fill="#8e9eb8" font-size="14" font-weight="400">团队协作</text>
+<path d="M29 347h12v12H29zM33 351h4M33 355h4" stroke="#8e9eb8" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="54" y="359" fill="#8e9eb8" font-size="14" font-weight="400">验收报告</text>
+<path d="M24 672h144" stroke="#26364c" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="29" y="707" fill="#8e9eb8" font-size="13" font-weight="400">设置与帮助</text>
+<circle cx="40" cy="756" r="16" fill="#314c73"/>
+<text x="34" y="761" fill="#d1e4ff" font-size="13" font-weight="600">S</text>
+<text x="66" y="752" fill="#c1cde0" font-size="13" font-weight="500">设计团队</text>
+<text x="66" y="772" fill="#8393ac" font-size="11" font-weight="400">演示工作空间</text>
+<rect x="192" y="0" width="1008" height="76" rx="0" fill="#ffffff"/>
+<path d="M192 76h1008" stroke="#e5eaf2" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="224" y="45" fill="#8490a3" font-size="13" font-weight="400">工作空间</text>
+<text x="301" y="45" fill="#bac2cf" font-size="13" font-weight="400">/</text>
+<text x="325" y="45" fill="#26334a" font-size="13" font-weight="500">项目概览</text>
+<rect x="859" y="23" width="222" height="32" rx="7" fill="#f5f7fa"/>
+<circle cx="877" cy="38" r="5" fill="none"/>
+<path d="M879 41l4 4M881 37a5 5 0 1 0-10 0a5 5 0 0 0 10 0" stroke="#919db0" stroke-width="1.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="897" y="44" fill="#919db0" font-size="12" font-weight="400">搜索项目</text>
+<text x="1054" y="44" fill="#a4afbf" font-size="10" font-weight="400">⌘ K</text>
+<circle cx="1148" cy="38" r="16" fill="#e6edfb"/>
+<text x="1143" y="43" fill="#4166a4" font-size="13" font-weight="600">S</text>
+<text x="228" y="127" fill="#18263e" font-size="28" font-weight="650">项目概览</text>
+<text x="229" y="154" fill="#7b889c" font-size="14" font-weight="400">让每一次交付，都有条不紊。</text>
+<rect x="1034" y="109" width="130" height="40" rx="8" fill="#27364e"/>
+<path d="M1053 129h10m-5-5v10" stroke="#ffffff" stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="1074" y="134" fill="#ffffff" font-size="14" font-weight="500">新建项目</text>
+<rect x="228" y="186" width="296" height="128" rx="12" fill="#ffffff" stroke="#e3e9f2"/>
+<text x="251" y="215" fill="#738099" font-size="13" font-weight="400">进行中项目</text>
+<text x="251" y="260" fill="#1c2c47" font-size="34" font-weight="600">12</text>
+<text x="251" y="290" fill="#268777" font-size="12" font-weight="500">+ 2</text>
+<text x="307" y="290" fill="#929daf" font-size="12" font-weight="400">较上周</text>
+<rect x="463" y="206" width="36" height="36" rx="9" fill="#edf3ff"/>
+<path d="M475 229v-7m5 7v-12m5 12v-9" stroke="#6b91e8" stroke-width="2.1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="435" y="284" width="4" height="7" rx="2" fill="#b5cdf9"/>
+<rect x="443" y="279" width="4" height="12" rx="2" fill="#b5cdf9"/>
+<rect x="451" y="282" width="4" height="9" rx="2" fill="#b5cdf9"/>
+<rect x="459" y="273" width="4" height="18" rx="2" fill="#b5cdf9"/>
+<rect x="467" y="277" width="4" height="14" rx="2" fill="#b5cdf9"/>
+<rect x="475" y="269" width="4" height="22" rx="2" fill="#b5cdf9"/>
+<rect x="483" y="266" width="4" height="25" rx="2" fill="#5c89e7"/>
+<rect x="548" y="186" width="296" height="128" rx="12" fill="#ffffff" stroke="#e3e9f2"/>
+<text x="571" y="215" fill="#738099" font-size="13" font-weight="400">本周完成</text>
+<text x="585" y="260" fill="#1c2c47" font-size="34" font-weight="600">28</text>
+<text x="571" y="290" fill="#268777" font-size="12" font-weight="500">+ 16%</text>
+<text x="627" y="290" fill="#929daf" font-size="12" font-weight="400">较上周</text>
+<rect x="783" y="206" width="36" height="36" rx="9" fill="#edf3ff"/>
+<path d="M795 229v-7m5 7v-12m5 12v-9" stroke="#6b91e8" stroke-width="2.1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="755" y="284" width="4" height="7" rx="2" fill="#b5cdf9"/>
+<rect x="763" y="279" width="4" height="12" rx="2" fill="#b5cdf9"/>
+<rect x="771" y="282" width="4" height="9" rx="2" fill="#b5cdf9"/>
+<rect x="779" y="273" width="4" height="18" rx="2" fill="#b5cdf9"/>
+<rect x="787" y="277" width="4" height="14" rx="2" fill="#b5cdf9"/>
+<rect x="795" y="269" width="4" height="22" rx="2" fill="#b5cdf9"/>
+<rect x="803" y="266" width="4" height="25" rx="2" fill="#5c89e7"/>
+<rect x="868" y="186" width="296" height="128" rx="12" fill="#ffffff" stroke="#e3e9f2"/>
+<text x="891" y="215" fill="#738099" font-size="13" font-weight="400">设计交付率</text>
+<text x="891" y="260" fill="#1c2c47" font-size="34" font-weight="600">86%</text>
+<text x="891" y="290" fill="#268777" font-size="12" font-weight="500">+ 8%</text>
+<text x="947" y="290" fill="#929daf" font-size="12" font-weight="400">较上周</text>
+<rect x="1075" y="284" width="4" height="7" rx="2" fill="#b5cdf9"/>
+<rect x="1083" y="279" width="4" height="12" rx="2" fill="#b5cdf9"/>
+<rect x="1091" y="282" width="4" height="9" rx="2" fill="#b5cdf9"/>
+<rect x="1099" y="273" width="4" height="18" rx="2" fill="#b5cdf9"/>
+<rect x="1107" y="277" width="4" height="14" rx="2" fill="#b5cdf9"/>
+<rect x="1115" y="269" width="4" height="22" rx="2" fill="#b5cdf9"/>
+<rect x="1123" y="266" width="4" height="25" rx="2" fill="#5c89e7"/>
+<rect x="228" y="338" width="606" height="246" rx="12" fill="#ffffff" stroke="#e3e9f2"/>
+<text x="251" y="372" fill="#25354f" font-size="16" font-weight="600">交付趋势</text>
+<circle cx="645" cy="367" r="3" fill="#4b7cf2"/>
+<text x="655" y="372" fill="#76859e" font-size="11" font-weight="400">本周</text>
+<rect x="721" y="353" width="88" height="28" rx="6" fill="#f7f9fc" stroke="#e8edf4"/>
+<text x="737" y="372" fill="#7e8da3" font-size="11" font-weight="400">最近 7 天</text>
+<text x="251" y="419" fill="#a0acbf" font-size="10" font-weight="400">30</text>
+<path d="M279 415h530" stroke="#edf1f7" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="251" y="467" fill="#a0acbf" font-size="10" font-weight="400">20</text>
+<path d="M279 463h530" stroke="#edf1f7" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="251" y="515" fill="#a0acbf" font-size="10" font-weight="400">10</text>
+<path d="M279 511h530" stroke="#edf1f7" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M280 511C310 511 328 480 365 482S420 510 452 475S510 472 542 453S598 467 631 421S700 455 721 405S770 410 802 397L802 543H280Z" fill="url(#area)"/>
+<path d="M280 511C310 511 328 480 365 482S420 510 452 475S510 472 542 453S598 467 631 421S700 455 721 405S770 410 802 397" stroke="#4b7cf2" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="631" cy="421" r="5" fill="#ffffff"/>
+<circle cx="631" cy="421" r="3" fill="#4b7cf2"/>
+<text x="278" y="562" fill="#99a6b9" font-size="10" font-weight="400">周一</text>
+<text x="363" y="562" fill="#99a6b9" font-size="10" font-weight="400">周二</text>
+<text x="448" y="562" fill="#99a6b9" font-size="10" font-weight="400">周三</text>
+<text x="533" y="562" fill="#99a6b9" font-size="10" font-weight="400">周四</text>
+<text x="618" y="562" fill="#99a6b9" font-size="10" font-weight="400">周五</text>
+<text x="703" y="562" fill="#99a6b9" font-size="10" font-weight="400">周六</text>
+<text x="788" y="562" fill="#99a6b9" font-size="10" font-weight="400">周日</text>
+<rect x="858" y="338" width="306" height="246" rx="12" fill="#ffffff" stroke="#e3e9f2"/>
+<text x="881" y="372" fill="#25354f" font-size="16" font-weight="600">项目进度</text>
+<text x="881" y="410" fill="#6d7b91" font-size="12" font-weight="400">品牌官网</text>
+<text x="1099" y="410" fill="#465b7b" font-size="12" font-weight="500">82%</text>
+<rect x="881" y="422" width="256" height="6" rx="3" fill="#edf1f7"/>
+<rect x="881" y="422" width="209.92" height="6" rx="3" fill="#4e7ff2"/>
+<text x="881" y="468" fill="#6d7b91" font-size="12" font-weight="400">管理控制台</text>
+<text x="1099" y="468" fill="#465b7b" font-size="12" font-weight="500">64%</text>
+<rect x="881" y="480" width="256" height="6" rx="3" fill="#edf1f7"/>
+<rect x="881" y="480" width="163.84" height="6" rx="3" fill="#80a8ec"/>
+<text x="881" y="526" fill="#6d7b91" font-size="12" font-weight="400">移动端体验</text>
+<text x="1099" y="526" fill="#465b7b" font-size="12" font-weight="500">45%</text>
+<rect x="881" y="538" width="256" height="6" rx="3" fill="#edf1f7"/>
+<rect x="881" y="538" width="115.2" height="6" rx="3" fill="#b3c9e9"/>
+<rect x="228" y="608" width="936" height="172" rx="12" fill="#ffffff" stroke="#e3e9f2"/>
+<text x="251" y="641" fill="#25354f" font-size="16" font-weight="600">最近项目</text>
+<text x="1090" y="641" fill="#7290bb" font-size="11" font-weight="400">查看全部 →</text>
+<rect x="229" y="657" width="934" height="30" rx="0" fill="#fafbfd"/>
+<text x="251" y="677" fill="#8b98ab" font-size="11" font-weight="400">项目名称</text>
+<text x="675" y="677" fill="#8b98ab" font-size="11" font-weight="400">负责人</text>
+<text x="832" y="677" fill="#8b98ab" font-size="11" font-weight="400">状态</text>
+<text x="1041" y="677" fill="#8b98ab" font-size="11" font-weight="400">更新时间</text>
+<rect x="251" y="699" width="25" height="25" rx="6" fill="#edf2fb"/>
+<path d="M259 707h10v9h-10z" stroke="#7999cf" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="289" y="716" fill="#50617b" font-size="12" font-weight="500">品牌官网 · 视觉升级</text>
+<circle cx="686" cy="712" r="11" fill="#e8eef8"/>
+<text x="682" y="716" fill="#7188ac" font-size="10" font-weight="500">L</text>
+<text x="705" y="716" fill="#8592a6" font-size="11" font-weight="400">设计组</text>
+<rect x="832" y="700" width="69" height="24" rx="12" fill="#fff1dc"/>
+<text x="845" y="716" fill="#a77a29" font-size="11" font-weight="400">进行中</text>
+<text x="1041" y="716" fill="#8592a6" font-size="11" font-weight="400">10 月 22 日</text>
+<path d="M251 734h889" stroke="#edf1f7" stroke-width="1" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="251" y="743" width="25" height="25" rx="6" fill="#edf2fb"/>
+<path d="M259 751h10v9h-10z" stroke="#7999cf" stroke-width="1.3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+<text x="289" y="760" fill="#50617b" font-size="12" font-weight="500">管理控制台 · 工作空间</text>
+<circle cx="686" cy="756" r="11" fill="#e8eef8"/>
+<text x="682" y="760" fill="#7188ac" font-size="10" font-weight="500">M</text>
+<text x="705" y="760" fill="#8592a6" font-size="11" font-weight="400">设计组</text>
+<rect x="832" y="744" width="69" height="24" rx="12" fill="#e8f5ef"/>
+<text x="845" y="760" fill="#4e9273" font-size="11" font-weight="400">进行中</text>
+<text x="1041" y="760" fill="#8592a6" font-size="11" font-weight="400">10 月 21 日</text>
+</g></svg>
